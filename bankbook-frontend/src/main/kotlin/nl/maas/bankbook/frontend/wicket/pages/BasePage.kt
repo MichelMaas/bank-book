@@ -1,0 +1,98 @@
+package nl.maas.bankbook.frontend.wicket.pages
+
+import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar
+import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton
+import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarComponents
+import nl.maas.fxanalyzer.frontend.wicket.caches.ModelCache
+import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
+import nl.maas.fxanalyzer.frontend.wicket.components.FxAnalyserNavbarButton
+import nl.maas.fxanalyzer.frontend.wicket.objects.enums.ButtonTypes
+import org.apache.commons.lang3.StringUtils
+import org.apache.wicket.AttributeModifier
+import org.apache.wicket.Component
+import org.apache.wicket.markup.html.GenericWebPage
+import org.apache.wicket.model.Model
+import org.apache.wicket.protocol.http.WebApplication
+import org.apache.wicket.request.mapper.parameter.PageParameters
+import javax.inject.Inject
+
+
+open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(parameters) {
+    lateinit var navbar: Navbar
+
+    @Inject
+    lateinit var modelCache: ModelCache
+
+    @Inject
+    lateinit var propertiesCache: PropertiesCache
+
+    override fun onInitialize() {
+        super.onInitialize()
+        (application as WebApplication).mountResource("/images/icon.png", propertiesCache.iconReference)
+    }
+
+    protected fun newNavbar(markupId: String): Navbar {
+        navbar =
+            ToolTipNavBar(
+                markupId,
+                propertiesCache.applicationProperties.version
+            )
+        navbar.position = Navbar.Position.TOP
+        navbar.add(NavbarProvider())
+        navbar.setBrandName(Model.of("FX Analyzer"))
+        navbar.setBrandImage(propertiesCache.brandReference, Model.of(StringUtils.EMPTY))
+        val navbarButtons: Array<NavbarButton<*>> = ButtonTypes.values().map { button: ButtonTypes? ->
+            FxAnalyserNavbarButton(
+                button!!
+            )
+        }.toTypedArray()
+        navbar.addComponents(NavbarComponents.transform(Navbar.ComponentPosition.LEFT, *navbarButtons))
+        navbar.outputMarkupId = true
+        return navbar
+    }
+
+    fun findNavButton(type: ButtonTypes): FxAnalyserNavbarButton? {
+        return navbar.filter { component -> component.javaClass.isAssignableFrom(FxAnalyserNavbarButton::class.java) }
+            .map { it as FxAnalyserNavbarButton }.firstOrNull { type.equals(it.buttonType) }
+    }
+
+
+    override fun onBeforeRender() {
+        super.onBeforeRender()
+        addOrReplace(newNavbar("navbar"))
+        outputMarkupId = true
+    }
+
+    @ExperimentalStdlibApi
+    fun isButtonActive(type: ButtonTypes): Boolean {
+        var filled = when (type) {
+            ButtonTypes.OVERVIEW, ButtonTypes.ProfitPerDay, ButtonTypes.SellBuy, ButtonTypes.WinLoss, ButtonTypes.EntryPreference, ButtonTypes.TimeZones, ButtonTypes.Options, ButtonTypes.ProfitCalendar -> return modelCache.fxDataSet != null
+            ButtonTypes.Import -> return true
+            else -> false
+        }
+        return filled
+    }
+
+    private inner class NavbarProvider : AttributeModifier(
+        "class",
+        "navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar sticky-top bg-primary"
+    ) {
+        val childClass = AttributeModifier("class", "nav-item")
+    }
+
+    private inner class NavtabsProvider : AttributeModifier("class", "nav nav-tabs nav-tabs-dark")
+
+
+    inner class ToolTipNavBar(id: String, val toolTip: String) : Navbar(id) {
+
+        override fun newBrandNameLink(componentId: String?): Component {
+            return super.newBrandNameLink(componentId).add(*tooltipVersionProvider(toolTip))
+        }
+
+        fun tooltipVersionProvider(toolTip: String) = arrayOf(
+            AttributeModifier("data-toggle", "tooltip"),
+            AttributeModifier("data-placement", "bottom"),
+            AttributeModifier("title", toolTip)
+        )
+    }
+}

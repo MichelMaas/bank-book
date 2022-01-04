@@ -1,0 +1,335 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.8.RELEASE)
+
+2021-09-07 11:52:13.074  INFO 185275 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 185275 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-07 11:52:13.077 DEBUG 185275 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
+2021-09-07 11:52:13.078  INFO 185275 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
+2021-09-07 11:52:13.146  INFO 185275 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-09-07 11:52:15.768  INFO 185275 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-09-07 11:52:15.830  INFO 185275 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-09-07 11:52:15.831  INFO 185275 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.24]
+2021-09-07 11:52:16.026  INFO 185275 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-09-07 11:52:16.026  INFO 185275 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2879 ms
+2021-09-07 11:52:16.765  INFO 185275 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket core library initializer
+2021-09-07 11:52:16.769  INFO 185275 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket extensions initializer
+2021-09-07 11:52:16.796  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: nl.maas.fxanalyzer.frontend.wicket.config.BootstrapConfig$$EnhancerBySpringCGLIB$$3b52377c
+2021-09-07 11:52:16.816  INFO 185275 --- [           main] wicket-jquery-selectors                  : initialize wicket jquery selectors with given settings: de.agilecoders.wicket.jquery.settings.WicketJquerySelectorsSettings@57d5eea9
+2021-09-07 11:52:16.850  INFO 185275 --- [           main] wicket-webjars                           : initialize wicket webjars with given settings: WebjarsSettings{readFromCacheTimeout=PT3S, resourceStreamProvider=de.agilecoders.wicket.webjars.settings.ResourceStreamProvider$1@6a78bea0, recentVersionPlaceHolder='current', assetPathCollectors=[de.agilecoders.wicket.webjars.collectors.ClasspathAssetPathCollector@21acaa60, de.agilecoders.wicket.webjars.collectors.VfsAssetPathCollector@2df77a99, de.agilecoders.wicket.webjars.collectors.FileAssetPathCollector@78afec39], webjarsPackage='META-INF.resources.webjars', webjarsPath='META-INF/resources/webjars', resourcePattern=META-INF/resources/webjars/.*, webjarsPathPattern=/webjars/([^\/]*)\/([^\/]*)\/(.*), useCdnResources=false, cdnUrl='//cdn.jsdelivr.net:80/webjars/org.webjars'}
+2021-09-07 11:52:16.894  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.application.ApplicationSettingsConfig$$EnhancerBySpringCGLIB$$848bd15e
+2021-09-07 11:52:16.894  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.pagestore.StoreSettingsConfig$$EnhancerBySpringCGLIB$$61c90f71
+2021-09-07 11:52:16.896  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resources.SpringBootMainClassResourceRegistration$$EnhancerBySpringCGLIB$$8e50b6ee
+2021-09-07 11:52:16.897  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.exceptions.ExceptionSettingsConfig$$EnhancerBySpringCGLIB$$dcbf7ca5
+2021-09-07 11:52:16.897  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.requrestcycle.RequestCycleSettingsConfig$$EnhancerBySpringCGLIB$$2345522a
+2021-09-07 11:52:16.898  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.csrf.CsrfAttacksPreventionConfig$$EnhancerBySpringCGLIB$$1e298ec1
+2021-09-07 11:52:16.899  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resourcesettings.packageresourceguard.PackageResourceGuardConfig$$EnhancerBySpringCGLIB$$9ab2cbe5
+2021-09-07 11:52:16.900  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.markup.MarkupSettingsConfig$$EnhancerBySpringCGLIB$$5dbd5e9a
+2021-09-07 11:52:16.900  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.external.webjars.WebjarsConfig$$EnhancerBySpringCGLIB$$ccfd2e48
+2021-09-07 11:52:16.900  INFO 185275 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.stuff.annotationscan.AnnotatedMountScannerConfig$$EnhancerBySpringCGLIB$$918d57d6
+2021-09-07 11:52:16.932  INFO 185275 --- [           main] o.a.wicket.protocol.http.WebApplication  : [wicket-filter] Started Wicket version 9.0.0 in DEPLOYMENT mode
+2021-09-07 11:52:17.176  INFO 185275 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-09-07 11:52:17.654  INFO 185275 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoint(s) beneath base path '/actuator'
+2021-09-07 11:52:17.795  INFO 185275 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-09-07 11:52:17.814  INFO 185275 --- [           main] n.m.f.frontend.WicketApplication         : Started WicketApplication in 5.745375315 seconds (JVM running for 31.147)
+2021-09-07 11:52:20.490  INFO 185275 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-09-07 11:52:20.491  INFO 185275 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-09-07 11:52:20.500  INFO 185275 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by net.sf.cglib.core.ReflectUtils$1 (file:/home/michel/.m2/repository/cglib/cglib-nodep/3.3.0/cglib-nodep-3.3.0.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of net.sf.cglib.core.ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.8.RELEASE)
+
+2021-09-07 11:52:21.279  INFO 185362 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 185362 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-07 11:52:21.282 DEBUG 185362 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
+2021-09-07 11:52:21.283  INFO 185362 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
+2021-09-07 11:52:21.331  INFO 185362 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-09-07 11:52:22.798  INFO 185362 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-09-07 11:52:22.829  INFO 185362 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-09-07 11:52:22.830  INFO 185362 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.24]
+2021-09-07 11:52:22.943  INFO 185362 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-09-07 11:52:22.943  INFO 185362 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1612 ms
+2021-09-07 11:52:23.511  INFO 185362 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket core library initializer
+2021-09-07 11:52:23.513  INFO 185362 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket extensions initializer
+2021-09-07 11:52:23.525  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: nl.maas.fxanalyzer.frontend.wicket.config.BootstrapConfig$$EnhancerBySpringCGLIB$$ba5066d7
+2021-09-07 11:52:23.529  INFO 185362 --- [           main] wicket-jquery-selectors                  : initialize wicket jquery selectors with given settings: de.agilecoders.wicket.jquery.settings.WicketJquerySelectorsSettings@a01299a
+2021-09-07 11:52:23.556  INFO 185362 --- [           main] wicket-webjars                           : initialize wicket webjars with given settings: WebjarsSettings{readFromCacheTimeout=PT3S, resourceStreamProvider=de.agilecoders.wicket.webjars.settings.ResourceStreamProvider$1@155cada0, recentVersionPlaceHolder='current', assetPathCollectors=[de.agilecoders.wicket.webjars.collectors.ClasspathAssetPathCollector@19d3fe54, de.agilecoders.wicket.webjars.collectors.VfsAssetPathCollector@427b54bf, de.agilecoders.wicket.webjars.collectors.FileAssetPathCollector@6b55ea8b], webjarsPackage='META-INF.resources.webjars', webjarsPath='META-INF/resources/webjars', resourcePattern=META-INF/resources/webjars/.*, webjarsPathPattern=/webjars/([^\/]*)\/([^\/]*)\/(.*), useCdnResources=false, cdnUrl='//cdn.jsdelivr.net:80/webjars/org.webjars'}
+2021-09-07 11:52:23.580  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.application.ApplicationSettingsConfig$$EnhancerBySpringCGLIB$$38a00b9
+2021-09-07 11:52:23.580  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.pagestore.StoreSettingsConfig$$EnhancerBySpringCGLIB$$e0c73ecc
+2021-09-07 11:52:23.581  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resources.SpringBootMainClassResourceRegistration$$EnhancerBySpringCGLIB$$d4ee649
+2021-09-07 11:52:23.581  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.exceptions.ExceptionSettingsConfig$$EnhancerBySpringCGLIB$$5bbdac00
+2021-09-07 11:52:23.582  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.requrestcycle.RequestCycleSettingsConfig$$EnhancerBySpringCGLIB$$a2438185
+2021-09-07 11:52:23.582  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.csrf.CsrfAttacksPreventionConfig$$EnhancerBySpringCGLIB$$9d27be1c
+2021-09-07 11:52:23.583  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resourcesettings.packageresourceguard.PackageResourceGuardConfig$$EnhancerBySpringCGLIB$$19b0fb40
+2021-09-07 11:52:23.583  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.markup.MarkupSettingsConfig$$EnhancerBySpringCGLIB$$dcbb8df5
+2021-09-07 11:52:23.583  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.external.webjars.WebjarsConfig$$EnhancerBySpringCGLIB$$4bfb5da3
+2021-09-07 11:52:23.584  INFO 185362 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.stuff.annotationscan.AnnotatedMountScannerConfig$$EnhancerBySpringCGLIB$$108b8731
+2021-09-07 11:52:23.602  INFO 185362 --- [           main] o.a.wicket.protocol.http.WebApplication  : [wicket-filter] Started Wicket version 9.0.0 in DEPLOYMENT mode
+2021-09-07 11:52:23.769  INFO 185362 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-09-07 11:52:24.106  INFO 185362 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoint(s) beneath base path '/actuator'
+2021-09-07 11:52:24.174 ERROR 185362 --- [           main] org.apache.catalina.util.LifecycleBase   : Failed to start component [Connector[HTTP/1.1-8080]]
+
+org.apache.catalina.LifecycleException: Protocol handler start failed
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1008)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:227)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.addPreviouslyRemovedConnectors(TomcatWebServer.java:263)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:195)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.startWebServer(ServletWebServerApplicationContext.java:297)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.finishRefresh(ServletWebServerApplicationContext.java:163)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:552)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.builder.SpringApplicationBuilder.run(SpringApplicationBuilder.java:140)
+	at nl.maas.fxanalyzer.frontend.WicketApplication.main(WicketApplication.java:14)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.boot.maven.AbstractRunMojo$LaunchRunner.run(AbstractRunMojo.java:578)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.net.BindException: Adres is al in gebruik
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:455)
+	at java.base/sun.nio.ch.Net.bind(Net.java:447)
+	at java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:227)
+	at java.base/sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:80)
+	at org.apache.tomcat.util.net.NioEndpoint.initServerSocket(NioEndpoint.java:230)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:213)
+	at org.apache.tomcat.util.net.AbstractEndpoint.bindWithCleanup(AbstractEndpoint.java:1124)
+	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:1210)
+	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:585)
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1005)
+	... 19 common frames omitted
+
+2021-09-07 11:52:24.179  INFO 185362 --- [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2021-09-07 11:52:24.185  INFO 185362 --- [           main] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket core library initializer
+2021-09-07 11:52:24.185  INFO 185362 --- [           main] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket extensions initializer
+2021-09-07 11:52:24.214  INFO 185362 --- [           main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-09-07 11:52:24.216 ERROR 185362 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The Tomcat connector configured to listen on port 8080 failed to start. The port may already be in use or the connector may be misconfigured.
+
+Action:
+
+Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
+
+2021-09-07 11:52:24.218  INFO 185362 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:2.4.4:run (default-cli) on project filerenamer-frontend: An exception occurred while running. null: InvocationTargetException: Connector configured to listen on port 8080 failed to start -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :filerenamer-frontend
+SearchCriteria(path=/shares/anime, sequenceType=NUMBER)
+Er is geen geldige optie gevonden voor volgnummer 27. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 66. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 95. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 110. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 116. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 127. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 5. Dit nummer wordt genegeerd
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 10 (720p) [AF611A36].mkv to Slime Taoshite 300-nen - 10.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 09 (720p) [9F0974C5].mkv to Slime Taoshite 300-nen - 09.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 11 (720p) [01FF701C].mkv to Slime Taoshite 300-nen - 11.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 12 (720p) [CBCFEF81].mkv to Slime Taoshite 300-nen - 12.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 08 (720p) [3E1D0225].mkv to Slime Taoshite 300-nen - 08.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 06 (720p) [F7CE2A92].mkv to Slime Taoshite 300-nen - 06.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 07 (720p) [9F747ABB].mkv to Slime Taoshite 300-nen - 07.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 05 (720p) [29F60026].mkv to Slime Taoshite 300-nen - 05.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 04 (720p) [51ED758D].mkv to Slime Taoshite 300-nen - 04.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [SubsPlease] Slime Taoshite 300-nen, Shiranai Uchi ni Level Max ni Nattemashita - 03 (720p) [6CB33C44].mkv to Slime Taoshite 300-nen - 03.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [Erai-raws] Slime Taoshite 300-nen Shiranai Uchi ni Level Max ni Nattemashita - 01 [720p][Multiple Subtitle].mkv to Slime Taoshite 300-nen - 01.mkv in /shares/anime/Slime Taoshite 300-nen
+Renamed [Erai-raws] Slime Taoshite 300-nen Shiranai Uchi ni Level Max ni Nattemashita - 02 [720p][Multiple Subtitle].mkv to Slime Taoshite 300-nen - 02.mkv in /shares/anime/Slime Taoshite 300-nen
+Er is geen geldige optie gevonden voor volgnummer 27. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 66. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 95. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 110. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 116. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 127. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 5. Dit nummer wordt genegeerd
+2021-09-07 11:53:17.463  INFO 185275 --- [lication Thread] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-09-07 11:53:17.477  INFO 185275 --- [lication Thread] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket core library initializer
+2021-09-07 11:53:17.477  INFO 185275 --- [lication Thread] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket extensions initializer
+2021-09-07 11:53:17.483  WARN 185275 --- [lication Thread] o.a.w.p.AbstractPersistentPageStore      : Cannot remove data 'ED9961668D0AD83989767294B287A347' because disk store 'wicket-filter:DiskPageStore' is no longer present.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.8.RELEASE)
+
+2021-09-09 10:05:32.021  INFO 453700 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 453700 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-09 10:05:32.044 DEBUG 453700 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
+2021-09-09 10:05:32.046  INFO 453700 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
+2021-09-09 10:05:32.141  INFO 453700 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-09-09 10:05:34.791  INFO 453700 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-09-09 10:05:34.829  INFO 453700 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-09-09 10:05:34.830  INFO 453700 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.24]
+2021-09-09 10:05:34.982  INFO 453700 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-09-09 10:05:34.983  INFO 453700 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2842 ms
+2021-09-09 10:05:35.694  INFO 453700 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket core library initializer
+2021-09-09 10:05:35.696  INFO 453700 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket extensions initializer
+2021-09-09 10:05:35.708  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: nl.maas.fxanalyzer.frontend.wicket.config.BootstrapConfig$$EnhancerBySpringCGLIB$$5cf1ea97
+2021-09-09 10:05:35.723  INFO 453700 --- [           main] wicket-jquery-selectors                  : initialize wicket jquery selectors with given settings: de.agilecoders.wicket.jquery.settings.WicketJquerySelectorsSettings@6b38505e
+2021-09-09 10:05:35.776  INFO 453700 --- [           main] wicket-webjars                           : initialize wicket webjars with given settings: WebjarsSettings{readFromCacheTimeout=PT3S, resourceStreamProvider=de.agilecoders.wicket.webjars.settings.ResourceStreamProvider$1@3824d197, recentVersionPlaceHolder='current', assetPathCollectors=[de.agilecoders.wicket.webjars.collectors.ClasspathAssetPathCollector@4ddbebd, de.agilecoders.wicket.webjars.collectors.VfsAssetPathCollector@57f75662, de.agilecoders.wicket.webjars.collectors.FileAssetPathCollector@6e2253c], webjarsPackage='META-INF.resources.webjars', webjarsPath='META-INF/resources/webjars', resourcePattern=META-INF/resources/webjars/.*, webjarsPathPattern=/webjars/([^\/]*)\/([^\/]*)\/(.*), useCdnResources=false, cdnUrl='//cdn.jsdelivr.net:80/webjars/org.webjars'}
+2021-09-09 10:05:35.807  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.application.ApplicationSettingsConfig$$EnhancerBySpringCGLIB$$a62b8479
+2021-09-09 10:05:35.808  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.pagestore.StoreSettingsConfig$$EnhancerBySpringCGLIB$$8368c28c
+2021-09-09 10:05:35.810  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resources.SpringBootMainClassResourceRegistration$$EnhancerBySpringCGLIB$$aff06a09
+2021-09-09 10:05:35.811  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.exceptions.ExceptionSettingsConfig$$EnhancerBySpringCGLIB$$fe5f2fc0
+2021-09-09 10:05:35.811  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.requrestcycle.RequestCycleSettingsConfig$$EnhancerBySpringCGLIB$$44e50545
+2021-09-09 10:05:35.812  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.csrf.CsrfAttacksPreventionConfig$$EnhancerBySpringCGLIB$$3fc941dc
+2021-09-09 10:05:35.814  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resourcesettings.packageresourceguard.PackageResourceGuardConfig$$EnhancerBySpringCGLIB$$bc527f00
+2021-09-09 10:05:35.814  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.markup.MarkupSettingsConfig$$EnhancerBySpringCGLIB$$7f5d11b5
+2021-09-09 10:05:35.815  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.external.webjars.WebjarsConfig$$EnhancerBySpringCGLIB$$ee9ce163
+2021-09-09 10:05:35.815  INFO 453700 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.stuff.annotationscan.AnnotatedMountScannerConfig$$EnhancerBySpringCGLIB$$b32d0af1
+2021-09-09 10:05:35.834  INFO 453700 --- [           main] o.a.wicket.protocol.http.WebApplication  : [wicket-filter] Started Wicket version 9.0.0 in DEPLOYMENT mode
+2021-09-09 10:05:36.036  INFO 453700 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-09-09 10:05:36.452  INFO 453700 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoint(s) beneath base path '/actuator'
+2021-09-09 10:05:36.562  INFO 453700 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-09-09 10:05:36.579  INFO 453700 --- [           main] n.m.f.frontend.WicketApplication         : Started WicketApplication in 5.686293331 seconds (JVM running for 30.889)
+2021-09-09 10:05:38.957  INFO 453700 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-09-09 10:05:38.958  INFO 453700 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-09-09 10:05:38.972  INFO 453700 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 13 ms
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by net.sf.cglib.core.ReflectUtils$1 (file:/home/michel/.m2/repository/cglib/cglib-nodep/3.3.0/cglib-nodep-3.3.0.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of net.sf.cglib.core.ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+SearchCriteria(path=/shares/anime, sequenceType=NUMBER)
+Er is geen geldige optie gevonden voor volgnummer 27. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 66. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 95. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 110. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 116. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 127. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 5. Dit nummer wordt genegeerd
+Renamed [Erai-raws] Boku no Hero Academia - 10 [720p][Multiple Subtitle][01C2B7BB].mkv to Boku no Hero Academia S1 - 10.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 11 [720p][Multiple Subtitle][05BC8938].mkv to Boku no Hero Academia S1 - 11.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 13 [END][720p][Multiple Subtitle][52DA0F15].mkv to Boku no Hero Academia S1 - 13.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 12 [720p][Multiple Subtitle][2E1BBB61].mkv to Boku no Hero Academia S1 - 12.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 03 [720p][Multiple Subtitle][ABCBED8E].mkv to Boku no Hero Academia S1 - 03.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 06 [720p][Multiple Subtitle][B3913C4A].mkv to Boku no Hero Academia S1 - 06.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 02 [720p][Multiple Subtitle][E03B58E8].mkv to Boku no Hero Academia S1 - 02.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 05 [720p][Multiple Subtitle][00279D2E].mkv to Boku no Hero Academia S1 - 05.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 08 [720p][Multiple Subtitle][1A2C63CC].mkv to Boku no Hero Academia S1 - 08.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 04 [720p][Multiple Subtitle][59613E8E].mkv to Boku no Hero Academia S1 - 04.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 07 [720p][Multiple Subtitle][714BE05B].mkv to Boku no Hero Academia S1 - 07.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 09 [720p][Multiple Subtitle][127108C4].mkv to Boku no Hero Academia S1 - 09.mkv in /shares/anime/Boku no Hero Academia S1
+Renamed [Erai-raws] Boku no Hero Academia - 01 [720p][Multiple Subtitle][0B075FA3].mkv to Boku no Hero Academia S1 - 01.mkv in /shares/anime/Boku no Hero Academia S1
+Er is geen geldige optie gevonden voor volgnummer 27. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 66. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 95. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 110. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 116. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 127. Dit nummer wordt genegeerd
+Er is geen geldige optie gevonden voor volgnummer 5. Dit nummer wordt genegeerd
+2021-09-09 10:06:24.581  INFO 453700 --- [lication Thread] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-09-09 10:06:24.597  INFO 453700 --- [lication Thread] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket core library initializer
+2021-09-09 10:06:24.598  INFO 453700 --- [lication Thread] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket extensions initializer
+2021-09-09 10:06:24.607  WARN 453700 --- [lication Thread] o.a.w.p.AbstractPersistentPageStore      : Cannot remove data '2BA55520418EE5383B1486B072A66932' because disk store 'wicket-filter:DiskPageStore' is no longer present.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.8.RELEASE)
+
+2021-09-23 21:12:33.479  INFO 1320451 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 1320451 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-23 21:12:33.581 DEBUG 1320451 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
+2021-09-23 21:12:33.583  INFO 1320451 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
+2021-09-23 21:12:33.657  INFO 1320451 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-09-23 21:12:36.073  INFO 1320451 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-09-23 21:12:36.128  INFO 1320451 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-09-23 21:12:36.129  INFO 1320451 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.24]
+2021-09-23 21:12:36.312  INFO 1320451 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-09-23 21:12:36.313  INFO 1320451 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2655 ms
+2021-09-23 21:12:37.089  INFO 1320451 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket core library initializer
+2021-09-23 21:12:37.091  INFO 1320451 --- [           main] org.apache.wicket.Application            : [wicket-filter] init: Wicket extensions initializer
+2021-09-23 21:12:37.102  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: nl.maas.fxanalyzer.frontend.wicket.config.BootstrapConfig$$EnhancerBySpringCGLIB$$ef818987
+2021-09-23 21:12:37.124  INFO 1320451 --- [           main] wicket-jquery-selectors                  : initialize wicket jquery selectors with given settings: de.agilecoders.wicket.jquery.settings.WicketJquerySelectorsSettings@5d7cab0f
+2021-09-23 21:12:37.158  INFO 1320451 --- [           main] wicket-webjars                           : initialize wicket webjars with given settings: WebjarsSettings{readFromCacheTimeout=PT3S, resourceStreamProvider=de.agilecoders.wicket.webjars.settings.ResourceStreamProvider$1@5b78836c, recentVersionPlaceHolder='current', assetPathCollectors=[de.agilecoders.wicket.webjars.collectors.ClasspathAssetPathCollector@6d1ee8ba, de.agilecoders.wicket.webjars.collectors.VfsAssetPathCollector@ce28b88, de.agilecoders.wicket.webjars.collectors.FileAssetPathCollector@5c52782], webjarsPackage='META-INF.resources.webjars', webjarsPath='META-INF/resources/webjars', resourcePattern=META-INF/resources/webjars/.*, webjarsPathPattern=/webjars/([^\/]*)\/([^\/]*)\/(.*), useCdnResources=false, cdnUrl='//cdn.jsdelivr.net:80/webjars/org.webjars'}
+2021-09-23 21:12:37.191  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.application.ApplicationSettingsConfig$$EnhancerBySpringCGLIB$$38bb2369
+2021-09-23 21:12:37.192  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.pagestore.StoreSettingsConfig$$EnhancerBySpringCGLIB$$15f8617c
+2021-09-23 21:12:37.193  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resources.SpringBootMainClassResourceRegistration$$EnhancerBySpringCGLIB$$428008f9
+2021-09-23 21:12:37.193  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.exceptions.ExceptionSettingsConfig$$EnhancerBySpringCGLIB$$90eeceb0
+2021-09-23 21:12:37.193  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.requrestcycle.RequestCycleSettingsConfig$$EnhancerBySpringCGLIB$$d774a435
+2021-09-23 21:12:37.194  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.csrf.CsrfAttacksPreventionConfig$$EnhancerBySpringCGLIB$$d258e0cc
+2021-09-23 21:12:37.195  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.resourcesettings.packageresourceguard.PackageResourceGuardConfig$$EnhancerBySpringCGLIB$$4ee21df0
+2021-09-23 21:12:37.196  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.core.settings.markup.MarkupSettingsConfig$$EnhancerBySpringCGLIB$$11ecb0a5
+2021-09-23 21:12:37.196  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.external.webjars.WebjarsConfig$$EnhancerBySpringCGLIB$$812c8053
+2021-09-23 21:12:37.196  INFO 1320451 --- [           main] s.b.s.a.WicketBootStandardWebApplication : init-config: com.giffing.wicket.spring.boot.starter.configuration.extensions.stuff.annotationscan.AnnotatedMountScannerConfig$$EnhancerBySpringCGLIB$$45bca9e1
+2021-09-23 21:12:37.218  INFO 1320451 --- [           main] o.a.wicket.protocol.http.WebApplication  : [wicket-filter] Started Wicket version 9.0.0 in DEPLOYMENT mode
+2021-09-23 21:12:37.516  INFO 1320451 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-09-23 21:12:37.959  INFO 1320451 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoint(s) beneath base path '/actuator'
+2021-09-23 21:12:38.094  INFO 1320451 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-09-23 21:12:38.105  INFO 1320451 --- [           main] n.m.f.frontend.WicketApplication         : Started WicketApplication in 5.792312773 seconds (JVM running for 30.689)
+2021-09-23 21:12:42.164  INFO 1320451 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-09-23 21:12:42.166  INFO 1320451 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-09-23 21:12:42.179  INFO 1320451 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 13 ms
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by net.sf.cglib.core.ReflectUtils$1 (file:/home/michel/.m2/repository/cglib/cglib-nodep/3.3.0/cglib-nodep-3.3.0.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of net.sf.cglib.core.ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 1)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 2)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 5)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 5)
+Framebuffer object format is unsupported by the video hardware. (GL_FRAMEBUFFER_UNSUPPORTED)(FBO - 820)
+Error creating framebuffer object with TexID 5)
+2021-09-23 21:14:44.948  INFO 1320451 --- [lication Thread] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-09-23 21:14:44.962  INFO 1320451 --- [lication Thread] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket core library initializer
+2021-09-23 21:14:44.962  INFO 1320451 --- [lication Thread] org.apache.wicket.Application            : [wicket-filter] destroy: Wicket extensions initializer
+2021-09-23 21:14:44.973  WARN 1320451 --- [lication Thread] o.a.w.p.AbstractPersistentPageStore      : Cannot remove data '494045B1084723585846E6F94EDCCBC6' because disk store 'wicket-filter:DiskPageStore' is no longer present.

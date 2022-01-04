@@ -1,0 +1,42 @@
+.container{
+background-color: white;
+padding-right: 20%;
+padding-left: 20%;
+}
+
+.header{
+position: fixed;
+top: 0px;
+width: 100%;
+height: 50px;
+background-color: white;
+z-index: 10;
+}
+
+.content{
+top: 60px;
+padding-top: 60px;
+background: rgba(0, 0, 0, 0.3)
+}
+
+.content *{
+}
+
+.folderName{
+font-weight: bold;
+font-size: large;
+}
+
+.folder{
+color: black;
+}
+
+.fileMember{
+display: inline-flex;
+float: left;
+}
+
+.fileMember input{
+    float: right;
+    margin-right: 10%;
+}
