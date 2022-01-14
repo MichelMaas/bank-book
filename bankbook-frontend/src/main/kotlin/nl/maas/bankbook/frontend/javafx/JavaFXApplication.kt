@@ -23,7 +23,7 @@ class JavaFXApplication : Application() {
 
     override fun stop() {
         super.stop()
-        val ctx = nl.maas.fxanalyzer.frontend.ContextProvider.ctx
+        val ctx = nl.maas.bankbook.frontend.ContextProvider.ctx
         ctx.close()
     }
 

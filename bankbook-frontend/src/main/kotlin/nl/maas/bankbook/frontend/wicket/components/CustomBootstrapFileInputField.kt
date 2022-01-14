@@ -4,8 +4,8 @@ import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.Fil
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.FileinputJsReference
 import de.agilecoders.wicket.jquery.JQuery
 import de.agilecoders.wicket.jquery.util.Strings2
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.pages.BasePage
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior
 import org.apache.wicket.markup.ComponentTag

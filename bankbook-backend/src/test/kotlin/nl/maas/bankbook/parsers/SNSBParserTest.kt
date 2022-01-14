@@ -15,7 +15,7 @@ class SNSBParserTest : AbstractTest() {
         val result = instance.createTransactions()
         val transfer = result.first { it.id.equals(20477741L) } as Transfer
         Assert.assertEquals(IBAN("NL36INGB0003445588"), transfer.counterAccount)
-        Assert.assertEquals(Amount("119.00"), transfer.mutation)
+        Assert.assertEquals(Amount("119.00", "€"), transfer.mutation)
         println(transfer.toString())
     }
 }

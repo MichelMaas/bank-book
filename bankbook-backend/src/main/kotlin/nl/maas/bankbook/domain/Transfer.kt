@@ -1,7 +1,7 @@
 package nl.maas.bankbook.domain
 
 import nl.maas.bankbook.domain.enums.MutationTypes
-import nl.maas.fxanalyzer.domain.Transaction
+import nl.maas.bankbook.domain.Transaction
 import java.time.LocalDate
 import java.util.*
 

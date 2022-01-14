@@ -7,7 +7,7 @@
         {
           "name": "BasePage",
           "labels": {
-            "title": "FX Analyzer",
+            "title": "Bank Book",
             "January": "January",
             "February": "February",
             "March": "March",
@@ -155,7 +155,7 @@
         {
           "name": "BasePage",
           "labels": {
-            "title": "FX Analyzer",
+            "title": "Bankboekje",
             "January": "Januari",
             "February": "Februari",
             "March": "Maart",
@@ -303,7 +303,7 @@
         {
           "name": "BasePage",
           "labels": {
-            "title": "FX Analyzer",
+            "title": "預金",
             "January": "1月",
             "February": "2月",
             "March": "3月",

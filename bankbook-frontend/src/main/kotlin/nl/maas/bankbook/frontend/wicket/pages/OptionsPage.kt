@@ -2,9 +2,9 @@ package nl.maas.bankbook.frontend.wicket.pages
 
 import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchTheme
 import nl.maas.bankbook.frontend.WicketApplication
-import nl.maas.fxanalyzer.frontend.wicket.components.DynamicFormComponent
-import nl.maas.fxanalyzer.frontend.wicket.config.BootstrapConfig
-import nl.maas.fxanalyzer.frontend.wicket.objects.Options
+import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
+import nl.maas.bankbook.frontend.wicket.config.BootstrapConfig
+import nl.maas.bankbook.frontend.wicket.objects.Options
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
@@ -30,7 +30,7 @@ open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
             override fun onSubmit(target: AjaxRequestTarget) {
                 (defaultModelObject as Options).store()
                 target.add(this@OptionsPage)
-                _root_ide_package_.nl.maas.bankbook.frontend.WicketApplication.restart()
+                WicketApplication.restart()
             }
 
         }.addSelect(
@@ -41,7 +41,7 @@ open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
             "theme",
             propertiesCache.translator.translate(OptionsPage::class, "Theme"),
             BootswatchTheme.values().toList().map { it.name }
-        )
+        ).addTextBox("watchedFolder", "Folder to monitor")
         return form
     }
 

@@ -2,7 +2,7 @@ package nl.maas.bankbook.frontend.wicket.config
 
 import de.agilecoders.wicket.core.settings.BootstrapSettings
 import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchTheme
-import nl.maas.fxanalyzer.frontend.wicket.objects.Options
+import nl.maas.bankbook.frontend.wicket.objects.Options
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 
@@ -12,6 +12,6 @@ class BootstrapProperties : BootstrapSettings() {
     var theme: BootswatchTheme = Options.load().theme ?: BootswatchTheme.Pulse
 
     companion object {
-        const val PROPERTY_PREFIX = "nl.maas.fxanalyzer.frontend.wicket.config"
+        const val PROPERTY_PREFIX = "nl.maas.bankbook.frontend.wicket.config"
     }
 }

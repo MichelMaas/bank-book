@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired
 //
 //@ApplicationInitExtension
 //@ConditionalOnProperty(
-//    prefix = nl.maas.fxanalyzer.frontend.wicket.config.FilerenamerProperties.PROPERTY_PREFIX,
+//    prefix = nl.maas.bankbook.frontend.wicket.config.FilerenamerProperties.PROPERTY_PREFIX,
 //    value = ["enabled"],
 //    matchIfMissing = true
 //)
 //@ConditionalOnClass(
 //    FilerenamerConfig::class
 //)
-//@EnableConfigurationProperties(nl.maas.fxanalyzer.frontend.wicket.config.FilerenamerProperties::class)
+//@EnableConfigurationProperties(nl.maas.bankbook.frontend.wicket.config.FilerenamerProperties::class)
 class FilerenamerConfig : WicketApplicationInitConfiguration {
     @Autowired
-    private val prop: nl.maas.fxanalyzer.frontend.wicket.config.FilerenamerProperties? = null
+    private val prop: nl.maas.bankbook.frontend.wicket.config.FilerenamerProperties? = null
     override fun init(webApplication: WebApplication) {
         webApplication.cspSettings.blocking().disabled()
     }

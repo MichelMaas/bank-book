@@ -1,11 +1,7 @@
 package nl.maas.bankbook.parsers
 
-import nl.maas.bankbook.domain.Amount
-import nl.maas.bankbook.domain.IBAN
-import nl.maas.bankbook.domain.Payment
-import nl.maas.bankbook.domain.Transfer
+import nl.maas.bankbook.domain.*
 import nl.maas.bankbook.domain.enums.MutationTypes
-import nl.maas.fxanalyzer.domain.Transaction
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -14,18 +10,22 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) : Pars
 
 
     override fun createPayment(record: MutableList<String>): Transaction {
+        val currency =
+            Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }
         return Payment(
             record[POSITIONS.ID].toLong(),
             LocalDate.parse(record[POSITIONS.DATE], DateTimeFormatter.ofPattern("dd-MM-yyyy")),
             IBAN(record[POSITIONS.SOURCE]),
-            Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) },
-            Amount(record[POSITIONS.AMOUNT]),
+            currency,
+            Amount(record[POSITIONS.AMOUNT], currency.symbol),
             MutationTypes.valueOf(record[POSITIONS.TYPE]),
             record[POSITIONS.DESCRIPTION]
         )
     }
 
     override fun createTransfer(record: MutableList<String>): Transaction {
+        val currency =
+            Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }
         return Transfer(
             record[POSITIONS.ID].toLong(),
             LocalDate.parse(record[POSITIONS.DATE], DateTimeFormatter.ofPattern("dd-MM-yyyy")),
@@ -33,7 +33,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) : Pars
             IBAN(record[POSITIONS.COUNTER]),
             record[POSITIONS.COUNTER_NAME],
             Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) },
-            Amount(record[POSITIONS.AMOUNT]),
+            Amount(record[POSITIONS.AMOUNT], currency.symbol),
             MutationTypes.valueOf(record[POSITIONS.TYPE]),
             record[POSITIONS.DESCRIPTION]
         )

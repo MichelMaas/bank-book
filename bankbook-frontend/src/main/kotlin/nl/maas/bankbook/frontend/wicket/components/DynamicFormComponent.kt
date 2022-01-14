@@ -3,8 +3,8 @@ package nl.maas.bankbook.frontend.wicket.components
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.BootstrapFileInputField
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.FileInputConfig
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.select.BootstrapSelect
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.panels.AbstractPanel
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.panels.AbstractPanel
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxLink
@@ -12,6 +12,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink
 import org.apache.wicket.markup.head.IHeaderResponse
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.markup.html.form.upload.FileUpload
@@ -63,6 +64,11 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
 
     fun addTextBox(id: String, label: String): DynamicFormComponent<T> {
         formComponents.add(TextBoxFragment<Serializable>(id, label))
+        return this
+    }
+
+    fun addCheckBox(id: String, label: String, defaultOn: Boolean = false): DynamicFormComponent<T> {
+        formComponents.add(CheckBoxFragment(id, label, defaultOn))
         return this
     }
 
@@ -161,6 +167,36 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         }
 
         override fun onReset(target: AjaxRequestTarget, originalValue: M?) {
+            defaultModelObject = originalValue
+            target.add(this)
+        }
+
+    }
+
+    private inner class CheckBoxFragment(val propertyName: String, val label: String, val defaultOn: Boolean = false) :
+        ResettableFormFragment<Boolean>(
+            "propertyName",
+            "checkBoxFragment",
+            this,
+            defaultOn
+        ) {
+        override fun onBeforeRender() {
+            super.onBeforeRender()
+            val m = readInstanceProperty(form.modelObject, propertyName).toBoolean().or(defaultOn)
+            addOrReplace(object : CheckBox("checkBox", CompoundPropertyModel.of(m)) {
+                override fun onModelChanged() {
+                    super.onModelChanged()
+                    form.modelObject::class.declaredMemberProperties.filterIsInstance<KMutableProperty<*>>()
+                        .find { propertyName.equals(it.name) }?.let {
+                            it.setter.call(form.modelObject, modelObject)
+                        }
+                    changedProperties.add(propertyName)
+                }
+            })
+            addOrReplace(Label("checkBoxLabel", label))
+        }
+
+        override fun onReset(target: AjaxRequestTarget, originalValue: Boolean?) {
             defaultModelObject = originalValue
             target.add(this)
         }
@@ -354,4 +390,6 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         val get = property.get(instance)
         return if (get != null) get.toString() else "NONE"
     }
+
+
 }

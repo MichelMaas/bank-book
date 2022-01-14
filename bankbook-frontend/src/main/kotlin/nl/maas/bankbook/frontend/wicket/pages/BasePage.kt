@@ -3,10 +3,12 @@ package nl.maas.bankbook.frontend.wicket.pages
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarComponents
-import nl.maas.fxanalyzer.frontend.wicket.caches.ModelCache
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.components.FxAnalyserNavbarButton
-import nl.maas.fxanalyzer.frontend.wicket.objects.enums.ButtonTypes
+import nl.maas.bankbook.frontend.services.ParserService
+import nl.maas.bankbook.frontend.wicket.caches.ModelCache
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.components.FxAnalyserNavbarButton
+import nl.maas.bankbook.frontend.wicket.objects.Account
+import nl.maas.bankbook.frontend.wicket.objects.enums.ButtonTypes
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.Component
@@ -21,6 +23,9 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
     lateinit var navbar: Navbar
 
     @Inject
+    lateinit var parserService: ParserService
+
+    @Inject
     lateinit var modelCache: ModelCache
 
     @Inject
@@ -28,6 +33,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     override fun onInitialize() {
         super.onInitialize()
+        modelCache.dataContainer = Account.loadOrCreate(parserService.fetchTransactions())
         (application as WebApplication).mountResource("/images/icon.png", propertiesCache.iconReference)
     }
 
@@ -66,8 +72,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
     @ExperimentalStdlibApi
     fun isButtonActive(type: ButtonTypes): Boolean {
         var filled = when (type) {
-            ButtonTypes.OVERVIEW, ButtonTypes.ProfitPerDay, ButtonTypes.SellBuy, ButtonTypes.WinLoss, ButtonTypes.EntryPreference, ButtonTypes.TimeZones, ButtonTypes.Options, ButtonTypes.ProfitCalendar -> return modelCache.fxDataSet != null
-            ButtonTypes.Import -> return true
+            ButtonTypes.YEAR_OVERVIEW, ButtonTypes.MONTH_OVERVIEW, ButtonTypes.CATEGORIES, ButtonTypes.OPTIONS -> return true
             else -> false
         }
         return filled

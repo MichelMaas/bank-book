@@ -5,6 +5,6 @@ class FilerenamerProperties {
     var isEnabled = true
 
     companion object {
-        const val PROPERTY_PREFIX = "nl.maas.fxanalyzer.frontend.wicket.config"
+        const val PROPERTY_PREFIX = "nl.maas.bankbook.frontend.wicket.config"
     }
 }

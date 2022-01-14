@@ -1,9 +1,9 @@
 package nl.maas.bankbook.parsers
 
 import nl.maas.bankbook.domain.IBAN
+import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Banks
 import nl.maas.bankbook.utils.CSVUtils
-import nl.maas.fxanalyzer.domain.Transaction
 import org.apache.commons.lang3.NotImplementedException
 
 abstract class Parser private constructor(protected val map: Map<Int, MutableList<String>>) {
@@ -29,7 +29,7 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
     companion object {
         fun parse(file: String): Parser {
             val parsedFile = CSVUtils.parseFile(file)
-            val bankName = CSVUtils.findBaseAccount(parsedFile).substring(4, 7)
+            val bankName = CSVUtils.findBaseAccount(parsedFile).substring(4, 8)
             return when (Banks.valueOf(bankName)) {
                 Banks.SNSB -> SNSBParser(parsedFile)
                 else -> throw NotImplementedException("No parser yet implemented for bank ${bankName}")
@@ -39,7 +39,7 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
     }
 
     fun createTransactions(): List<Transaction> {
-        return map.values.map { createTransaction(it) }
+        return map.values.map { createTransaction(it) }.distinctBy { it.id }
     }
 
     fun determineSourceAccount(doc: Map<Int, MutableList<String>>): IBAN {

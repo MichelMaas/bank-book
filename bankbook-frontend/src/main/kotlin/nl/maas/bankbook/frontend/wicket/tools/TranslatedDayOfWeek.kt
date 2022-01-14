@@ -1,7 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.tools
 
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.pages.BasePage
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import java.time.DayOfWeek
 import kotlin.reflect.KClass
 

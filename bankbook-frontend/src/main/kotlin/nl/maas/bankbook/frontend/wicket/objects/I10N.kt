@@ -1,6 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.objects
 
-import nl.maas.fxanalyzer.frontend.wicket.pages.BasePage
+import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses
 

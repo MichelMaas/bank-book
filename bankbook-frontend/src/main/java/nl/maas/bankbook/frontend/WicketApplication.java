@@ -1,7 +1,7 @@
 package nl.maas.bankbook.frontend;
 
 import nl.maas.bankbook.frontend.wicket.pages.OverviewPage;
-import nl.maas.fxanalyzer.frontend.wicket.pages.OverviewPage;
+import nl.maas.bankbook.frontend.wicket.pages.OverviewPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.resource.FileSystemResourceReference;

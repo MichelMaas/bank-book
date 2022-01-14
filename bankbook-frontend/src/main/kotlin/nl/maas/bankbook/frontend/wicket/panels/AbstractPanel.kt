@@ -1,6 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.panels
 
-import nl.maas.fxanalyzer.frontend.wicket.pages.BasePage
+import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.IModel
 import kotlin.reflect.KClass

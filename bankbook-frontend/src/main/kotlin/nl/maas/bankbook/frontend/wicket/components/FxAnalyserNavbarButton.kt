@@ -1,8 +1,8 @@
 package nl.maas.bankbook.frontend.wicket.components
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton
-import nl.maas.fxanalyzer.frontend.wicket.objects.enums.ButtonTypes
-import nl.maas.fxanalyzer.frontend.wicket.pages.BasePage
+import nl.maas.bankbook.frontend.wicket.objects.enums.ButtonTypes
+import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import org.apache.wicket.model.Model
 
 class FxAnalyserNavbarButton(val buttonType: ButtonTypes) :

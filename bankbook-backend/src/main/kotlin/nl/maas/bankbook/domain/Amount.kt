@@ -4,18 +4,15 @@ import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class Amount(val value: String) : BigDecimal(value) {
+class Amount constructor(val value: BigDecimal, val symbol: String) : Comparable<BigDecimal> by value {
+
+    constructor(str: String, symbol: String) : this(BigDecimal(str), symbol)
+
     init {
-        this.setScale(2, RoundingMode.HALF_UP)
+        this.value.setScale(2, RoundingMode.HALF_UP)
     }
 
-    override fun toByte() = super.toString().toByte()
-
-    override fun toChar() = super.toString().toCharArray()[0]
-
-    override fun toShort() = super.shortValueExact()
-
     override fun toString(): String {
-        return super.toString().replace(",", StringUtils.EMPTY).replace('.', ',')
+        return "${symbol} ${value.toString().replace(",", StringUtils.EMPTY).replace('.', ',')}"
     }
 }

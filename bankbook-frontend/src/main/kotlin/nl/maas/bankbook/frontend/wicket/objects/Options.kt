@@ -9,7 +9,8 @@ import java.time.DayOfWeek
 class Options private constructor(
     var language: String = "English",
     var theme: BootswatchTheme? = BootswatchTheme.Pulse,
-    var firstDay: DayOfWeek = DayOfWeek.MONDAY
+    var firstDay: DayOfWeek = DayOfWeek.MONDAY,
+    var watchedFolder: String = System.getProperty("user.home")
 ) : Storable<Options> {
 
 

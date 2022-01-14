@@ -7,15 +7,15 @@ import de.martinspielmann.wicket.chartjs.data.dataset.property.TextLabel
 import de.martinspielmann.wicket.chartjs.data.dataset.property.data.Data
 import de.martinspielmann.wicket.chartjs.data.dataset.property.data.NumberDataValue
 import de.martinspielmann.wicket.chartjs.panel.BarChartPanel
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.objects.Colors
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.objects.Colors
 import org.apache.wicket.model.IModel
 import org.apache.wicket.model.LoadableDetachableModel
 import javax.inject.Inject
 
 class TablePanel<T : Comparable<T>>(
     id: String,
-    val data: Map<String, Map<String, Number>>
+    val data: Map<String, Map<String, T>>
 ) : AbstractPanel(id) {
 
     @Inject
@@ -27,13 +27,14 @@ class TablePanel<T : Comparable<T>>(
     }
 
     private fun createBarData(): IModel<out Bar> {
+        require(data[data.keys.last()]?.values?.last().toString().matches("-?\\d+(\\.\\d+)?".toRegex()))
         val bar = Bar()
         val labels = mutableSetOf<String>()
         data.keys.forEach { key ->
             labels.addAll(data[key]!!.keys.map { propertiesCache.translator.translate(containingPage(), it) })
             val barDataSet = BarDataset()
             barDataSet.label = propertiesCache.translator.translate(containingPage(), key)
-            barDataSet.data = Data(NumberDataValue.of(data[key]!!.values.toList()))
+            barDataSet.data = Data(NumberDataValue.of(data[key]!!.values.toList().map { it as Number }))
             barDataSet.backgroundColor =
                 IndexableOption(Colors.colors())
             bar.data.datasets.add(barDataSet)

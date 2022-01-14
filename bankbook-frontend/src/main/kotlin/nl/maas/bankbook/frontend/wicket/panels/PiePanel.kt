@@ -7,8 +7,8 @@ import de.martinspielmann.wicket.chartjs.data.dataset.property.TextLabel
 import de.martinspielmann.wicket.chartjs.data.dataset.property.data.Data
 import de.martinspielmann.wicket.chartjs.data.dataset.property.data.NumberDataValue
 import de.martinspielmann.wicket.chartjs.panel.PieChartPanel
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.objects.Colors
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.objects.Colors
 import org.apache.wicket.model.IModel
 import org.apache.wicket.model.LoadableDetachableModel
 import javax.inject.Inject

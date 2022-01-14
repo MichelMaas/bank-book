@@ -1,7 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.panels
 
-import nl.maas.fxanalyzer.frontend.wicket.caches.PropertiesCache
-import nl.maas.fxanalyzer.frontend.wicket.tools.TranslatedDayOfWeek
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.tools.TranslatedDayOfWeek
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget

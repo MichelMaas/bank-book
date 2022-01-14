@@ -1,4 +1,4 @@
-package nl.maas.fxanalyzer.program
+package nl.maas.bankbook.program
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 

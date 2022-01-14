@@ -13,7 +13,7 @@ class ContextProvider : ApplicationContextAware {
     }
 
     override fun setApplicationContext(context: ApplicationContext) {
-        _root_ide_package_.nl.maas.bankbook.frontend.ContextProvider.Companion.ctx = context as ConfigurableApplicationContext
+        ContextProvider.Companion.ctx = context as ConfigurableApplicationContext
     }
 
 
