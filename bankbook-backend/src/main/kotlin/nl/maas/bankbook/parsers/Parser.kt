@@ -54,8 +54,16 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
         }
     }
 
+    fun isValid() = validate()
+
+    private fun validate(): Boolean {
+        val isValidCSV = true
+        return isValidCSV && validateForBank()
+    }
+
     protected abstract fun createPayment(record: MutableList<String>): Transaction
     protected abstract fun createTransfer(record: MutableList<String>): Transaction
+    protected abstract fun validateForBank(): Boolean
 
     protected inner class Positions(
         internal val ID: Int,

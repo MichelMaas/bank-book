@@ -38,17 +38,15 @@ abstract class Transaction(
         }\n}"
     }
 
-    fun filterString(): String {
-        return "${
-            this::class.memberProperties.filterNot { "id".equals(it.name) }.map {
-                " ${it.name}: ${
-                    if (LocalDate::class.starProjectedType.equals(it.returnType)) {
-                        (it.call(this) as LocalDate).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-                    } else {
-                        it.call(this).toString()
-                    }
-                }"
-            }.joinToString(" ")
-        }\n}"
+    fun filterValues(): Array<String> {
+        return this::class.memberProperties.filterNot { "id".equals(it.name) }.map {
+
+            if (LocalDate::class.starProjectedType.equals(it.returnType)) {
+                (it.call(this) as LocalDate).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+            } else {
+                it.call(this).toString()
+            }
+
+        }.toTypedArray()
     }
 }

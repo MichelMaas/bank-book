@@ -4,6 +4,7 @@ import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.Boo
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.FileInputConfig
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.select.BootstrapSelect
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import nl.maas.bankbook.frontend.wicket.panels.AbstractPanel
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -13,6 +14,7 @@ import org.apache.wicket.markup.head.IHeaderResponse
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.CheckBox
+import org.apache.wicket.markup.html.form.ChoiceRenderer
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.markup.html.form.upload.FileUpload
@@ -24,6 +26,7 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.model.Model
 import java.io.Serializable
 import javax.inject.Inject
+import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
@@ -280,7 +283,8 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         override fun onBeforeRender() {
             super.onBeforeRender()
             val m: Serializable = readInstanceProperty(form.modelObject, propertyName)
-            addOrReplace(object : BootstrapSelect<Serializable>("select", CompoundPropertyModel.of(m), options) {
+            addOrReplace(object :
+                BootstrapSelect<Serializable>("select", CompoundPropertyModel.of(m), options, I18NChoiceRenderer()) {
 
                 override fun onBeforeRender() {
                     super.onBeforeRender()
@@ -316,6 +320,16 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
             target.add(this)
         }
 
+    }
+
+    private inner class I18NChoiceRenderer : ChoiceRenderer<Serializable>() {
+        override fun getDisplayValue(item: Serializable): String {
+            return propertiesCache.translator.translate(findBasePage(), item.toString())
+        }
+    }
+
+    private fun findBasePage(): KClass<out BasePage> {
+        return findParent(BasePage::class.java)::class
     }
 
     private inner class InnerForm(model: IComponentInheritedModel<T>) : Form<T>("dynamicForm", model) {

@@ -9,6 +9,7 @@ import nl.maas.bankbook.frontend.wicket.objects.Tuple
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
@@ -42,11 +43,11 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
             }
         }.addSelect(
             "category",
-            "Category",
+            propertiesCache.translator.translate(CategoriesPage::class, "Category"),
             Categories.values().sortedBy { it.name }.toList()
-        ).addCheckBox("saveFilter", "Save filter", true)
-
-        addOrReplace(object : AjaxSearchField("search", Model.of(filter)) {
+        ).addCheckBox("saveFilter", propertiesCache.translator.translate(CategoriesPage::class, "Save"), true)
+        val searchLabel = Label("searchLabel", propertiesCache.translator.translate(CategoriesPage::class, "search"))
+        addOrReplace(searchLabel, object : AjaxSearchField("search", Model.of(filter)) {
 
             override fun onChange(target: AjaxRequestTarget) {
                 this@CategoriesPage.filter = this.convertedInput.orEmpty()

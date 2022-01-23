@@ -41,7 +41,7 @@ open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
             "theme",
             propertiesCache.translator.translate(OptionsPage::class, "Theme"),
             BootswatchTheme.values().toList().map { it.name }
-        ).addTextBox("watchedFolder", "Folder to monitor")
+        ).addTextBox("watchedFolder", propertiesCache.translator.translate(OptionsPage::class, "Folder"))
         return form
     }
 

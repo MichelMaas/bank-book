@@ -7,12 +7,14 @@ import nl.maas.bankbook.frontend.services.ParserService
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import nl.maas.bankbook.frontend.wicket.components.FxAnalyserNavbarButton
-import nl.maas.bankbook.frontend.wicket.objects.Account
 import nl.maas.bankbook.frontend.wicket.objects.enums.ButtonTypes
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.Component
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalDialog
 import org.apache.wicket.markup.html.GenericWebPage
+import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
 import org.apache.wicket.protocol.http.WebApplication
 import org.apache.wicket.request.mapper.parameter.PageParameters
@@ -33,7 +35,6 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     override fun onInitialize() {
         super.onInitialize()
-        modelCache.dataContainer = Account.loadOrCreate(parserService.fetchTransactions())
         (application as WebApplication).mountResource("/images/icon.png", propertiesCache.iconReference)
     }
 
@@ -45,7 +46,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
             )
         navbar.position = Navbar.Position.TOP
         navbar.add(NavbarProvider())
-        navbar.setBrandName(Model.of("FX Analyzer"))
+        navbar.setBrandName(Model.of(propertiesCache.translator.translate(BasePage::class, "title")))
         navbar.setBrandImage(propertiesCache.brandReference, Model.of(StringUtils.EMPTY))
         val navbarButtons: Array<NavbarButton<*>> = ButtonTypes.values().map { button: ButtonTypes? ->
             FxAnalyserNavbarButton(
@@ -63,9 +64,11 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
     }
 
 
+    private val modalDialog = ModalDialog("notifications")
+
     override fun onBeforeRender() {
         super.onBeforeRender()
-        addOrReplace(newNavbar("navbar"))
+        addOrReplace(newNavbar("navbar"), modalDialog)
         outputMarkupId = true
     }
 
@@ -100,4 +103,10 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
             AttributeModifier("title", toolTip)
         )
     }
+
+    protected fun showModal(target: AjaxRequestTarget, title: String, text: String) {
+        modalDialog.add(Label("modalTitle", title), Label("modalContent", text))
+        modalDialog.open(target)
+    }
+
 }

@@ -18,7 +18,7 @@ enum class Categories {
     WORK,
     INCOME,
     EATING_OUT_TAKE_OUT,
-    CHILD_SUPPORT,
+    CHILD_BENEFITS,
     SAVING,
     HEALTH,
     SHOPPING,

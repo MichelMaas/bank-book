@@ -27,113 +27,61 @@
             "Friday": "Friday",
             "Saturday": "Saturday",
             "Sunday": "Sunday",
-            "YearIndicator": ""
+            "YearIndicator": "",
+            "nothing": "Nothing",
+            "totTrans": "Tot. Trans",
+            "result": "Result",
+            "account": "Account",
+            "totIn": "Total in",
+            "totOut": "Total out",
+            "categories": "Categories",
+            "groceries": "Groceries",
+            "car": "Car",
+            "other": "Other",
+            "home": "Home",
+            "shopping": "Shopping",
+            "clothing": "Clothing",
+            "vacation": "Vacation",
+            "child_benefits": "Child benefits",
+            "insurance": "Insurance",
+            "loans": "Loans",
+            "school": "Education",
+            "telecom": "Telecom",
+            "tax_returns": "Tax returns",
+            "utilities": "Utilities",
+            "tax": "Taxes",
+            "income": "Income",
+            "saving": "Savings",
+            "sports": "Sports",
+            "health": "Health",
+            "public_transport": "Public transport",
+            "category": "Category",
+            "amount": "Amount",
+            "counter": "Receiver",
+            "description": "Description",
+            "date": "Date"
           }
         },
         {
-          "name": "TestPage",
+          "name": "YearOverviewPage",
           "labels": {
-            "title": "Tests"
+            "title": "Jaaroverzicht"
           }
         },
         {
-          "name": "ProfitCalendarPage",
+          "name": "MonthOverviewPage",
           "labels": {
-            "title": "Profit Calendar",
-            "Back": "<",
-            "Forward": ">"
+            "title": "Maandoverzicht"
           }
         },
         {
-          "name": "EntryPreferencePage",
+          "name": "CategoriesPage",
           "labels": {
-            "title": "Entry preferences",
-            "EntryPreference": "Entry preference",
-            "BUY": "Buy",
-            "SELL": "Sell",
-            "WON": "Won",
-            "LOST": "Lost"
-          }
-        },
-        {
-          "name": "ImportPage",
-          "labels": {
-            "title": "Import",
-            "File": "File",
-            "Browse": "Browse",
-            "Cancel": "Cancel",
-            "Confirm": "Confirm",
-            "Reset": "Reset",
-            "SelectFile": "Select file...",
-            "Upload": "Upload",
-            "Remove": "Remove"
-          }
-        },
-        {
-          "name": "OverviewPage",
-          "labels": {
-            "title": "Overview",
-            "AccountValue": "Account value",
-            "AverageProfit": "Average profit",
-            "Risk": "Risk",
-            "Profit": "Profit",
-            "AverageLoss": "Average loss",
-            "WinPercentage": "Win percentage",
-            "AverageTimeHeld": "Average time held",
-            "AverageTimeHeldWin": "Average time held (win)",
-            "AverageTimeHeldLoss": "Average time held (loss)",
-            "Transfers": "Transfers",
-            "Transactions": "Transactions",
-            "Ticket": "Ticket",
-            "Time": "Time",
-            "Type": "Type",
-            "Amount": "Amount",
-            "EntryTime": "Entry time",
-            "BuySell": "Buy/Sell",
-            "Currency": "Currency",
-            "EntryPrice": "Entry price",
-            "ExitTime": "Exit time",
-            "ExitPrice": "Exit price",
-            "WonLost": "Won/Lost",
-            "H": "h"
-          }
-        },
-        {
-          "name": "ProfitDayPage",
-          "labels": {
-            "title": "Profit per day",
-            "Won": "Won",
-            "Lost": "Lost",
-            "Profit": "Profit"
-          }
-        },
-        {
-          "name": "SellBuyPage",
-          "labels": {
-            "title": "Sold vs. bought",
-            "Buy": "Bought",
-            "Sell": "Sold"
-          }
-        },
-        {
-          "name": "WinLossPage",
-          "labels": {
-            "title": "Won and lost per month",
-            "Won": "Won",
-            "Lost": "Lost",
-            "Profit": "Profit"
-          }
-        },
-        {
-          "name": "ProfitTimezonePage",
-          "labels": {
-            "title": "Results per timezone",
-            "AmountWonByTimezone": "Amount won by timezone",
-            "AmountLostByTimezone": "Amount lost by timezone",
-            "Tokyo": "Tokyo",
-            "London": "London",
-            "NewYork1": "New York (1)",
-            "NewYork2": "New York (2)"
+            "title": "Categories",
+            "search": "Search",
+            "save": "Save filter",
+            "confirm": "Confirm",
+            "reset": "Reset"
           }
         },
         {
@@ -143,6 +91,7 @@
             "Language": "Language",
             "Theme": "Theme",
             "Confirm": "Confirm",
+            "Folder": "Folder to monitor",
             "Reset": "Reset"
           }
         }
@@ -175,113 +124,61 @@
             "Friday": "Vrijdag",
             "Saturday": "Zaterdag",
             "Sunday": "Zondag",
-            "YearIndicator": ""
+            "YearIndicator": "",
+            "nothing": "Geen",
+            "totTrans": "Totaal trans.",
+            "result": "Resultaat",
+            "account": "Rekening",
+            "totIn": "Totaal bij",
+            "totOut": "Totaal af",
+            "categories": "Categorieën",
+            "groceries": "Boodschappen",
+            "car": "Auto",
+            "other": "Overig",
+            "home": "Huis",
+            "shopping": "Winkelen",
+            "clothing": "Kleding",
+            "vacation": "Vakantie",
+            "child_benefits": "Kinderbijdrage",
+            "insurance": "Verzekering",
+            "loans": "Leningen",
+            "school": "Opleiding",
+            "telecom": "Telecom",
+            "tax_returns": "Belastingteruggaaf",
+            "utilities": "Nuts",
+            "tax": "Belastingen",
+            "income": "Inkomen",
+            "saving": "Sparen",
+            "sports": "Sport",
+            "health": "Gezondheid",
+            "public_transport": "OV",
+            "category": "Categorie",
+            "amount": "Bedrag",
+            "counter": "Ontvanger",
+            "description": "Omschrijving",
+            "date": "Datum"
           }
         },
         {
-          "name": "TestPage",
+          "name": "YearOverviewPage",
           "labels": {
-            "title": "Tests"
+            "title": "Jaaroverzicht"
           }
         },
         {
-          "name": "ProfitCalendarPage",
+          "name": "MonthOverviewPage",
           "labels": {
-            "title": "Winstkalender",
-            "Back": "<",
-            "Forward": ">"
+            "title": "Maandoverzicht"
           }
         },
         {
-          "name": "EntryPreferencePage",
+          "name": "CategoriesPage",
           "labels": {
-            "title": "Instapvoorkeur",
-            "EntryPreference": "Instapvoorkeur",
-            "BUY": "Koop",
-            "SELL": "Verkoop",
-            "WON": "Gewonnen",
-            "LOST": "Verloren"
-          }
-        },
-        {
-          "name": "ImportPage",
-          "labels": {
-            "title": "Importeren",
-            "File": "Bestand",
-            "Browse": "Rondkijken",
-            "Cancel": "Annuleren",
-            "Confirm": "Bevestigen",
-            "Reset": "Herstellen",
-            "SelectFile": "Kies bestand...",
-            "Upload": "Versturen",
-            "Remove": "Verwijderen"
-          }
-        },
-        {
-          "name": "OverviewPage",
-          "labels": {
-            "title": "Overzicht",
-            "AccountValue": "Waarde rekening",
-            "AverageProfit": "Gemiddelde winst",
-            "Risk": "Risiko",
-            "Profit": "Winst",
-            "AverageLoss": "Gemiddeld verlies",
-            "WinPercentage": "Winstpercentage",
-            "AverageTimeHeld": "Gemiddeld vastgehouden",
-            "AverageTimeHeldWin": "Gemiddeld vastgehouden (winst)",
-            "AverageTimeHeldLoss": "Gemiddeld vastgehouden (verlies)",
-            "Transfers": "Overboekingen",
-            "Transactions": "Transacties",
-            "Ticket": "Ticket",
-            "Time": "Tijd",
-            "Type": "Type",
-            "Amount": "Bedrag",
-            "EntryTime": "Instaptijd",
-            "BuySell": "Gekocht/Verkocht",
-            "Currency": "Valuta",
-            "EntryPrice": "Instapprijs",
-            "ExitTime": "Uitstaptijd",
-            "ExitPrice": "Uitstapprijs",
-            "WonLost": "Gewonnen/Verloren",
-            "H": "u"
-          }
-        },
-        {
-          "name": "ProfitDayPage",
-          "labels": {
-            "title": "Winst per dag",
-            "Won": "Gewonnen",
-            "Lost": "Verloren",
-            "Profit": "Winst"
-          }
-        },
-        {
-          "name": "SellBuyPage",
-          "labels": {
-            "title": "Gekocht/Verkocht",
-            "Buy": "Gekocht",
-            "Sell": "Verkocht"
-          }
-        },
-        {
-          "name": "WinLossPage",
-          "labels": {
-            "title": "Winst en verlies per maand",
-            "Won": "Gewonnen",
-            "Lost": "Verloren",
-            "Profit": "Winst"
-          }
-        },
-        {
-          "name": "ProfitTimezonePage",
-          "labels": {
-            "title": "Resultaat per tijdzone",
-            "AmountWonByTimezone": "Gewonnen bedrag per tijdzone",
-            "AmountLostByTimezone": "Verloren bedrag per tijdzone",
-            "Tokyo": "Tokio",
-            "London": "Londen",
-            "NewYork1": "New York (1)",
-            "NewYork2": "New York (2)"
+            "title": "Categorieën",
+            "search": "Zoeken",
+            "save": "Bewaar filter",
+            "confirm": "Bevestig",
+            "reset": "Ongedaan maken"
           }
         },
         {
@@ -290,8 +187,9 @@
             "title": "Opties",
             "Language": "Taal",
             "Theme": "Thema",
-            "Confirm": "Bevestigen",
-            "Reset": "Herstellen"
+            "Confirm": "Bevestig",
+            "Folder": "Map om te monitoren",
+            "Reset": "Ongedaan maken"
           }
         }
       ]
@@ -323,113 +221,61 @@
             "Friday": "金曜日",
             "Saturday": "土曜日",
             "Sunday": "日曜日",
-            "YearIndicator": "年"
+            "YearIndicator": "年",
+            "nothing": "ない",
+            "totTrans": "転送の総数",
+            "result": "結果",
+            "account": "銀行口座",
+            "totIn": "合計追加",
+            "totOut": "合計償却",
+            "categories": "カテゴリ",
+            "groceries": "食料品",
+            "car": "自動車",
+            "other": "その他",
+            "home": "家",
+            "shopping": "買えもの",
+            "clothing": "洋服",
+            "vacation": "旅行",
+            "child_benefits": "児童手当",
+            "insurance": "保険",
+            "loans": "ローン",
+            "school": "教育",
+            "telecom": "テレコム",
+            "tax_returns": "税金還付",
+            "utilities": "ユーティリティ",
+            "tax": "税金",
+            "income": "所得",
+            "saving": "保存",
+            "sports": "スポーツ",
+            "health": "健康",
+            "public_transport": "公共交通機関",
+            "category": "カテゴリ",
+            "amount": "額",
+            "counter": "レシーバー",
+            "description": "説明",
+            "date": "日にち"
           }
         },
         {
-          "name": "TestPage",
+          "name": "YearOverviewPage",
           "labels": {
-            "title": "寺家"
+            "title": "年次レビュー"
           }
         },
         {
-          "name": "ProfitCalendarPage",
+          "name": "MonthOverviewPage",
           "labels": {
-            "title": "収益カレンダー",
-            "Back": "<",
-            "Forward": ">"
+            "title": "月次概要"
           }
         },
         {
-          "name": "EntryPreferencePage",
+          "name": "CategoriesPage",
           "labels": {
-            "title": "優先エントリの種類",
-            "EntryPreference": "優先エントリの種類",
-            "BUY": "買い",
-            "SELL": "売り",
-            "WON": "勝ち",
-            "LOST": "負け"
-          }
-        },
-        {
-          "name": "ImportPage",
-          "labels": {
-            "title": "インポート",
-            "File": "ファイル",
-            "Browse": "ブラウズ",
-            "Cancel": "取消",
-            "Confirm": "確認",
-            "Reset": "回復する",
-            "SelectFile": "ファイルを選んで下さい。。。",
-            "Upload": "アプロード",
-            "Remove": "消す"
-          }
-        },
-        {
-          "name": "OverviewPage",
-          "labels": {
-            "title": "概要",
-            "AccountValue": "口座残高",
-            "AverageProfit": "平均利益",
-            "Risk": "リスク1に対してのリワード",
-            "Profit": "収益",
-            "AverageLoss": "平均損失",
-            "WinPercentage": "勝率",
-            "AverageTimeHeld": "平均保有時間",
-            "AverageTimeHeldWin": "平均保有時間 (勝ち)",
-            "AverageTimeHeldLoss": "平均保有時間 (負け)",
-            "Transfers": "トランスファ−",
-            "Transactions": "取引",
-            "Ticket": "チケット",
-            "Time": "自家",
-            "Type": "種類",
-            "Amount": "額",
-            "EntryTime": "入る時間",
-            "BuySell": "買えや売り",
-            "Currency": "通貨",
-            "EntryPrice": "入る値段",
-            "ExitTime": "出る時間",
-            "ExitPrice": "出る値段",
-            "WonLost": "勝ち/負け",
-            "H": "時間"
-          }
-        },
-        {
-          "name": "ProfitDayPage",
-          "labels": {
-            "title": "曜日別損益合算",
-            "Won": "勝",
-            "Lost": "負",
-            "Profit": "利益"
-          }
-        },
-        {
-          "name": "SellBuyPage",
-          "labels": {
-            "title": "ロングショート比率",
-            "Buy": "ロング",
-            "Sell": "ショート"
-          }
-        },
-        {
-          "name": "WinLossPage",
-          "labels": {
-            "title": "収益及び口座残高の推移",
-            "Won": "勝",
-            "Lost": "負",
-            "Profit": "口座残高"
-          }
-        },
-        {
-          "name": "ProfitTimezonePage",
-          "labels": {
-            "title": "マーケット別損益合算 (エントリー時間ベース)",
-            "AmountWonByTimezone": "勝",
-            "AmountLostByTimezone": "負",
-            "Tokyo": "東京",
-            "London": "ロンドン",
-            "NewYork1": "ニューヨーク (1)",
-            "NewYork2": "ニューヨーク (2)"
+            "title": "カテゴリ",
+            "search": "探す",
+            "save": "フィルターを保存する",
+            "confirm": "確認",
+            "reset": "回復する"
           }
         },
         {
@@ -439,6 +285,7 @@
             "Language": "国語",
             "Theme": "テーマ",
             "Confirm": "確認",
+            "Folder": "監視するフォルダ",
             "Reset": "回復する"
           }
         }

@@ -91,6 +91,6 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
     }
 
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        startBrowser()
+//        startBrowser()
     }
 }
