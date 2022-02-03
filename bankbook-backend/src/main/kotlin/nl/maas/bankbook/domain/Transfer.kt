@@ -1,7 +1,6 @@
 package nl.maas.bankbook.domain
 
 import nl.maas.bankbook.domain.enums.MutationTypes
-import nl.maas.bankbook.domain.Transaction
 import java.time.LocalDate
 import java.util.*
 
@@ -16,4 +15,5 @@ class Transfer(
     mutationType: MutationTypes,
     description: String
 ) : Transaction(id, date, baseAccount, currency, mutation, mutationType, description) {
+    override fun counter() = counterHolder
 }

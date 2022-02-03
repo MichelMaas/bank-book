@@ -5,15 +5,13 @@ import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import org.springframework.stereotype.Component
 import java.nio.file.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Component
-class TransactionWatchService private constructor(
+class TransactionWatchService private @Inject constructor(
     val propertiesCache: PropertiesCache,
     val parserService: ParserService,
     val modelCache: ModelCache,
-    val watchService: WatchService
 ) {
 
 
@@ -26,19 +24,13 @@ class TransactionWatchService private constructor(
 //    @Inject
 //    lateinit var modelCache: ModelCache
 
-    @Inject
-    constructor(propertiesCache: PropertiesCache, parserService: ParserService, modelCache: ModelCache) : this(
-        propertiesCache, parserService, modelCache,
-        FileSystems.getDefault().newWatchService()
-    ) {
-        val path = Paths.get(propertiesCache.options.watchedFolder)
-        path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE)
-        Timer().schedule(WatchTask(), TimeUnit.MINUTES.toMillis(1))
+    init {
+        Timer().schedule(WatchTask(), 0, 1)
     }
 
     private inner class WatchTask : TimerTask() {
 
-        fun watch() {
+        fun watch(watchService: WatchService) {
             var watchKey = watchService.take()
             val creates = watchKey.pollEvents().filter { it.kind().equals(StandardWatchEventKinds.ENTRY_CREATE) }
             creates.forEach {
@@ -55,11 +47,18 @@ class TransactionWatchService private constructor(
                     ex.printStackTrace()
                 }
             }
-            Timer().schedule(WatchTask(), TimeUnit.MINUTES.toMillis(1))
+            watchService.poll()
         }
 
         override fun run() {
-            watch()
+            watch(registerTask(propertiesCache))
+        }
+
+        private fun registerTask(propertiesCache: PropertiesCache): WatchService {
+            val watchService = FileSystems.getDefault().newWatchService()
+            val path = Paths.get(propertiesCache.options.watchedFolder)
+            path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE)
+            return watchService
         }
     }
 

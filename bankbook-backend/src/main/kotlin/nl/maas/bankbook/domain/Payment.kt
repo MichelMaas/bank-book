@@ -14,4 +14,5 @@ class Payment(
     description: String
 ) : Transaction(id, date, baseAccount, currency, mutation, mutationType, description) {
     fun shortDescription() = description.substringBefore(">").substringAfter("'")
+    override fun counter() = shortDescription()
 }

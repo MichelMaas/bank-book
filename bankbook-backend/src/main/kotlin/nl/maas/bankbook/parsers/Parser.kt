@@ -20,10 +20,12 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
         COUNTER_NAME: Int,
         CURRENCY: Int,
         AMOUNT: Int,
+        TYPE_CODE: Int,
         TYPE: Int,
         DESCRIPTION: Int
     ) : this(map) {
-        this.POSITIONS = Positions(ID, DATE, SOURCE, COUNTER, COUNTER_NAME, CURRENCY, AMOUNT, TYPE, DESCRIPTION)
+        this.POSITIONS =
+            Positions(ID, DATE, SOURCE, COUNTER, COUNTER_NAME, CURRENCY, AMOUNT, TYPE_CODE, TYPE, DESCRIPTION)
     }
 
     companion object {
@@ -73,6 +75,7 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
         internal val COUNTER_NAME: Int,
         internal val CURRENCY: Int,
         internal val AMOUNT: Int,
+        internal val TYPE_CODE: Int,
         internal val TYPE: Int,
         internal val DESCRIPTION: Int
     ) {}

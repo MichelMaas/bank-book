@@ -11,9 +11,13 @@ import nl.maas.bankbook.frontend.wicket.objects.enums.ButtonTypes
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.Component
+import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalDialog
+import org.apache.wicket.markup.head.CssReferenceHeaderItem
+import org.apache.wicket.markup.head.IHeaderResponse
 import org.apache.wicket.markup.html.GenericWebPage
+import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
 import org.apache.wicket.protocol.http.WebApplication
@@ -35,6 +39,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     override fun onInitialize() {
         super.onInitialize()
+        outputMarkupId = true
         (application as WebApplication).mountResource("/images/icon.png", propertiesCache.iconReference)
     }
 
@@ -65,11 +70,22 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
 
     private val modalDialog = ModalDialog("notifications")
+    val loader = WebMarkupContainer("loader")
 
     override fun onBeforeRender() {
         super.onBeforeRender()
-        addOrReplace(newNavbar("navbar"), modalDialog)
-        outputMarkupId = true
+        addOrReplace(newNavbar("navbar"), modalDialog, loader)
+        add(object : AjaxEventBehavior("onload") {
+            override fun onEvent(target: AjaxRequestTarget) {
+                ajaxStopLoader(target)
+            }
+        })
+    }
+
+    override fun renderHead(response: IHeaderResponse) {
+        super.renderHead(response)
+        response.render(CssReferenceHeaderItem.forUrl("css/main.css"))
+        response.render(CssReferenceHeaderItem.forUrl("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"))
     }
 
     @ExperimentalStdlibApi
@@ -107,6 +123,17 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
     protected fun showModal(target: AjaxRequestTarget, title: String, text: String) {
         modalDialog.add(Label("modalTitle", title), Label("modalContent", text))
         modalDialog.open(target)
+    }
+
+    fun ajaxStartLoader(target: AjaxRequestTarget) {
+        val classAttr = loader.markupAttributes["class"].toString()
+        loader.add(AttributeModifier.replace("class", classAttr.replace("d-none", StringUtils.EMPTY).trim()))
+        target.add(loader)
+    }
+
+    fun ajaxStopLoader(target: AjaxRequestTarget) {
+        loader.add(AttributeModifier.append("class", "d-none"))
+        target.add(loader)
     }
 
 }

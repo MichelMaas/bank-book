@@ -1,5 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
+import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Categories
 import nl.maas.bankbook.frontend.wicket.components.AjaxSearchField
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
@@ -66,10 +67,23 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
             super.onBeforeRender()
             value = modelCache.dataContainer.findByFilter(filter).toMutableList()
             addOrReplace(
-                DynamicTableComponent(
+                object : DynamicTableComponent(
                     "table",
                     value
-                )
+                ) {
+                    override fun onTupleClick(target: AjaxRequestTarget, tuple: Tuple) {
+                        setResponsePage(
+                            TransactionPage(
+                                (modelCache.dataContainer.filterTransactions(tuple.toFilterString()).firstOrNull()
+                                    ?: Transaction.EMPTY(
+                                        modelCache.dataContainer.transactions.first().baseAccount,
+                                        modelCache.dataContainer.transactions.first().currency
+                                    )) as Transaction
+                            )
+                        )
+                        target.add(this@CategoriesPage)
+                    }
+                }
             )
         }
     }

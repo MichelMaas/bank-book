@@ -8,10 +8,12 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.nio.file.Path;
 
 @SpringBootApplication
+@EnableAsync
 public class WicketApplication extends WebApplication {
 
     public static void main(String[] args) throws Exception {

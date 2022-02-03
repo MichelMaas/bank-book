@@ -8,7 +8,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) : Parser(map, 15, 0, 1, 2, 3, 7, 10, 14, 17) {
+class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) :
+    Parser(map, 15, 0, 1, 2, 3, 7, 10, 13, 14, 17) {
 
 
     private val datePattern = "dd-MM-yyyy"
@@ -22,7 +23,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) : Pars
             IBAN(record[POSITIONS.SOURCE]),
             currency,
             Amount(record[POSITIONS.AMOUNT], currency.symbol),
-            MutationTypes.valueOf(record[POSITIONS.TYPE]),
+            MutationTypes.byCode(record[POSITIONS.TYPE_CODE].toInt()),
             record[POSITIONS.DESCRIPTION]
         )
     }
@@ -38,7 +39,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) : Pars
             record[POSITIONS.COUNTER_NAME],
             Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) },
             Amount(record[POSITIONS.AMOUNT], currency.symbol),
-            MutationTypes.valueOf(record[POSITIONS.TYPE]),
+            MutationTypes.byCode(record[POSITIONS.TYPE_CODE].toInt()),
             record[POSITIONS.DESCRIPTION]
         )
     }
@@ -52,7 +53,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) : Pars
                     Currency.getAvailableCurrencies()
                         .filter { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }.isNotEmpty() &&
                     GenericValidator.isDouble(record[POSITIONS.AMOUNT]) &&
-                    MutationTypes.values().any { it.name.equals(record[POSITIONS.TYPE]) }
+                    MutationTypes.values().any { it.codes.contains(record[POSITIONS.TYPE_CODE].toInt()) }
         }
     }
 

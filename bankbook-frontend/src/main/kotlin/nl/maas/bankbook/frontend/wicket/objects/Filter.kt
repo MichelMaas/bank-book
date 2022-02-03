@@ -1,12 +1,16 @@
 package nl.maas.bankbook.frontend.wicket.objects
 
 import nl.maas.bankbook.IterativeStorable
+import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Categories
 import org.apache.commons.lang3.StringUtils
 
 class Filter() : IterativeStorable<Filter> {
     var filter = StringUtils.EMPTY
     var category = Categories.OTHER
+
+    @Transient
+    var foundTransactions: List<Transaction> = listOf()
 
     @Transient
     var saveFilter: Boolean = true
