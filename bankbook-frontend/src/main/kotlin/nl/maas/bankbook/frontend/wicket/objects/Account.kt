@@ -10,6 +10,8 @@ import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import nl.maas.filerenamer.domain.Storable
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
+import java.time.Duration
+import java.time.LocalTime
 import java.time.Month
 import java.time.Year
 import java.time.format.DateTimeFormatter
@@ -203,15 +205,17 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
     }
 
     fun filterTransactions(filter: String, transactions: List<Transaction> = this.transactions): List<Transaction> {
+        val start = LocalTime.now()
         val properties = ContextProvider.ctx.getBean(PropertiesCache::class.java)
         val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isNullOrBlank() }
-        var filtered: List<Transaction> = transactions
-        filterWords.forEach { filterWord ->
-            filtered = filtered.filter {
-                it.filterValues()
-                    .any { properties.translator.translate(BasePage::class, it).contains(filterWord, true) }
+        var filtered: List<Transaction> = transactions.filter { tr ->
+            filterWords.map { properties.translator.untranslate(BasePage::class, it) }.all { filterWord ->
+                tr.filterValues().joinToString(StringUtils.SPACE).contains(filterWord, true)
             }
         }
+        val end = LocalTime.now()
+        val between = Duration.between(start, end)
+        println("Filtering took: ${between}")
         return filtered
     }
 

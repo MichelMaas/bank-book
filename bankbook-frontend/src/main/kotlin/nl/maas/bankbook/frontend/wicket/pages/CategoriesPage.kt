@@ -61,7 +61,7 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
         val searchLabel = Label("searchLabel", propertiesCache.translator.translate(CategoriesPage::class, "search"))
         addOrReplace(searchLabel, object : AjaxSearchField("search", Model.of(filter)) {
 
-            override fun onEnter(target: AjaxRequestTarget) {
+            override fun onChange(target: AjaxRequestTarget) {
                 this@CategoriesPage.filter = this.convertedInput.orEmpty()
                 target.add(tableWrapper)
             }

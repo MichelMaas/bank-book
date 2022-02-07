@@ -11,7 +11,6 @@ import nl.maas.bankbook.frontend.wicket.objects.enums.ButtonTypes
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.Component
-import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalDialog
 import org.apache.wicket.markup.head.CssReferenceHeaderItem
@@ -74,12 +73,8 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     override fun onBeforeRender() {
         super.onBeforeRender()
+        loader.outputMarkupId = true
         addOrReplace(newNavbar("navbar"), modalDialog, loader)
-        add(object : AjaxEventBehavior("onload") {
-            override fun onEvent(target: AjaxRequestTarget) {
-                ajaxStopLoader(target)
-            }
-        })
     }
 
     override fun renderHead(response: IHeaderResponse) {

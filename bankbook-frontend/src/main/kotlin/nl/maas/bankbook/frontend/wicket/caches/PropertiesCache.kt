@@ -40,6 +40,9 @@ class PropertiesCache {
         fun <T : KClass<out BasePage>> translate(page: T, key: String) =
             i10N.translate(page, key, currentLanguage())
 
+        fun <T : KClass<out BasePage>> untranslate(page: T, key: String) =
+            i10N.untranslate(page, key, currentLanguage())
+
         fun currentLanguage() =
             (propertiesCache.i10N.languages.find { it.name.equals(propertiesCache.options.language) }
                 ?: propertiesCache.i10N.languages.first { "en".equals(it.code) }).code
