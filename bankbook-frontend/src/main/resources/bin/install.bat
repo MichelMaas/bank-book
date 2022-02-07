@@ -3,4 +3,4 @@ pushd %CD%\..
 set DIRECTORY=%CD%
 popd
 
-Shortcut.exe /F:"%AppData%\Microsoft\Windows\Start Menu\Programs\FX-Analyzer.lnk" /A:C /W:"%DIRECTORY%\bin" /T:"%DIRECTORY%\bin\start.bat" /I:"%DIRECTORY%\lib\fx-analyzer.ico,0"
+Shortcut.exe /F:"%AppData%\Microsoft\Windows\Start Menu\Programs\BankBook.lnk" /A:C /W:"%DIRECTORY%\bin" /T:"%DIRECTORY%\bin\start.bat" /I:"%DIRECTORY%\lib\bankbook.ico,0"

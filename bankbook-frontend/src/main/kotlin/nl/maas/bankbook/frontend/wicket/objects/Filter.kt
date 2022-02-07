@@ -4,10 +4,12 @@ import nl.maas.bankbook.IterativeStorable
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Categories
 import org.apache.commons.lang3.StringUtils
+import org.apache.wicket.markup.html.form.upload.FileUpload
 
 class Filter() : IterativeStorable<Filter> {
     var filter = StringUtils.EMPTY
     var category = Categories.OTHER
+    var file: FileUpload? = null
 
     @Transient
     var foundTransactions: List<Transaction> = listOf()

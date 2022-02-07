@@ -11,9 +11,11 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.form.upload.FileUpload
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import java.nio.file.Files
 
 class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
 
@@ -42,15 +44,24 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
                 }
                 target.add(tableWrapper)
             }
+
+            override fun onFileUpload(target: AjaxRequestTarget, fileUpload: FileUpload) {
+                val tempFile = Files.createTempFile("uploaded", "csv").toFile()
+                fileUpload.writeTo(tempFile)
+                val parseFile = parserService.parseFile(tempFile)
+                modelCache.dataContainer.addNewFrom(parseFile)
+                target.add(this@CategoriesPage)
+            }
         }.addSelect(
             "category",
             propertiesCache.translator.translate(CategoriesPage::class, "Category"),
             Categories.values().sortedBy { it.name }.toList()
         ).addCheckBox("saveFilter", propertiesCache.translator.translate(CategoriesPage::class, "Save"), true)
+            .addFileUploadField("file")
         val searchLabel = Label("searchLabel", propertiesCache.translator.translate(CategoriesPage::class, "search"))
         addOrReplace(searchLabel, object : AjaxSearchField("search", Model.of(filter)) {
 
-            override fun onChange(target: AjaxRequestTarget) {
+            override fun onEnter(target: AjaxRequestTarget) {
                 this@CategoriesPage.filter = this.convertedInput.orEmpty()
                 target.add(tableWrapper)
             }

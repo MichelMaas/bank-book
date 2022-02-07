@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DESKTOP_FILE=$HOME/.local/applications/fx-analyzer.desktop
+DESKTOP_FILE=$HOME/.local/applications/bankbook.desktop
 function setFolder() {
   pushd $PWD/..
   folder=$PWD
@@ -16,8 +16,8 @@ function createShortcut() {
         Comment=The Drive to Develop
         Categories=Tools;Files;
         Terminal=false
-        Icon=$folder/fx_analyzer/icon.png
-        Exec=java -Xms256m -Xmx512m -server -jar $folder/lib/fx_analyzer-frontend-${project.version}-exec.war" >$HOME/.local/share/applications/fx-analyzer.desktop
+        Icon=$folder/bankbook/icon.png
+        Exec=java -Xms256m -Xmx512m -server -jar $folder/lib/bankbook-frontend-${project.version}-exec.war" >$HOME/.local/share/applications/bankbook.desktop
   fi
 }
 

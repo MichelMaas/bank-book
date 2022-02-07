@@ -20,6 +20,7 @@ enum class Categories {
     EATING_OUT_TAKE_OUT,
     CHILD_BENEFITS,
     SAVING,
+    INVESTMENTS,
     HEALTH,
     SHOPPING,
     OTHER;

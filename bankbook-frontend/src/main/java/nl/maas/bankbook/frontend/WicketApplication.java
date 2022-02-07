@@ -27,10 +27,9 @@ public class WicketApplication extends WebApplication {
         ApplicationArguments args = ctx[0].getBean(ApplicationArguments.class);
 //        BrowserManager manager = ctx[0].getBean(BrowserManager.class);
 //        manager.close();
-//        Thread thread = new Thread(() -> {
-//            ctx[0].close();
-//            ctx[0] = SpringApplication.run(WicketApplication.class, args.getSourceArgs());
-//        });
+        Thread thread = new Thread(() -> {
+            ctx[0].refresh();
+        });
 //
 //        thread.setDaemon(false);
 //        thread.start();

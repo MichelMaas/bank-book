@@ -53,6 +53,7 @@
             "tax": "Taxes",
             "income": "Income",
             "saving": "Savings",
+            "investments": "Investments",
             "sports": "Sports",
             "health": "Health",
             "public_transport": "Public transport",
@@ -151,6 +152,7 @@
             "tax": "Belastingen",
             "income": "Inkomen",
             "saving": "Sparen",
+            "investments": "Beleggingen",
             "sports": "Sport",
             "health": "Gezondheid",
             "public_transport": "OV",
@@ -198,7 +200,7 @@
     },
     {
       "code": "jp",
-      "name": "日本語",
+      "name": "Japanese",
       "pages": [
         {
           "name": "BasePage",
@@ -249,6 +251,7 @@
             "tax": "税金",
             "income": "所得",
             "saving": "保存",
+            "investments": "投資",
             "sports": "スポーツ",
             "health": "健康",
             "public_transport": "公共交通機関",

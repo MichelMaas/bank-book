@@ -215,7 +215,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         val uploadLabel: String,
         val removeLabel: String
     ) :
-        ResettableFormFragment<FileUpload>("propertyName", "fileUploadFragment", this, null) {
+        ResettableFormFragment<FileUpload>(propertyName, "fileUploadFragment", this, null) {
         var fileUpload: FileUpload? = null
         private val bootstrapFileInputField = object : BootstrapFileInputField(
             "file",
@@ -257,7 +257,9 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         fun fileLabelJS() = "\$('label:contains(\"File\")').text('${fieldLabel}')"
 
         fun onFileUpload(target: AjaxRequestTarget) {
-            this@DynamicFormComponent.onFileUpload(target, this.fileUpload!!)
+            this.fileUpload?.let {
+                this@DynamicFormComponent.onFileUpload(target, it)
+            }
         }
 
         override fun onReset(target: AjaxRequestTarget, fileUpload: FileUpload?) {

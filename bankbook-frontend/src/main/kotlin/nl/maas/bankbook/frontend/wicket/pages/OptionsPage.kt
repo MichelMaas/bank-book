@@ -1,20 +1,14 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
-import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchTheme
 import nl.maas.bankbook.frontend.WicketApplication
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
-import nl.maas.bankbook.frontend.wicket.config.BootstrapConfig
 import nl.maas.bankbook.frontend.wicket.objects.Options
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import javax.inject.Inject
 
 open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
-
-    @Inject
-    lateinit var bootstrapConfig: BootstrapConfig
 
     override fun onBeforeRender() {
         super.onBeforeRender()
@@ -28,7 +22,8 @@ open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
             )
         ) {
             override fun onSubmit(target: AjaxRequestTarget) {
-                (defaultModelObject as Options).store()
+                val options = (defaultModelObject as Options).store()
+//                CookieUtil.saveLanguageCookie(options.language)
                 target.add(this@OptionsPage)
                 WicketApplication.restart()
             }
@@ -37,10 +32,6 @@ open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
             "language",
             propertiesCache.translator.translate(OptionsPage::class, "Language"),
             propertiesCache.translator.supportedLanguages
-        ).addSelect(
-            "theme",
-            propertiesCache.translator.translate(OptionsPage::class, "Theme"),
-            BootswatchTheme.values().toList().map { it.name }
         ).addTextBox("watchedFolder", propertiesCache.translator.translate(OptionsPage::class, "Folder"))
         return form
     }

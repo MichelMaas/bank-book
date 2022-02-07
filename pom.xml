@@ -83,6 +83,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-tomcat</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
@@ -133,6 +139,12 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jetty</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-undertow</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>provided</scope>
             </dependency>
@@ -211,7 +223,7 @@
                     <version>2.5.2</version>
                     <configuration>
                         <appendAssemblyId>false</appendAssemblyId>
-                        <finalName>FX-Analyzer-${project.version}</finalName>
+                        <finalName>bank-book-${project.version}</finalName>
                         <descriptors>
                             <descriptor>${basedir}/assembly.xml</descriptor>
                         </descriptors>

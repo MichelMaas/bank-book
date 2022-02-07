@@ -5,6 +5,8 @@ import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Banks
 import nl.maas.bankbook.utils.CSVUtils
 import org.apache.commons.lang3.NotImplementedException
+import java.io.File
+import java.nio.file.Paths
 
 abstract class Parser private constructor(protected val map: Map<Int, MutableList<String>>) {
 
@@ -30,6 +32,10 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
 
     companion object {
         fun parse(file: String): Parser {
+            return parse(Paths.get(file).toFile())
+        }
+
+        fun parse(file: File): Parser {
             val parsedFile = CSVUtils.parseFile(file)
             val bankName = CSVUtils.findBaseAccount(parsedFile).substring(4, 8)
             return when (Banks.valueOf(bankName)) {

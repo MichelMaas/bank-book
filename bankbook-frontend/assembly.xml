@@ -30,7 +30,7 @@
     <!--            </excludes>-->
     <!--        </dependencySet>-->
     <!--    </dependencySets>-->
-    <id>fz-analyzer-frontend</id>
+    <id>bankbook</id>
     <formats>
         <format>tar</format>
         <format>zip</format>

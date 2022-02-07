@@ -1,5 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.components
 
+import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
 import org.apache.wicket.markup.html.form.TextField
@@ -12,9 +13,16 @@ abstract class AjaxSearchField(id: String, model: IModel<String>) : TextField<St
             override fun onUpdate(target: AjaxRequestTarget) {
                 this@AjaxSearchField.onChange(target)
             }
+        }, object : AjaxEventBehavior("keyup") {
+            override fun onEvent(p0: AjaxRequestTarget?) {
+                println("key up")
+            }
+
         })
     }
 
-    abstract fun onChange(target: AjaxRequestTarget)
+    open protected fun onChange(target: AjaxRequestTarget) {}
+
+    open protected fun onEnter(target: AjaxRequestTarget) {}
 
 }
