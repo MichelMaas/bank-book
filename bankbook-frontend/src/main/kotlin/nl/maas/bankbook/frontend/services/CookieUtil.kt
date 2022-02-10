@@ -3,6 +3,7 @@ package nl.maas.bankbook.frontend.services
 import org.apache.wicket.request.cycle.RequestCycle
 import org.apache.wicket.request.http.WebRequest
 import org.apache.wicket.request.http.WebResponse
+import org.apache.wicket.util.cookies.CookieUtils
 import javax.servlet.http.Cookie
 
 class CookieUtil {
@@ -12,12 +13,7 @@ class CookieUtil {
         private val languageCookie = "bankBookLanguageCookie"
 
         fun languageCookieExists(): Boolean {
-            var exists = false
-            RequestCycle.get()?.let {
-                val webRequest = it.request as WebRequest
-                exists = webRequest.cookies.any { it.name.equals(languageCookie) }
-            }
-            return exists
+            return CookieUtils().load(languageCookie) != null
         }
 
 
@@ -37,9 +33,9 @@ class CookieUtil {
         }
 
         fun readLanguageCookie(): String {
-            val webRequest: WebRequest = RequestCycle.get().request as WebRequest
-            val cookie: Cookie = webRequest.getCookie(languageCookie)
-            return cookie.value
+//            val webRequest: WebRequest = RequestCycle.get().request as WebRequest
+//            val cookie: Cookie = webRequest.getCookie(languageCookie)
+            return CookieUtils().load(languageCookie)
         }
 
     }

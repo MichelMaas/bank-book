@@ -32,20 +32,19 @@ class PropertiesCache {
         translator = Translator(this)
     }
 
-
     inner class Translator(
         val propertiesCache: PropertiesCache,
         val supportedLanguages: List<String> = propertiesCache.i10N.languages.map { it.name }
     ) {
         fun <T : KClass<out BasePage>> translate(page: T, key: String) =
-            i10N.translate(page, key, currentLanguage())
+            i10N.translate(page, key, currentLanguage)
 
         fun <T : KClass<out BasePage>> untranslate(page: T, key: String) =
-            i10N.untranslate(page, key, currentLanguage())
+            i10N.untranslate(page, key, currentLanguage)
 
-        fun currentLanguage() =
-            (propertiesCache.i10N.languages.find { it.name.equals(propertiesCache.options.language) }
-                ?: propertiesCache.i10N.languages.first { "en".equals(it.code) }).code
+        val currentLanguage
+            get() = propertiesCache.i10N.languages.firstOrNull { options.language.equals(it.code) }?.code
+                ?: propertiesCache.i10N.languages.first { "en".equals(it.code) }.code
     }
 
 }

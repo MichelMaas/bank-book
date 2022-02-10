@@ -221,7 +221,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
             "file",
             Model.ofList(mutableListOf()),
             FileInputConfig().showPreview(false).maxFileCount(1)
-                .withLocale(propertiesCache.translator.currentLanguage())
+                .withLocale(propertiesCache.translator.currentLanguage)
         ) {
             override fun onSubmit(target: AjaxRequestTarget) {
                 super.onSubmit(target)

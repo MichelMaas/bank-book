@@ -77,6 +77,10 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
         addOrReplace(newNavbar("navbar"), modalDialog, loader)
     }
 
+    override fun onRender() {
+        super.onRender()
+    }
+
     override fun renderHead(response: IHeaderResponse) {
         super.renderHead(response)
         response.render(CssReferenceHeaderItem.forUrl("css/main.css"))
