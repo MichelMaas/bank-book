@@ -3,8 +3,8 @@ package nl.maas.bankbook.domain.enums
 enum class MutationTypes(val tidy: String, vararg val codes: Int) {
     INC("Incasso", 9714),
     BEA("PIN Transaction", 7906, 7913, 7914),
-    OVB("Manual transfer", 8809, 8949, 9935, 6853, 9755, 9932, 9747, 9933),
-    DPS("Deposit", 2723),
+    OVB("Manual transfer", 8809, 8949, 9935, 6853, 9755, 9932, 9747, 9930, 9933),
+    DPS("Deposit", 2723, 6016),
     IOB("Internal transfer", 2754, 3700, 9802, 3754, 2724),
     DIV("Account cost", 7241),
     IDB("IDEAL Payment", 9856, 9806),

@@ -16,6 +16,8 @@ import java.nio.file.Path;
 @EnableAsync
 public class WicketApplication extends WebApplication {
 
+    private static final String USER_HOME = "user-home";
+
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext run = new SpringApplicationBuilder()
                 .sources(WicketApplication.class)
@@ -30,15 +32,10 @@ public class WicketApplication extends WebApplication {
         Thread thread = new Thread(() -> {
             ctx[0].refresh();
         });
-//
-//        thread.setDaemon(false);
-//        thread.start();
+        thread.setDaemon(false);
+        thread.start();
     }
 
-    public WicketApplication() {
-//        FileSystemResourceReference favicon = new FileSystemResourceReference("favicon", Path.of(this.getClass().getResource("/open/images/icon.png").getPath()));
-//        mountResource("/images/icon.png", favicon);
-    }
 
     @Override
     protected void internalInit() {

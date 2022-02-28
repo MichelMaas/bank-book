@@ -21,6 +21,8 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
 import org.apache.wicket.protocol.http.WebApplication
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import java.time.Duration
+import java.time.LocalTime
 import javax.inject.Inject
 
 
@@ -35,6 +37,8 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     @Inject
     lateinit var propertiesCache: PropertiesCache
+
+    val start: LocalTime = LocalTime.now()
 
     override fun onInitialize() {
         super.onInitialize()
@@ -77,14 +81,16 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
         addOrReplace(newNavbar("navbar"), modalDialog, loader)
     }
 
-    override fun onRender() {
-        super.onRender()
-    }
-
     override fun renderHead(response: IHeaderResponse) {
         super.renderHead(response)
         response.render(CssReferenceHeaderItem.forUrl("css/main.css"))
         response.render(CssReferenceHeaderItem.forUrl("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"))
+    }
+
+    override fun onAfterRender() {
+        super.onAfterRender()
+        val end = LocalTime.now()
+        println("Render time for page ${this::class.simpleName} is: ${Duration.between(start, end).toString()}")
     }
 
     @ExperimentalStdlibApi

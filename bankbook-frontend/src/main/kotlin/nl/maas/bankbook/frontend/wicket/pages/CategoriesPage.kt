@@ -68,6 +68,7 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
         }, form, tableWrapper)
     }
 
+
     private inner class TableWrapper() : WebMarkupContainer("tableWrapper") {
 
         init {

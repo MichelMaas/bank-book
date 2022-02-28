@@ -1,2 +1,2 @@
 @echo off
-start javaw -Xms256m -Xmx512m -server -jar ../lib/bankbook-frontend-${project.version}-exec.war
+start javaw -Dserver.port=80 -Xms512m -Xmx768m -server -jar ../lib/bankbook-frontend-${project.version}-exec.war

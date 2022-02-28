@@ -26,6 +26,7 @@ open class DynamicTableComponent(
             tuples.add(Tuple(mapOf(Pair("NOTHING", StringUtils.EMPTY))))
         }
         require(tuples.all { it.equals(tuples.first()) })
+        tuples.sortedBy { it.columns.values.first().toString() }
         propertiesCache = ContextProvider.ctx.getBean(PropertiesCache::class.java)
     }
 
