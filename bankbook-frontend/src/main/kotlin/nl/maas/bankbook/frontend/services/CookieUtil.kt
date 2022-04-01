@@ -1,5 +1,6 @@
 package nl.maas.bankbook.frontend.services
 
+import org.apache.wicket.Session
 import org.apache.wicket.request.cycle.RequestCycle
 import org.apache.wicket.request.http.WebRequest
 import org.apache.wicket.request.http.WebResponse
@@ -30,9 +31,10 @@ class CookieUtil {
                 val oldCookie: Cookie = webRequest.getCookie(languageCookie)
                 webResponse.clearCookie(oldCookie)
             }
+            Session.get().invalidateNow()
         }
 
-        fun readLanguageCookie(): String {
+        fun readLanguageCookie(): String? {
 //            val webRequest: WebRequest = RequestCycle.get().request as WebRequest
 //            val cookie: Cookie = webRequest.getCookie(languageCookie)
             return CookieUtils().load(languageCookie)

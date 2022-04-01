@@ -1,10 +1,10 @@
 package nl.maas.bankbook.frontend;
 
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache;
 import nl.maas.bankbook.frontend.wicket.pages.OverviewPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.resource.FileSystemResourceReference;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -26,11 +26,11 @@ public class WicketApplication extends WebApplication {
 
     public static void restart() {
         final ConfigurableApplicationContext[] ctx = {ContextProvider.ctx};
-        ApplicationArguments args = ctx[0].getBean(ApplicationArguments.class);
+//        ApplicationArguments args = ctx[0].getBean(ApplicationArguments.class);
 //        BrowserManager manager = ctx[0].getBean(BrowserManager.class);
 //        manager.close();
         Thread thread = new Thread(() -> {
-            ctx[0].refresh();
+            ctx[0].getBean(PropertiesCache.class);
         });
         thread.setDaemon(false);
         thread.start();

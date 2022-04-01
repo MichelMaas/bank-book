@@ -1,6 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
-import nl.maas.bankbook.frontend.WicketApplication
+import nl.maas.bankbook.frontend.services.CookieUtil
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
 import nl.maas.bankbook.frontend.wicket.objects.Options
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -23,9 +23,9 @@ open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
         ) {
             override fun onSubmit(target: AjaxRequestTarget) {
                 val options = (defaultModelObject as Options).store()
-//                CookieUtil.saveLanguageCookie(options.language)
+                CookieUtil.saveLanguageCookie(options.language)
                 target.add(this@OptionsPage)
-                WicketApplication.restart()
+//                WicketApplication.restart()
             }
 
         }.addSelect(
