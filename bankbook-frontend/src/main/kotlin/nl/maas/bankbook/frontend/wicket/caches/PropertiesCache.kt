@@ -23,7 +23,7 @@ class PropertiesCache {
         FileSystemResourceReference("brand", Path.of(FileUtils.findFile("brand.png")))
 
     init {
-        i10N = JsonUtils.load(FileUtils.findFile("I10N.json").toString(), I10N::class.java)!!
+        i10N = JsonUtils.load(FileUtils.findFile("I10N.json"), I10N::class.java)!!
         options = Options.load()
         applicationProperties = ApplicationProperties.load()
     }

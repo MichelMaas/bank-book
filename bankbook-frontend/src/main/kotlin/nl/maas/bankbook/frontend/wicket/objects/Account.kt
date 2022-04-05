@@ -2,7 +2,6 @@ package nl.maas.bankbook.frontend.wicket.objects
 
 import nl.maas.bankbook.IterativeStorable
 import nl.maas.bankbook.domain.*
-import nl.maas.bankbook.domain.enums.Categories
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
@@ -86,12 +85,12 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
 
     fun groupedCategoriesFor(year: Year, month: Month? = null): List<Tuple> {
         return transactionsForPeriod(month, year).filterNot { MutationTypes.IOB.equals(it.mutationType) }
-            .groupBy { it.category.name }.map {
+            .groupBy { it.category }.map {
                 Tuple(
                     mapOf(
                         Pair(
                             "category",
-                            it.value.map { it.category.name }.distinct().joinToString("\n")
+                            it.value.map { it.category }.distinct().joinToString("\n")
                         ),
                         Pair(
                             "amount",
@@ -125,7 +124,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
                                         ),
                                         Pair(
                                             "category",
-                                            it.value.map { it.category.name }.distinct().joinToString("\n")
+                                            it.value.map { it.category }.distinct().joinToString("\n")
                                         )
                                     )
                                 )
@@ -149,7 +148,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
                                         ),
                                         Pair(
                                             "category",
-                                            it.value.map { it.category.name }.distinct().joinToString("\n")
+                                            it.value.map { it.category }.distinct().joinToString("\n")
                                         )
                                     )
                                 )
@@ -179,7 +178,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
                 Pair("counter", it.shortDescription()),
                 Pair("amount", it.mutation.toString()),
                 Pair("description", it.description),
-                Pair("category", it.category.name),
+                Pair("category", it.category),
                 Pair("date", it.date.format(DEFAULT_DATE_FORMATTER))
             )
         )
@@ -190,17 +189,17 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
                 Pair("counter", it.counterHolder),
                 Pair("amount", it.mutation.toString()),
                 Pair("description", it.description),
-                Pair("category", it.category.name),
+                Pair("category", it.category),
                 Pair("date", it.date.format(DEFAULT_DATE_FORMATTER))
             )
         )
 
-    fun changeCategoriesForAll(filter: String, categories: Categories) {
+    fun changeCategoriesForAll(filter: String, categories: String) {
         val filtered = filterTransactions(filter)
         changeCategoriesForAll(filtered, categories)
     }
 
-    fun changeCategoriesForAll(transactions: List<Transaction>, categories: Categories) {
+    fun changeCategoriesForAll(transactions: List<Transaction>, categories: String) {
         transactions.forEach { it.category = categories }
     }
 

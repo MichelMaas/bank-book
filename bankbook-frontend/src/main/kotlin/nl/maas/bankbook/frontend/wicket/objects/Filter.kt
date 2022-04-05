@@ -2,13 +2,13 @@ package nl.maas.bankbook.frontend.wicket.objects
 
 import nl.maas.bankbook.IterativeStorable
 import nl.maas.bankbook.domain.Transaction
-import nl.maas.bankbook.domain.enums.Categories
+import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.markup.html.form.upload.FileUpload
 
 class Filter() : IterativeStorable<Filter> {
     var filter = StringUtils.EMPTY
-    var category = Categories.OTHER
+    var category = UNKNOWN
     var file: FileUpload? = null
 
     @Transient

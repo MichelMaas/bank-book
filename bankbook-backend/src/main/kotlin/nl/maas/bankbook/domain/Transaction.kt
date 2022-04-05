@@ -1,7 +1,7 @@
 package nl.maas.bankbook.domain
 
-import nl.maas.bankbook.domain.enums.Categories
 import nl.maas.bankbook.domain.enums.MutationTypes
+import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
 import nl.maas.filerenamer.domain.Event
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
@@ -19,7 +19,7 @@ abstract class Transaction(
     override val mutation: Amount,
     val mutationType: MutationTypes,
     val description: String,
-    var category: Categories = Categories.OTHER
+    var category: String = UNKNOWN
 ) : Event {
 
     companion object {
@@ -66,7 +66,7 @@ abstract class Transaction(
         }.toTypedArray()
     }
 
-    fun splitExpense(amount: Amount, category: Categories) {
+    fun splitExpense(amount: Amount, category: String) {
         splitExpenses = listOf(Expense("${this.id}_${splitExpenses.size}", amount, category))
     }
 

@@ -1,7 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
 import nl.maas.bankbook.domain.Transaction
-import nl.maas.bankbook.domain.enums.Categories
+import nl.maas.bankbook.domain.properties.Categories
 import nl.maas.bankbook.frontend.wicket.components.AjaxSearchField
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
@@ -55,7 +55,7 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
         }.addSelect(
             "category",
             propertiesCache.translator.translate(CategoriesPage::class, "Category"),
-            Categories.values().sortedBy { it.name }.toList()
+            Categories.values().sortedBy { it }.toList()
         ).addCheckBox("saveFilter", propertiesCache.translator.translate(CategoriesPage::class, "Save"), true)
             .addFileUploadField("file")
         val searchLabel = Label("searchLabel", propertiesCache.translator.translate(CategoriesPage::class, "search"))
