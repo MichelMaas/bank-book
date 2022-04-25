@@ -1,12 +1,11 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
-import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.properties.Categories
 import nl.maas.bankbook.frontend.wicket.components.AjaxSearchField
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
 import nl.maas.bankbook.frontend.wicket.objects.Filter
-import nl.maas.bankbook.frontend.wicket.objects.Tuple
+import nl.maas.wicket.framework.objects.Tuple
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.WebMarkupContainer
@@ -84,15 +83,15 @@ class CategoriesPage(parameters: PageParameters?) : BasePage(parameters) {
                     value
                 ) {
                     override fun onTupleClick(target: AjaxRequestTarget, tuple: Tuple) {
-                        setResponsePage(
-                            TransactionPage(
-                                (modelCache.dataContainer.filterTransactions(tuple.toFilterString()).firstOrNull()
-                                    ?: Transaction.EMPTY(
-                                        modelCache.dataContainer.transactions.first().baseAccount,
-                                        modelCache.dataContainer.transactions.first().currency
-                                    )) as Transaction
-                            )
-                        )
+//                        setResponsePage(
+//                            TransactionPage(
+//                                (modelCache.dataContainer.filterTransactions(tuple.toFilterString()).firstOrNull()
+//                                    ?: Transaction.EMPTY(
+//                                        modelCache.dataContainer.transactions.first().baseAccount,
+//                                        modelCache.dataContainer.transactions.first().currency
+//                                    )) as Transaction
+//                            )
+//                        )
                         target.add(this@CategoriesPage)
                     }
                 }

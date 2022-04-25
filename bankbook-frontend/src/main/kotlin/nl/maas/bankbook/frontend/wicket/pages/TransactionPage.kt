@@ -10,9 +10,9 @@ import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 
-private const val TRANSACTION = "TRANSACTION"
-
 class TransactionPage(val transaction: Transaction) : BasePage(PageParameters()) {
+
+    private val TRANSACTION = "TRANSACTION"
 
     override fun onBeforeRender() {
         super.onBeforeRender()

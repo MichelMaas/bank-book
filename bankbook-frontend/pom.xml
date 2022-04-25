@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>nl.maas.wicket.framework</groupId>
+            <artifactId>wicket.framework</artifactId>
+            <version>2022.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>nl.maas.bankbook</groupId>
             <artifactId>bankbook-backend</artifactId>
             <version>${project.version}</version>

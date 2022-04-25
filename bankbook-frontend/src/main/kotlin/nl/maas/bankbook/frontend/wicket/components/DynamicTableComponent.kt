@@ -2,8 +2,8 @@ package nl.maas.bankbook.frontend.wicket.components
 
 import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
-import nl.maas.bankbook.frontend.wicket.objects.Tuple
 import nl.maas.bankbook.frontend.wicket.pages.BasePage
+import nl.maas.wicket.framework.objects.Tuple
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget

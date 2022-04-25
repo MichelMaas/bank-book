@@ -7,6 +7,7 @@ import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import nl.maas.filerenamer.domain.Storable
+import nl.maas.wicket.framework.objects.Tuple
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.time.Duration

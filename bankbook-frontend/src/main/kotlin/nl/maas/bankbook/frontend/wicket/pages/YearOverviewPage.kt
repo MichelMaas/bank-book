@@ -5,7 +5,7 @@ import nl.maas.bankbook.domain.Amount
 import nl.maas.bankbook.frontend.wicket.components.DatePickerButton
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
 import nl.maas.bankbook.frontend.wicket.components.SingleDataViewPanel
-import nl.maas.bankbook.frontend.wicket.objects.Tuple
+import nl.maas.wicket.framework.objects.Tuple
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox

@@ -13,7 +13,7 @@ data class Categories(val category: Map<String, String>) {
         }
 
         fun values(): Array<String> {
-            return load().values.toTypedArray()
+            return load().values.sorted().toTypedArray()
         }
 
         private fun load(): Map<String, String> {
