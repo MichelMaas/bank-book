@@ -7,7 +7,7 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.8.RELEASE)
 
-2021-09-07 11:52:13.074  INFO 185275 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 185275 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-07 11:52:13.074  INFO 185275 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 185275 (/home/michel/projects/bankbook-sb/bankbook-frontend/target/classes started by michel in /home/michel/projects/bankbook-sb)
 2021-09-07 11:52:13.077 DEBUG 185275 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
 2021-09-07 11:52:13.078  INFO 185275 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
 2021-09-07 11:52:13.146  INFO 185275 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
@@ -53,7 +53,7 @@ WARNING: All illegal access operations will be denied in a future release
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.8.RELEASE)
 
-2021-09-07 11:52:21.279  INFO 185362 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 185362 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-07 11:52:21.279  INFO 185362 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 185362 (/home/michel/projects/bankbook-sb/bankbook-frontend/target/classes started by michel in /home/michel/projects/bankbook-sb)
 2021-09-07 11:52:21.282 DEBUG 185362 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
 2021-09-07 11:52:21.283  INFO 185362 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
 2021-09-07 11:52:21.331  INFO 185362 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
@@ -138,7 +138,7 @@ Action:
 Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
 
 2021-09-07 11:52:24.218  INFO 185362 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
-[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:2.4.4:run (default-cli) on project filerenamer-frontend: An exception occurred while running. null: InvocationTargetException: Connector configured to listen on port 8080 failed to start -> [Help 1]
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:2.4.4:run (default-cli) on project bankbook-frontend: An exception occurred while running. null: InvocationTargetException: Connector configured to listen on port 8080 failed to start -> [Help 1]
 [ERROR] 
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
@@ -147,7 +147,7 @@ Verify the connector's configuration, identify and stop any process that's liste
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
 [ERROR] 
 [ERROR] After correcting the problems, you can resume the build with the command
-[ERROR]   mvn <args> -rf :filerenamer-frontend
+[ERROR]   mvn <args> -rf :bankbook-frontend
 SearchCriteria(path=/shares/anime, sequenceType=NUMBER)
 Er is geen geldige optie gevonden voor volgnummer 27. Dit nummer wordt genegeerd
 Er is geen geldige optie gevonden voor volgnummer 66. Dit nummer wordt genegeerd
@@ -188,7 +188,7 @@ Er is geen geldige optie gevonden voor volgnummer 5. Dit nummer wordt genegeerd
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.8.RELEASE)
 
-2021-09-09 10:05:32.021  INFO 453700 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 453700 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-09 10:05:32.021  INFO 453700 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 453700 (/home/michel/projects/bankbook-sb/bankbook-frontend/target/classes started by michel in /home/michel/projects/bankbook-sb)
 2021-09-09 10:05:32.044 DEBUG 453700 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
 2021-09-09 10:05:32.046  INFO 453700 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
 2021-09-09 10:05:32.141  INFO 453700 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
@@ -266,7 +266,7 @@ Er is geen geldige optie gevonden voor volgnummer 5. Dit nummer wordt genegeerd
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.8.RELEASE)
 
-2021-09-23 21:12:33.479  INFO 1320451 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 1320451 (/home/michel/projects/filerenamer-sb/filerenamer-frontend/target/classes started by michel in /home/michel/projects/filerenamer-sb)
+2021-09-23 21:12:33.479  INFO 1320451 --- [           main] n.m.f.frontend.WicketApplication         : Starting WicketApplication on MDTP01 with PID 1320451 (/home/michel/projects/bankbook-sb/bankbook-frontend/target/classes started by michel in /home/michel/projects/bankbook-sb)
 2021-09-23 21:12:33.581 DEBUG 1320451 --- [           main] n.m.f.frontend.WicketApplication         : Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
 2021-09-23 21:12:33.583  INFO 1320451 --- [           main] n.m.f.frontend.WicketApplication         : No active profile set, falling back to default profiles: default
 2021-09-23 21:12:33.657  INFO 1320451 --- [           main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'

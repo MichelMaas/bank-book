@@ -2,7 +2,6 @@ package nl.maas.bankbook.domain
 
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
-import nl.maas.filerenamer.domain.Event
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.time.LocalDate

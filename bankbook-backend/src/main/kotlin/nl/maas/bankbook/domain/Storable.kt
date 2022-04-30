@@ -1,4 +1,4 @@
-package nl.maas.filerenamer.domain
+package nl.maas.bankbook.domain
 
 import com.google.gson.Gson
 import java.io.FileReader

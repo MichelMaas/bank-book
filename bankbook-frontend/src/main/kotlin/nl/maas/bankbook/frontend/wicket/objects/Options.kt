@@ -1,10 +1,10 @@
 package nl.maas.bankbook.frontend.wicket.objects
 
 import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchTheme
+import nl.maas.bankbook.domain.Storable
+import nl.maas.bankbook.domain.Storable.Companion.path
 import nl.maas.bankbook.frontend.services.CookieUtil
-import nl.maas.filerenamer.domain.Storable
-import nl.maas.filerenamer.domain.Storable.Companion.path
-import nl.maas.filerenamer.utils.JsonUtils
+import nl.maas.bankbook.utils.JsonUtils
 import java.time.DayOfWeek
 
 class Options private constructor(

@@ -1,6 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.objects
 
-import nl.maas.filerenamer.utils.JsonUtils
+import nl.maas.bankbook.utils.JsonUtils
 
 data class ApplicationProperties(
     val version: String

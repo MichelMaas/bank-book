@@ -26,7 +26,7 @@
     </filter>
 
     <filter-mapping>
-        <filter-name>wicket.filerenamer-frontend</filter-name>
+        <filter-name>wicket.bankbook-frontend</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

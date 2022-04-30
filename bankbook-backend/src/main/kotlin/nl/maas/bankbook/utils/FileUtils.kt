@@ -1,4 +1,4 @@
-package nl.maas.filerenamer.utils
+package nl.maas.bankbook.utils
 
 import org.apache.commons.lang3.StringUtils
 import java.io.File
