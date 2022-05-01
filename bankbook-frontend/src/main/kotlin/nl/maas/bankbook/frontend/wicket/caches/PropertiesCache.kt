@@ -4,8 +4,8 @@ import nl.maas.bankbook.frontend.wicket.objects.ApplicationProperties
 import nl.maas.bankbook.frontend.wicket.objects.I10N
 import nl.maas.bankbook.frontend.wicket.objects.Options
 import nl.maas.bankbook.frontend.wicket.pages.BasePage
-import nl.maas.filerenamer.utils.FileUtils
-import nl.maas.filerenamer.utils.JsonUtils
+import nl.maas.bankbook.utils.FileUtils
+import nl.maas.bankbook.utils.JsonUtils
 import org.apache.wicket.resource.FileSystemResourceReference
 import org.springframework.stereotype.Component
 import java.nio.file.Path

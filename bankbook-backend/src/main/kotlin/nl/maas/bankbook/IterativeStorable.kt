@@ -1,7 +1,7 @@
 package nl.maas.bankbook
 
 import com.google.gson.Gson
-import nl.maas.filerenamer.domain.Storable
+import nl.maas.bankbook.domain.Storable
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.reflect.KClass

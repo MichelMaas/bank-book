@@ -1,6 +1,5 @@
-package nl.maas.filerenamer.domain
+package nl.maas.bankbook.domain
 
-import nl.maas.bankbook.domain.Amount
 import java.io.Serializable
 
 interface Event : Serializable {

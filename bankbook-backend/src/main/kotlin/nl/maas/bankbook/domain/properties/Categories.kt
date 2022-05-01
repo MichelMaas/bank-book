@@ -1,6 +1,6 @@
 package nl.maas.bankbook.domain.properties
 
-import nl.maas.filerenamer.utils.JsonUtils
+import nl.maas.bankbook.utils.JsonUtils
 
 data class Categories(val category: Map<String, String>) {
     companion object {

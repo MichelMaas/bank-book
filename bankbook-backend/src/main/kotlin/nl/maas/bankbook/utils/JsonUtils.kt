@@ -1,4 +1,4 @@
-package nl.maas.filerenamer.utils
+package nl.maas.bankbook.utils
 
 import com.google.gson.Gson
 import java.io.BufferedReader
