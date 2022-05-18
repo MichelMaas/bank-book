@@ -59,6 +59,8 @@
             "public_transport": "Public transport",
             "category": "Category",
             "amount": "Amount",
+            "previous": "Previous period",
+            "difference": "Difference",
             "counter": "Receiver",
             "description": "Description",
             "date": "Date"
@@ -158,6 +160,8 @@
             "public_transport": "OV",
             "category": "Categorie",
             "amount": "Bedrag",
+            "previous": "Vorige periode",
+            "difference": "Verschil",
             "counter": "Ontvanger",
             "description": "Omschrijving",
             "date": "Datum"
@@ -257,6 +261,8 @@
             "public_transport": "公共交通機関",
             "category": "カテゴリ",
             "amount": "額",
+            "previous": "前期",
+            "difference": "違い",
             "counter": "レシーバー",
             "description": "説明",
             "date": "日にち"

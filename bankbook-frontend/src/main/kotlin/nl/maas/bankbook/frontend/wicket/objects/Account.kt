@@ -85,6 +85,14 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
     fun groupedCategoriesFor(year: Year, month: Month? = null): List<Tuple> {
         return transactionsForPeriod(month, year).filterNot { MutationTypes.IOB.equals(it.mutationType) }
             .groupBy { it.category }.map {
+                val amount = Amount(it.value.sumOf { it.mutation.value }, currencySymbol)
+                val previous = Amount(
+                    transactionsForPeriod(
+                        month?.minus(1),
+                        if (month == null) year.minusYears(1) else year
+                    ).filter { pr -> it.value.first().category.equals(pr.category) }
+                        .sumOf { pr -> pr.mutation.value }, currencySymbol
+                )
                 Tuple(
                     mapOf(
                         Pair(
@@ -93,7 +101,15 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
                         ),
                         Pair(
                             "amount",
-                            Amount(it.value.sumOf { it.mutation.value }, currencySymbol).toString()
+                            amount.toString()
+                        ),
+                        Pair(
+                            "previous",
+                            previous.toString()
+                        ),
+                        Pair(
+                            "difference",
+                            Amount(amount.value.minus(previous.value), currencySymbol).toString()
                         )
                     )
                 )
