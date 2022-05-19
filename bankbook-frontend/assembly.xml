@@ -41,6 +41,7 @@
             <outputDirectory>bin</outputDirectory>
             <includes>
                 <include>start.sh</include>
+                <include>startHeadless.sh</include>
                 <include>start.bat</include>
                 <include>install.sh</include>
                 <include>install.bat</include>

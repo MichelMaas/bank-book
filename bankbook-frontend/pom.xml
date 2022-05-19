@@ -335,6 +335,7 @@
                     <include>**/install.sh</include>
                     <include>**/start.bat</include>
                     <include>**/start.sh</include>
+                    <include>**/startHeadless.sh</include>
                 </includes>
             </resource>
             <!--            <resource>-->

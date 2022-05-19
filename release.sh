@@ -26,16 +26,19 @@ function push() {
     git push --tags
 }
 
-function merge() {
+function release() {
     git checkout master
     git fetch
     git pull
     git merge origin/develop
     git push
-    git checkout develop
+    mvn clean package
+    mkdir -p /shares/downloads/bankbook/releases
+    cp $PWD/bankbook-frontend/target/$VERSION /shares/downloads/bankbook/releases -Rv
 }
 
 function newSnapshot() {
+    git checkout develop
     read -p "Geef de versie voor de volgende release (huidige: $VERSION): " SNAPSHOT
     if [[ "$SNAPSHOT" != *"SNAPSHOT"* ]]; then
       SNAPSHOT = "$SNAPSHOT-SNAPSHOT"
@@ -67,7 +70,7 @@ function run() {
     build || handle
     commit || handle
     push || handle
-    merge || handle
+    release || handle
     newSnapshot || handle
 }
 

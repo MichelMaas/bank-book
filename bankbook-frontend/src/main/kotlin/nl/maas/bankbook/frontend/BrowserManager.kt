@@ -38,6 +38,7 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
     val pathDelimiter = if (os.equals("win")) "\\" else "/"
     private fun startBrowser() {
         val url = "http://localhost:8080"
+
         try {
             if (os.indexOf("win") >= 0) {
                 startWinBrowser(url)
@@ -156,6 +157,11 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
     }
 
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        startBrowser()
+        val mode = System.getProperty("mode")
+        if ("headless".equals(mode?.lowercase())) {
+            println("Starting in headless mode!")
+        } else {
+            startBrowser()
+        }
     }
 }
