@@ -14,6 +14,7 @@ enum class ButtonTypes(val pageClass: KClass<out BasePage>, val iconType: IconTy
     YEAR_OVERVIEW(YearOverviewPage::class, FontAwesome5IconType.sticky_note_s),
     MONTH_OVERVIEW(MonthOverviewPage::class, FontAwesome5IconType.sticky_note_s),
     CATEGORIES(CategoriesPage::class, FontAwesome5IconType.cat_s),
+    TRANSACTIONS(TransactionsPage::class, FontAwesome5IconType.money_bill_s),
     OPTIONS(OptionsPage::class, FontAwesome5IconType.cogs_s),
 
     //    Transactions(TransactionsPage::class, FontAwesome5IconType.coins_s),

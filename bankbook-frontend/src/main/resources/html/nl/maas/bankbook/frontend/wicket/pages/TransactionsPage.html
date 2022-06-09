@@ -9,7 +9,21 @@
 <body>
 <wicket:extend>
     <div class="container">
-        <wicket:container wicket:id="transactionsPanel"/>
+        <div class="modal-body row">
+            <div class="col-md-12">
+                <wicket:container wicket:id="import"/>
+            </div>
+        </div>
+        <div class="modal-body row">
+            <div class="col-md-6">
+                <wicket:container wicket:id="transactions"/>
+            </div>
+        </div>
+        <div class="modal-body row">
+            <div class="col-md-4">
+                <wicket:container wicket:id="details"/>
+            </div>
+        </div>
     </div>
 </wicket:extend>
 </body>

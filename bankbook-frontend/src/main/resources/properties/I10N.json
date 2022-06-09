@@ -42,6 +42,7 @@
             "shopping": "Shopping",
             "clothing": "Clothing",
             "vacation": "Vacation",
+            "unknown": "Unknown",
             "child_benefits": "Child benefits",
             "EATING_OUT_TAKE_OUT": "Eating out, Take out",
             "insurance": "Insurance",
@@ -98,6 +99,12 @@
             "Folder": "Folder to monitor",
             "Reset": "Reset"
           }
+        },
+        {
+          "name": "TransactionsPage",
+          "labels": {
+            "title": "Transactions"
+          }
         }
       ]
     },
@@ -144,6 +151,7 @@
             "shopping": "Winkelen",
             "clothing": "Kleding",
             "vacation": "Vakantie",
+            "unknown": "Onbekend",
             "child_benefits": "Kinderbijdrage",
             "insurance": "Verzekering",
             "loans": "Leningen",
@@ -199,6 +207,12 @@
             "Folder": "Map om te monitoren",
             "Reset": "Ongedaan maken"
           }
+        },
+        {
+          "name": "TransactionsPage",
+          "labels": {
+            "title": "Transacties"
+          }
         }
       ]
     },
@@ -245,6 +259,7 @@
             "shopping": "買えもの",
             "clothing": "洋服",
             "vacation": "旅行",
+            "unknown": "不明",
             "child_benefits": "児童手当",
             "insurance": "保険",
             "loans": "ローン",
@@ -299,6 +314,12 @@
             "Confirm": "確認",
             "Folder": "監視するフォルダ",
             "Reset": "回復する"
+          }
+        },
+        {
+          "name": "TransactionsPage",
+          "labels": {
+            "title": "総数"
           }
         }
       ]
