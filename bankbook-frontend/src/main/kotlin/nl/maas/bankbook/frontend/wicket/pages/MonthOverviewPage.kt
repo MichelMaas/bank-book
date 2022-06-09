@@ -1,6 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
 import nl.maas.bankbook.domain.Amount
+import nl.maas.bankbook.frontend.services.TranslationService
 import nl.maas.bankbook.frontend.wicket.components.DatePickerButton
 import nl.maas.bankbook.frontend.wicket.components.DatePickerButton.Companion.PickerTypes.MONTH_YEAR
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
@@ -16,9 +17,13 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import java.time.LocalDate
 import java.time.Year
+import javax.inject.Inject
 
 
 class MonthOverviewPage(parameters: PageParameters?) : BasePage(parameters) {
+
+    @Inject
+    lateinit var translationService: TranslationService
 
     override fun onBeforeRender() {
         super.onBeforeRender()
@@ -59,7 +64,12 @@ class MonthOverviewPage(parameters: PageParameters?) : BasePage(parameters) {
 
     private fun makeUpDataTable() {
         val dynamicTableComponent = DynamicTableComponent("table", tuples.toMutableList())
-        val switchLabel = Label("switchLabel", "Categories").add(AttributeModifier("for", "customSwitches"))
+        val switchLabel = Label("switchLabel", translationService.translate("Categories")).add(
+            AttributeModifier(
+                "for",
+                "customSwitches"
+            )
+        )
         val switch = object : AjaxCheckBox("switch", Model.of(categories)) {
 
             override fun onInitialize() {
@@ -78,16 +88,16 @@ class MonthOverviewPage(parameters: PageParameters?) : BasePage(parameters) {
     private fun makeUpRightDataColumn() {
         val right = listOf(
             Pair(
-                propertiesCache.translator.translate(this::class, "Account"),
+                translationService.translate("Account"),
                 modelCache.dataContainer.iban.toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "totIn"),
+                translationService.translate("Income total"),
                 modelCache.dataContainer.totalIn(Year.of(modelCache.localDate.year), modelCache.localDate.month)
                     .toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "totOut"),
+                translationService.translate("Expense total"),
                 modelCache.dataContainer.totalOut(Year.of(modelCache.localDate.year), modelCache.localDate.month)
                     .toString()
             )
@@ -108,14 +118,14 @@ class MonthOverviewPage(parameters: PageParameters?) : BasePage(parameters) {
     private fun makeUpLeftDataColumn() {
         val left = listOf(
             Pair(
-                propertiesCache.translator.translate(this::class, "totTrans"),
+                translationService.translate("Transactions total"),
                 modelCache.dataContainer.totalTransactionsFor(
                     Year.of(modelCache.localDate.year),
                     modelCache.localDate.month
                 ).toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "result"),
+                translationService.translate("Result"),
                 Amount(
                     modelCache.dataContainer.totalIn(
                         Year.of(modelCache.localDate.year), modelCache.localDate.month
