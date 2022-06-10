@@ -4,6 +4,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.Navbar
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarComponents
 import nl.maas.bankbook.frontend.services.ParserService
+import nl.maas.bankbook.frontend.services.TranslationService
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import nl.maas.bankbook.frontend.wicket.components.FxAnalyserNavbarButton
@@ -37,6 +38,9 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     @Inject
     lateinit var propertiesCache: PropertiesCache
+
+    @Inject
+    lateinit var translationService: TranslationService
 
     val start: LocalTime = LocalTime.now()
 

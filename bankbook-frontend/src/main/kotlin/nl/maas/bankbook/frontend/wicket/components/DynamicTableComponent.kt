@@ -1,9 +1,8 @@
 package nl.maas.bankbook.frontend.wicket.components
 
 import nl.maas.bankbook.frontend.ContextProvider
-import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.services.TranslationService
 import nl.maas.bankbook.frontend.wicket.objects.Tuple
-import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -19,7 +18,7 @@ open class DynamicTableComponent(
     val tuples: MutableList<Tuple>
 ) : Panel(id) {
 
-    val propertiesCache: PropertiesCache
+    val translationService: TranslationService
 
     init {
         if (tuples.isEmpty()) {
@@ -27,7 +26,7 @@ open class DynamicTableComponent(
         }
         require(tuples.all { it.equals(tuples.first()) })
         tuples.sortedBy { it.columns.values.first().toString() }
-        propertiesCache = ContextProvider.ctx.getBean(PropertiesCache::class.java)
+        translationService = ContextProvider.ctx.getBean(TranslationService::class.java)
     }
 
 
@@ -41,7 +40,7 @@ open class DynamicTableComponent(
             item.add(
                 Label(
                     "columnLabel",
-                    propertiesCache.translator.translate(findParent(BasePage::class.java)::class, item.modelObject)
+                    translationService.translate(item.modelObject)
                 )
             )
         }
@@ -64,10 +63,7 @@ open class DynamicTableComponent(
             item.add(
                 TooltipLabel(
                     "content",
-                    propertiesCache.translator.translate(
-                        findParent(BasePage::class.java)::class,
-                        item.modelObject.toString()
-                    ),
+                    translationService.translate(item.modelObject.toString()),
                     BigInteger.valueOf(150).div(columns.size.toBigInteger()).toInt()
                 )
             )

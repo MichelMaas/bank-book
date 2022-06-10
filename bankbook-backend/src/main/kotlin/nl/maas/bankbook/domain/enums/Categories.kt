@@ -1,5 +1,7 @@
 package nl.maas.bankbook.domain.enums
 
+import org.apache.commons.lang3.StringUtils
+
 enum class Categories {
     GROCERIES,
     SPORTS,
@@ -24,4 +26,8 @@ enum class Categories {
     HEALTH,
     SHOPPING,
     OTHER;
+
+    override fun toString(): String {
+        return name.lowercase().replaceFirstChar { name[0] }.replace("_", StringUtils.SPACE)
+    }
 }

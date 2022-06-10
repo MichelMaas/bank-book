@@ -1,7 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
 import nl.maas.bankbook.domain.Amount
-import nl.maas.bankbook.frontend.services.TranslationService
 import nl.maas.bankbook.frontend.wicket.components.DatePickerButton
 import nl.maas.bankbook.frontend.wicket.components.DatePickerButton.Companion.PickerTypes.MONTH_YEAR
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
@@ -17,13 +16,10 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import java.time.LocalDate
 import java.time.Year
-import javax.inject.Inject
 
 
 class MonthOverviewPage(parameters: PageParameters?) : BasePage(parameters) {
 
-    @Inject
-    lateinit var translationService: TranslationService
 
     override fun onBeforeRender() {
         super.onBeforeRender()
