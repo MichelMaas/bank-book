@@ -44,6 +44,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
         super.onInitialize()
         outputMarkupId = true
         (application as WebApplication).mountResource("/images/icon.png", propertiesCache.iconReference)
+//        (application as WebApplication).mountResource("/css/main.css",)
     }
 
     protected fun newNavbar(markupId: String): Navbar {
@@ -104,7 +105,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
 
     private inner class NavbarProvider : AttributeModifier(
         "class",
-        "navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar sticky-top bg-primary"
+        "navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar sticky-top bg-primary fixed-bottom"
     ) {
         val childClass = AttributeModifier("class", "nav-item")
     }

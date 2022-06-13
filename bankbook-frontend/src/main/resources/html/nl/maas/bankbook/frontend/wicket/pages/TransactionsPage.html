@@ -8,23 +8,21 @@
 </head>
 <body>
 <wicket:extend>
-    <div class="container">
-        <div class="modal-body row">
-            <div class="col-md-12">
-                <wicket:container wicket:id="import"/>
-            </div>
-        </div>
-        <div class="modal-body row">
-            <div class="col-md-6">
-                <wicket:container wicket:id="transactions"/>
-            </div>
-        </div>
-        <div class="modal-body row">
-            <div class="col-md-4">
-                <wicket:container wicket:id="details"/>
-            </div>
+    <!--    <div class="container">-->
+    <div class="modal-body row rw-30">
+        <div class="col col-12" wicket:id="importContainer">
+            <wicket:container wicket:id="import"/>
         </div>
     </div>
+    <div class="modal-body row rw-60">
+        <div class="col col-8" wicket:id="transactionsContainer">
+            <wicket:container wicket:id="transactions"/>
+        </div>
+        <div class="col col-4" wicket:id="detailsContainer">
+            <wicket:container wicket:id="details"/>
+        </div>
+    </div>
+    <!--    </div>-->
 </wicket:extend>
 </body>
 </html>

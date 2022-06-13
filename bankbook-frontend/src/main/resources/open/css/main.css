@@ -12,6 +12,11 @@
   background-color: #ededed;
 }
 
+.scroll{
+    height: 150px !important;
+    overflow: auto !important
+}
+
 .loader {
   max-width: 15rem;
   width: 100%;

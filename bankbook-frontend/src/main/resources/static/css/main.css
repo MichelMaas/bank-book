@@ -6,6 +6,59 @@ position: fixed;
 display: flex;
 align-items: center;
 }
+.navbar{
+height: 10vh;
+}
+.container{
+height: 90vh;
+}
+
+.scroll{
+    max-height: 100% !important;
+    display: flex;
+    align-items: stretch;
+    overflow-y: scroll !important;
+    overflow-x: hidden;
+}
+
+.rw-10{
+    height:10% !important;
+    margin: 2px;
+}
+
+.rw-20{
+    height:20% !important;
+    margin: 2px;
+}
+
+.rw-30{
+    height:30% !important;
+    margin: 2px;
+}
+
+.rw-40{
+    height:40% !important;
+    margin: 2px;
+}
+
+.rw-50{
+    height:50% !important;
+    margin: 2px;
+}
+
+.rw-60{
+    height:60% !important;
+    margin: 2px;
+}
+
+.rw-80{
+    height:80% !important;
+    margin: 2px;
+}
+
+.col{
+    max-height:100% !important;
+}
 
 .loader{
   width: 13%;

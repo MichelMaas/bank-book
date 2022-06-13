@@ -8,30 +8,29 @@
 </head>
 <body>
 <wicket:extend>
-    <div class="container">
-        <div class="modal-body row">
-            <div class="col-md-10">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" wicket:for="search"><span wicket:id="searchLabel">Search</span></label>
-                    </div>
-                    <input type="text" class="form-control" wicket:id="search">
+    <!--    <div class="container">-->
+    <div class="row rw-10">
+        <div class="col col-12">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" wicket:for="search"><span
+                            wicket:id="searchLabel">Search</span></label>
                 </div>
-            </div>
-        </div>
-        <div>
-            <div class="modal-body row">
-                <div class="col-md-10">
-                    <wicket:container wicket:id="form"/>
-                </div>
-            </div>
-        </div>
-        <div class="modal-body row">
-            <div class="col-md-10" wicket:id="tableWrapper">
-                <wicket:container wicket:id="table"/>
+                <input type="text" class="form-control" wicket:id="search">
             </div>
         </div>
     </div>
+    <div class="row rw-40">
+        <div class="col col-12">
+            <wicket:container wicket:id="form"/>
+        </div>
+    </div>
+    <div class="row rw-40">
+        <div class="col col-12" wicket:id="tableWrapper">
+            <wicket:container wicket:id="table"/>
+        </div>
+    </div>
+    <!--    </div>-->
 </wicket:extend>
 </body>
 </html>
