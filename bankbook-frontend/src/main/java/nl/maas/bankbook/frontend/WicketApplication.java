@@ -1,7 +1,7 @@
 package nl.maas.bankbook.frontend;
 
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache;
-import nl.maas.bankbook.frontend.wicket.pages.OverviewPage;
+import nl.maas.bankbook.frontend.wicket.pages.YearOverviewPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.resource.FileSystemResourceReference;
@@ -26,9 +26,6 @@ public class WicketApplication extends WebApplication {
 
     public static void restart() {
         final ConfigurableApplicationContext[] ctx = {ContextProvider.ctx};
-//        ApplicationArguments args = ctx[0].getBean(ApplicationArguments.class);
-//        BrowserManager manager = ctx[0].getBean(BrowserManager.class);
-//        manager.close();
         Thread thread = new Thread(() -> {
             ctx[0].getBean(PropertiesCache.class);
         });
@@ -46,6 +43,6 @@ public class WicketApplication extends WebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return OverviewPage.class;
+        return YearOverviewPage.class;
     }
 }

@@ -31,6 +31,7 @@ import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSuperclassOf
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.javaType
 
 open class DynamicFormComponent<T>(id: String, val formTitle: String, model: IComponentInheritedModel<T>) :
@@ -297,7 +298,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
 
                 override fun onModelChanged() {
                     super.onModelChanged()
-                    form.modelObject::class.declaredMemberProperties.filterIsInstance<KMutableProperty<*>>()
+                    form.modelObject::class.memberProperties.filterIsInstance<KMutableProperty<*>>()
                         .find { propertyName.equals(it.name) }?.let {
                             val typeName = it.getter.returnType.javaType.typeName
                             if (Enum::class.isSuperclassOf(Class.forName(typeName).kotlin)) {

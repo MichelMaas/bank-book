@@ -14,7 +14,18 @@
             <wicket:container wicket:id="import"/>
         </div>
     </div>
-    <div class="modal-body row rw-60">
+    <div class="modal-body row rw-10">
+        <div class="col col-12">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" wicket:for="search"><span
+                            wicket:id="searchLabel">Search</span></label>
+                </div>
+                <input type="text" class="form-control" wicket:id="search">
+            </div>
+        </div>
+    </div>
+    <div class="modal-body row rw-50">
         <div class="col col-8" wicket:id="transactionsContainer">
             <wicket:container wicket:id="transactions"/>
         </div>

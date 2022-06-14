@@ -233,6 +233,24 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
         return filtered
     }
 
+    fun findTransaction(filter: String, transactions: List<Transaction> = this.transactions): Transaction {
+        val start = LocalTime.now()
+        val properties = ContextProvider.ctx.getBean(PropertiesCache::class.java)
+        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isNullOrBlank() }.iterator()
+        var filtered = transactions
+        while (filtered.size > 1 || filterWords.hasNext()) {
+            val next = filterWords.next()
+            filtered = filterTransactions(next, filtered)
+        }
+        if (filtered.size > 1) {
+            throw IllegalStateException("Filter was not specific enough!!!!")
+        }
+        val end = LocalTime.now()
+        val between = Duration.between(start, end)
+        println("Filtering took: ${between}")
+        return filtered.first()
+    }
+
     fun addNewFrom(transactions: List<Transaction>): Account {
         val newTransactions = transactions.filter { new -> this.transactions.none { old -> old.id.equals(new.id) } }
         applyFilters(newTransactions, false)
