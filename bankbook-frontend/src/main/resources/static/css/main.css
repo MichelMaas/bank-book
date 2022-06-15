@@ -13,10 +13,11 @@ height: 10vh;
 height: 90vh;
 }
 
+thead.sticky-top{
+z-index: 1;
+}
 .scroll{
     max-height: 100% !important;
-    display: flex;
-    align-items: stretch;
     overflow-y: scroll !important;
     overflow-x: hidden;
 }

@@ -105,6 +105,12 @@
           "labels": {
             "title": "Transactions"
           }
+        },
+        {
+          "name": "FiltersPage",
+          "labels": {
+            "title": "Filters"
+          }
         }
       ]
     },
@@ -213,6 +219,12 @@
           "labels": {
             "title": "Transacties"
           }
+        },
+        {
+          "name": "FiltersPage",
+          "labels": {
+            "title": "Filters"
+          }
         }
       ]
     },
@@ -320,6 +332,12 @@
           "name": "TransactionsPage",
           "labels": {
             "title": "総数"
+          }
+        },
+        {
+          "name": "FiltersPage",
+          "labels": {
+            "title": "フィルター"
           }
         }
       ]

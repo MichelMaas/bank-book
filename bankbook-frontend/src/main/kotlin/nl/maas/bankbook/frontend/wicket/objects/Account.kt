@@ -265,5 +265,13 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
         return this
     }
 
+    fun findSimilarFilters(transactionsFilter: String): List<Tuple> {
+        return filters?.filter {
+            transactionsFilter.isNullOrBlank() || (transactionsFilter.split(StringUtils.SPACE)
+                .all { wrd -> it.filter.contains(wrd) })
+        }?.map { Tuple(mapOf("Filter" to it.filter, "Category" to it.category)) }
+            ?: listOf(Tuple(mapOf("Filters" to "None")))
+    }
+
 
 }
