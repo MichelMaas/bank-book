@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org"
+      xml:lang="en"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Panel</title>
+</head>
+<body>
+<wicket:panel>
+    <wicket:container wicket:id="rows">
+        <div class="modal-body row" wicket:id="row">
+            <wicket:container wicket:id="columns">
+                <div class="col" wicket:id="column">
+                    <div wicket:id="content"></div>
+                </div>
+            </wicket:container>
+        </div>
+    </wicket:container>
+</wicket:panel>
+</body>
+</html>

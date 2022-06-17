@@ -97,7 +97,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
     @ExperimentalStdlibApi
     fun isButtonActive(type: ButtonTypes): Boolean {
         var filled = when (type) {
-            ButtonTypes.YEAR_OVERVIEW, ButtonTypes.MONTH_OVERVIEW, ButtonTypes.TRANSACTIONS, ButtonTypes.FILTERS, ButtonTypes.OPTIONS -> return true
+            ButtonTypes.YEAR_OVERVIEW, ButtonTypes.MONTH_OVERVIEW, ButtonTypes.TRANSACTIONS, ButtonTypes.FILTERS, ButtonTypes.OPTIONS, ButtonTypes.TEST -> return true
             else -> false
         }
         return filled
