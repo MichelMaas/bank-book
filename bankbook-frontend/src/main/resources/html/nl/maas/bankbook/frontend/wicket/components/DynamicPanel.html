@@ -13,11 +13,23 @@
         <div class="modal-body row" wicket:id="row">
             <wicket:container wicket:id="columns">
                 <div class="col" wicket:id="column">
-                    <div wicket:id="content"></div>
+                    <wicket:container wicket:id="fragment"/>
                 </div>
             </wicket:container>
         </div>
     </wicket:container>
+    <wicket:fragment wicket:id="inputFragment">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" wicket:for="content"><span
+                        wicket:id="label">Search</span></label>
+            </div>
+            <input type="text" class="form-control" wicket:id="content">
+        </div>
+    </wicket:fragment>
+    <wicket:fragment wicket:id="normalFragment">
+        <wicket:container wicket:id="content"/>
+    </wicket:fragment>
 </wicket:panel>
 </body>
 </html>

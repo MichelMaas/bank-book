@@ -85,7 +85,18 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
     override fun renderHead(response: IHeaderResponse) {
         super.renderHead(response)
         response.render(CssReferenceHeaderItem.forUrl("css/main.css"))
+        response.render(CssReferenceHeaderItem.forCSS(createTmpCSS(), "tmp.css"))
         response.render(CssReferenceHeaderItem.forUrl("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"))
+    }
+
+    private fun createTmpCSS(): CharSequence {
+        val builder = StringBuilder()
+        for (i in 0..100) {
+            if (i.mod(5) == 0) {
+                builder.appendLine(".rw-${i} { height: ${i}% !important; }\n")
+            }
+        }
+        return builder.toString()
     }
 
     override fun onAfterRender() {

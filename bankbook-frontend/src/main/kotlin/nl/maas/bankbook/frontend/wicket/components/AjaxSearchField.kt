@@ -5,10 +5,12 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
 import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
+import org.apache.wicket.model.Model
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-abstract class AjaxSearchField(id: String, model: IModel<String>) : TextField<String>(id, model) {
+abstract class AjaxSearchField(id: String, model: IModel<String>, label: String = "Search") :
+    TextField<String>(id, model) {
 
     private var started: String = StringUtils.EMPTY
     override fun onBeforeRender() {
@@ -33,6 +35,7 @@ abstract class AjaxSearchField(id: String, model: IModel<String>) : TextField<St
 //                }
             }
         })
+        setLabel(Model.of(label));
     }
 
     protected abstract fun onChange(target: AjaxRequestTarget)

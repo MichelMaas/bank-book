@@ -9,9 +9,9 @@ class TestPage(parameters: PageParameters?) : BasePage(parameters) {
     override fun onBeforeRender() {
         super.onBeforeRender()
         val dyn = DynamicPanel("panel").addRows(
-            "Top" to intArrayOf(4, 8),
-            "Middel" to intArrayOf(4, 4, 4),
-            "Bodem" to intArrayOf(12)
+            DynamicPanel.Row.from("Top", 30, 4, 8),
+            DynamicPanel.Row.from("Middel", 30, 4, 4, 4),
+            DynamicPanel.Row.from("Bodem", 30, 12)
         ).addOrReplaceToColumn("Top", 0, Label::class, Model.of("Top left"))
             .addOrReplaceToColumn("Top", 1, Label::class, Model.of("Top right"))
             .addOrReplaceToColumn("Middel", 0, Label::class, Model.of("Middle left"))

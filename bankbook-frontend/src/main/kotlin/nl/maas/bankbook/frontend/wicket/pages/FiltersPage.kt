@@ -3,66 +3,69 @@ package nl.maas.bankbook.frontend.wicket.pages
 import nl.maas.bankbook.domain.properties.Categories
 import nl.maas.bankbook.frontend.wicket.components.AjaxSearchField
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
+import nl.maas.bankbook.frontend.wicket.components.DynamicPanel
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
 import nl.maas.bankbook.frontend.wicket.objects.Filter
 import org.apache.commons.lang3.StringUtils.EMPTY
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.markup.html.WebMarkupContainer
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
 
 class FiltersPage : BasePage(PageParameters()) {
 
-    private val transactionsContainer = object : WebMarkupContainer("transactionsContainer") {init {
-        outputMarkupId = true
-    }
-    }
-    private val importContainer = object : WebMarkupContainer("categoriesContainer") {init {
-        outputMarkupId = true
-    }
-    }
-    private val filtersContainer = object : WebMarkupContainer("filtersContainer") {init {
-        outputMarkupId = true
-    }
-    }
-
     private var transactionsFilter = EMPTY
 
     override fun onBeforeRender() {
         super.onBeforeRender()
-        addOrReplace(importContainer, transactionsContainer, filtersContainer)
+        addOrReplace(createDynamicPanel())
         setUpCategories()
         setUpTransactions()
         setUpSearchBar()
         setUpFilters()
     }
 
-    private fun setUpFilters() {
+    private val dynamicPanel: DynamicPanel = DynamicPanel("panel").addRows(
+        DynamicPanel.Row.from("search", 10, 12),
+        DynamicPanel.Row.from("filters", 40, 8, 4),
+        DynamicPanel.Row.from("transactions", 40, 12)
+    )
+
+
+    private fun createDynamicPanel(): Component {
+        dynamicPanel.addOrReplaceToColumn("filters", 1, setUpCategories())
+            .addOrReplaceToColumn("filters", 0, setUpFilters())
+            .addOrReplaceToColumn("transactions", 0, setUpTransactions())
+            .addOrReplaceToColumn("search", 0, setUpSearchBar())
+        return dynamicPanel
+    }
+
+    private fun setUpFilters(): Component {
         val filters = DynamicTableComponent(
-            "filters",
+            DynamicPanel.CONTENT_ID,
             modelCache.dataContainer.findSimilarFilters(transactionsFilter).toMutableList()
         )
-        filtersContainer.addOrReplace(filters)
+        return filters
     }
 
-    private fun setUpSearchBar() {
-        val search = object : AjaxSearchField("search", Model.of(EMPTY)) {
+    private fun setUpSearchBar(): Component {
+        return object : AjaxSearchField(DynamicPanel.CONTENT_ID, Model.of(EMPTY)) {
             override fun onChange(target: AjaxRequestTarget) {
                 transactionsFilter = modelObject ?: EMPTY
-                setUpTransactions()
-                setUpFilters()
-                target.add(transactionsContainer, filtersContainer)
+                val transactions = dynamicPanel.getColumn("transactions", 0)
+                val filters = dynamicPanel.getColumn("filters", 0)
+                transactions.addOrReplace(setUpTransactions())
+                filters.addOrReplace(setUpFilters())
+                target.add(transactions, filters)
             }
         }
-        addOrReplace(search, Label("searchLabel", propertiesCache.translator.translate(this::class, "Search")))
     }
 
-    private fun setUpCategories() {
+
+    private fun setUpCategories(): Component {
         val categories = object : DynamicFormComponent<Filter>(
-            "categories",
+            DynamicPanel.CONTENT_ID,
             "Import transactions",
             CompoundPropertyModel.of(Filter())
         ) {
@@ -77,18 +80,17 @@ class FiltersPage : BasePage(PageParameters()) {
                     (defaultModelObject as Filter).store()
                 }
                 setUpTransactions()
-                target.add(transactionsContainer)
+                target.add(dynamicPanel.getColumn("transactions", 0))
             }
         }.addSelect("category", "Categories", Categories.values().toList()).addCheckBox("saveFilter", "Persistent")
-        importContainer.addOrReplace(categories)
+        return categories
     }
 
     private fun setUpTransactions(filter: String = transactionsFilter): Component {
         val transactions = DynamicTableComponent(
-            "transactions",
+            DynamicPanel.CONTENT_ID,
             modelCache.dataContainer.findByFilter(filter).toMutableList()
         )
-        transactionsContainer.addOrReplace(transactions)
         return transactions
     }
 
