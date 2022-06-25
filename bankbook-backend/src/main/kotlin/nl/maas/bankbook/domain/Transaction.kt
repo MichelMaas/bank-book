@@ -1,5 +1,7 @@
 package nl.maas.bankbook.domain
 
+import nl.maas.bankbook.IterativeStorable
+import nl.maas.bankbook.domain.annotations.StoreAs
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
 import org.apache.commons.lang3.StringUtils
@@ -10,6 +12,7 @@ import java.util.*
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
+@StoreAs("transactions")
 abstract class Transaction(
     override val id: Long,
     val date: LocalDate,
@@ -19,7 +22,7 @@ abstract class Transaction(
     val mutationType: MutationTypes,
     val description: String,
     var category: String = UNKNOWN
-) : Event {
+) : Event, IterativeStorable<Transaction> {
 
     companion object {
         fun EMPTY(account: IBAN, currency: Currency) = object : Transaction(
@@ -50,7 +53,7 @@ abstract class Transaction(
                     }
                 }"
             }.joinToString("\n")
-        }\n}"
+        }\nCounter: ${counter()}\n}"
     }
 
     fun filterValues(): Array<String> {
@@ -67,6 +70,10 @@ abstract class Transaction(
 
     fun splitExpense(amount: Amount, category: String) {
         splitExpenses = listOf(Expense("${this.id}_${splitExpenses.size}", amount, category))
+    }
+
+    override fun replace(source: List<Transaction>): List<Transaction> {
+        return source.filter { it.toString().equals(this.toString()) }
     }
 
     abstract fun counter(): String

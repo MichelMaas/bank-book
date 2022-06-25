@@ -16,34 +16,16 @@ import java.time.format.DateTimeFormatter
 
 class Account private constructor(transactions: List<Transaction>) : Storable<Account> {
 
-    var payments: List<Payment>
-        private set
+    val transactions: List<Transaction> get() = IterativeStorable.load(Transaction::class)
 
-    var transfers: List<Transfer>
-        private set
+    val payments: List<Payment> get() = transactions.filter { it::class.isInstance(Payment::class) } as List<Payment>
 
-    @Transient
-    private var filters: List<Filter>? = mutableListOf()
+    val transfers: List<Transfer> get() = transactions.filter { it::class.isInstance(Transfer::class) } as List<Transfer>
 
-    var transactions
-        get() = payments.plus(transfers).sortedBy { it.date }
-        private set(transactions: List<out Transaction>) {
-            payments = transactions.filter { it is Payment } as List<Payment>
-            transfers = transactions.filter { it is Transfer } as List<Transfer>
-        }
+    private val filters: List<Filter> get() = IterativeStorable.load(Filter::class)
 
     val currencySymbol get() = if (transactions.isNotEmpty()) transactions.first().currency.symbol else "€"
     val iban get() = if (transactions.isNotEmpty()) transactions.first().baseAccount else IBAN("NL00AAAA0000000000")
-
-    init {
-        payments = transactions.filter { Payment::class.isInstance(it) }.map { it as Payment }
-        transfers = transactions.filter { Transfer::class.isInstance(it) }.map { it as Transfer }
-    }
-
-    constructor(transactions: List<Transaction>, filters: List<Filter>) : this(transactions) {
-        addFilters(filters)
-        applyFilters()
-    }
 
     private fun applyFilters(transactions: List<Transaction> = this.transactions, store: Boolean = true) {
         filters?.let { filters ->
@@ -60,7 +42,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
 
         fun loadOrCreate(): Account {
             val filters = IterativeStorable.load(Filter::class)
-            return ((Storable.load(Account::class) ?: Account(listOf()))).addFilters(filters)
+            return ((Storable.load(Account::class) ?: Account(listOf())))
         }
     }
 
@@ -215,7 +197,10 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
     }
 
     fun changeCategoriesForAll(transactions: List<Transaction>, categories: String) {
-        transactions.forEach { it.category = categories }
+        transactions.forEach {
+            it.category = categories
+            it.store()
+        }
     }
 
     fun filterTransactions(filter: String, transactions: List<Transaction> = this.transactions): List<Transaction> {
@@ -235,7 +220,6 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
 
     fun findTransaction(filter: String, transactions: List<Transaction> = this.transactions): Transaction {
         val start = LocalTime.now()
-        val properties = ContextProvider.ctx.getBean(PropertiesCache::class.java)
         val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isNullOrBlank() }.iterator()
         var filtered = transactions
         while (filtered.size > 1 || filterWords.hasNext()) {
@@ -254,14 +238,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
     fun addNewFrom(transactions: List<Transaction>): Account {
         val newTransactions = transactions.filter { new -> this.transactions.none { old -> old.id.equals(new.id) } }
         applyFilters(newTransactions, false)
-        this.transactions = this.transactions.plus(newTransactions)
-        return this
-    }
-
-    protected fun addFilters(filters: List<Filter>): Account {
-        this.filters =
-            this.filters?.plus(filters.filter { new -> this.filters!!.none { old -> old.filter.equals(new.filter) } })
-                ?: filters
+        transactions.forEach { it.store() }
         return this
     }
 
@@ -270,8 +247,6 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
             transactionsFilter.isNullOrBlank() || (transactionsFilter.split(StringUtils.SPACE)
                 .all { wrd -> it.filter.contains(wrd) })
         }?.map { Tuple(mapOf("Filter" to it.filter, "Category" to it.category)) }
-            ?: listOf(Tuple(mapOf("Filters" to "None")))
     }
-
 
 }

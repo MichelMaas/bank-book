@@ -77,7 +77,8 @@ class FiltersPage : BasePage(PageParameters()) {
                     (defaultModelObject as Filter).store()
                 }
                 setUpTransactions()
-                target.add(transactionsContainer)
+                setUpFilters()
+                target.add(transactionsContainer, filtersContainer)
             }
         }.addSelect("category", "Categories", Categories.values().toList()).addCheckBox("saveFilter", "Persistent")
         importContainer.addOrReplace(categories)

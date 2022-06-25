@@ -20,5 +20,4 @@ class Filter() : IterativeStorable<Filter> {
         return source.filter { it.filter.equals(this.filter) }
     }
 
-
 }
