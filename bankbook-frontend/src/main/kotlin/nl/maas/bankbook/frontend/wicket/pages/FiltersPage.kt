@@ -12,9 +12,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
-import org.apache.wicket.request.mapper.parameter.PageParameters
 
-class FiltersPage : BasePage(PageParameters()) {
+class FiltersPage : BasePage() {
 
     private val transactionsContainer = object : WebMarkupContainer("transactionsContainer") {init {
         outputMarkupId = true

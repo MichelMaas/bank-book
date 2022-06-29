@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 
 data class I10N(
     val languages: List<Language>
-) {
+) : java.io.Serializable {
     fun <T : KClass<out BasePage>> translate(page: T, label: String, languageCode: String): String {
         return findPage(page, languageCode, label).labels.entries.firstOrNull {
             it.key.equals(

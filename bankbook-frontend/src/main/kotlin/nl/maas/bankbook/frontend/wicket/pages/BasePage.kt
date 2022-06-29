@@ -26,7 +26,12 @@ import java.time.LocalTime
 import javax.inject.Inject
 
 
-open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(parameters) {
+open class BasePage : GenericWebPage<Void?> {
+
+    constructor() : super()
+
+    constructor(pageParameters: PageParameters) : super(pageParameters)
+
     lateinit var navbar: Navbar
 
     @Inject
@@ -44,7 +49,6 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
         super.onInitialize()
         outputMarkupId = true
         (application as WebApplication).mountResource("/images/icon.png", propertiesCache.iconReference)
-//        (application as WebApplication).mountResource("/css/main.css",)
     }
 
     protected fun newNavbar(markupId: String): Navbar {
@@ -56,7 +60,7 @@ open class BasePage(parameters: PageParameters?) : GenericWebPage<Void?>(paramet
         navbar.position = Navbar.Position.TOP
         navbar.add(NavbarProvider())
         navbar.setBrandName(Model.of(propertiesCache.translator.translate(BasePage::class, "title")))
-        navbar.setBrandImage(propertiesCache.brandReference, Model.of(StringUtils.EMPTY))
+//        navbar.setBrandImage(propertiesCache.brandReference, Model.of(StringUtils.EMPTY))
         val navbarButtons: Array<NavbarButton<*>> = ButtonTypes.values().map { button: ButtonTypes? ->
             FxAnalyserNavbarButton(
                 button!!

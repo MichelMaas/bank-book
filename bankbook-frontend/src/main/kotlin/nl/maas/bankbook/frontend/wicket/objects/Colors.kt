@@ -3,7 +3,7 @@ package nl.maas.bankbook.frontend.wicket.objects
 import de.martinspielmann.wicket.chartjs.data.dataset.property.color.SimpleColor
 import kotlin.reflect.full.memberProperties
 
-class Colors(val index: Int, color: String) : SimpleColor(color), Comparable<Colors> {
+class Colors(val index: Int, color: String) : SimpleColor(color), Comparable<Colors>, java.io.Serializable {
     companion object {
         val GREEN = Colors(0, "GREEN")
         val RED = Colors(1, "RED")

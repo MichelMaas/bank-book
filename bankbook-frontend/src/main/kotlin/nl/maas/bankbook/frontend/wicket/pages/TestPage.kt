@@ -3,9 +3,8 @@ package nl.maas.bankbook.frontend.wicket.pages
 import nl.maas.bankbook.frontend.wicket.components.DynamicPanel
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
-import org.apache.wicket.request.mapper.parameter.PageParameters
 
-class TestPage(parameters: PageParameters?) : BasePage(parameters) {
+class TestPage : BasePage() {
     override fun onBeforeRender() {
         super.onBeforeRender()
         val dyn = DynamicPanel("panel").addRows(

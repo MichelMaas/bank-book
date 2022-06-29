@@ -6,9 +6,8 @@ import nl.maas.bankbook.frontend.wicket.objects.Options
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
-import org.apache.wicket.request.mapper.parameter.PageParameters
 
-open class OptionsPage(parameters: PageParameters) : BasePage(parameters) {
+open class OptionsPage : BasePage() {
 
     override fun onBeforeRender() {
         super.onBeforeRender()

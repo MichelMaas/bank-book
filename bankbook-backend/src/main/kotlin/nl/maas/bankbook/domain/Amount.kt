@@ -4,7 +4,8 @@ import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class Amount constructor(val value: BigDecimal, val symbol: String) : Comparable<BigDecimal> by value {
+class Amount constructor(val value: BigDecimal, val symbol: String) : java.io.Serializable,
+    Comparable<BigDecimal> by value {
 
     constructor(str: String, symbol: String) : this(BigDecimal(str), symbol)
 

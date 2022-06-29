@@ -13,12 +13,11 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.Model
-import org.apache.wicket.request.mapper.parameter.PageParameters
 import java.time.LocalDate
 import java.time.Year
 
 @WicketHomePage
-class YearOverviewPage(parameters: PageParameters?) : BasePage(parameters) {
+class YearOverviewPage : BasePage() {
 
     override fun onBeforeRender() {
         super.onBeforeRender()

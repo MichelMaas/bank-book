@@ -21,7 +21,7 @@ public class WicketApplication extends WebApplication {
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext run = new SpringApplicationBuilder()
                 .sources(WicketApplication.class)
-                .run(args);
+                .run();
     }
 
     public static void restart() {

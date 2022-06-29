@@ -8,9 +8,8 @@ import nl.maas.bankbook.frontend.wicket.objects.Account.Companion.DEFAULT_DATE_F
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.request.mapper.parameter.PageParameters
 
-class TransactionPage(val transaction: Transaction) : BasePage(PageParameters()) {
+class TransactionPage(val transaction: Transaction) : BasePage() {
     private val TRANSACTION = "TRANSACTION"
 
     override fun onBeforeRender() {

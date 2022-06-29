@@ -2,7 +2,6 @@ package nl.maas.bankbook.frontend.services
 
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
-import org.springframework.stereotype.Component
 import java.io.File
 import java.nio.file.*
 import java.time.Duration
@@ -11,7 +10,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
-@Component
+//@Component
 class TransactionWatchService private @Inject constructor(
     val propertiesCache: PropertiesCache,
     val parserService: ParserService,

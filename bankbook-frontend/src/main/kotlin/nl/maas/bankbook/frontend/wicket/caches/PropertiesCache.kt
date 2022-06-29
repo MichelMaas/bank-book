@@ -3,24 +3,24 @@ package nl.maas.bankbook.frontend.wicket.caches
 import nl.maas.bankbook.frontend.wicket.objects.ApplicationProperties
 import nl.maas.bankbook.frontend.wicket.objects.I10N
 import nl.maas.bankbook.frontend.wicket.objects.Options
+import nl.maas.bankbook.frontend.wicket.objects.SerializableFileResourceReference
 import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import nl.maas.bankbook.utils.FileUtils
 import nl.maas.bankbook.utils.JsonUtils
-import org.apache.wicket.resource.FileSystemResourceReference
 import org.springframework.stereotype.Component
-import java.nio.file.Path
 import kotlin.reflect.KClass
 
 @Component
-class PropertiesCache {
+class PropertiesCache : java.io.Serializable {
     protected val i10N: I10N
     val translator: Translator
     val options: Options
     val applicationProperties: ApplicationProperties
     val iconReference =
-        FileSystemResourceReference("favicon", Path.of(FileUtils.findFile("icon.png")))
+        SerializableFileResourceReference("favicon", FileUtils.findFile("icon.png"))
+
     val brandReference =
-        FileSystemResourceReference("brand", Path.of(FileUtils.findFile("brand.png")))
+        SerializableFileResourceReference("brand", FileUtils.findFile("brand.png"))
 
     init {
         i10N = JsonUtils.load(FileUtils.findFile("I10N.json"), I10N::class.java)!!
@@ -35,7 +35,7 @@ class PropertiesCache {
     inner class Translator(
         val propertiesCache: PropertiesCache,
         val supportedLanguages: List<String> = propertiesCache.i10N.languages.map { it.name }
-    ) {
+    ) : java.io.Serializable {
         fun <T : KClass<out BasePage>> translate(page: T, key: String) =
             i10N.translate(page, key, currentLanguage)
 
