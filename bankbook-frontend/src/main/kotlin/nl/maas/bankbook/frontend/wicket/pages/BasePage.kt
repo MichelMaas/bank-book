@@ -60,7 +60,7 @@ open class BasePage : GenericWebPage<Void?> {
         navbar.position = Navbar.Position.TOP
         navbar.add(NavbarProvider())
         navbar.setBrandName(Model.of(propertiesCache.translator.translate(BasePage::class, "title")))
-//        navbar.setBrandImage(propertiesCache.brandReference, Model.of(StringUtils.EMPTY))
+        navbar.setBrandImage(propertiesCache.brandReference, Model.of(StringUtils.EMPTY))
         val navbarButtons: Array<NavbarButton<*>> = ButtonTypes.values().map { button: ButtonTypes? ->
             FxAnalyserNavbarButton(
                 button!!
