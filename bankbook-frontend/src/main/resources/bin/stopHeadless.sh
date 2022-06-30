@@ -1,2 +1,3 @@
 #!/bin/bash
-kill $bankbook_pid
+pid=$(pidof java)
+kill $pid
