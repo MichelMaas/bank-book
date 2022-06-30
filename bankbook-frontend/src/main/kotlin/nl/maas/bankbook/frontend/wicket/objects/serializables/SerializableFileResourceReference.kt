@@ -1,4 +1,4 @@
-package nl.maas.bankbook.frontend.wicket.objects
+package nl.maas.bankbook.frontend.wicket.objects.serializables
 
 import org.apache.wicket.WicketRuntimeException
 import org.apache.wicket.resource.FileSystemResource

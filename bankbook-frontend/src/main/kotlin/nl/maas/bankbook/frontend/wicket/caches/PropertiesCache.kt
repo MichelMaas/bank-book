@@ -3,7 +3,7 @@ package nl.maas.bankbook.frontend.wicket.caches
 import nl.maas.bankbook.frontend.wicket.objects.ApplicationProperties
 import nl.maas.bankbook.frontend.wicket.objects.I10N
 import nl.maas.bankbook.frontend.wicket.objects.Options
-import nl.maas.bankbook.frontend.wicket.objects.SerializableFileResourceReference
+import nl.maas.bankbook.frontend.wicket.objects.serializables.SerializableFileResourceReference
 import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import nl.maas.bankbook.utils.FileUtils
 import nl.maas.bankbook.utils.JsonUtils

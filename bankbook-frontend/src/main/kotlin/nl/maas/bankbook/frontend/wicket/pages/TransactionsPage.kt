@@ -13,7 +13,6 @@ import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.upload.FileUpload
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
 import java.io.File
@@ -63,10 +62,9 @@ class TransactionsPage : BasePage() {
             "Import transactions",
             CompoundPropertyModel.of(File.createTempFile("tmp", "file"))
         ) {
-            override fun onFileUpload(target: AjaxRequestTarget, fileUpload: FileUpload) {
+            override fun onFileUpload(target: AjaxRequestTarget, fileUpload: File) {
                 super.onFileUpload(target, fileUpload)
-                fileUpload.writeTo(defaultModelObject as File)
-                val transactions = parserService.parseFile(defaultModelObject as File)
+                val transactions = parserService.parseFile(fileUpload)
                 modelCache.dataContainer.addNewFrom(transactions).store()
                 setUpTransactionsList()
                 target.add(transactionsContainer)

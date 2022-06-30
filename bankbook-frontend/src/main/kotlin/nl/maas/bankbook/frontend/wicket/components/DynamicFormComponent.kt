@@ -4,6 +4,7 @@ import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.Boo
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.fileinput.FileInputConfig
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.select.BootstrapSelect
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.objects.serializables.UploadedFile
 import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import nl.maas.bankbook.frontend.wicket.panels.AbstractPanel
 import org.apache.wicket.MarkupContainer
@@ -24,6 +25,7 @@ import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.IComponentInheritedModel
 import org.apache.wicket.model.IModel
 import org.apache.wicket.model.Model
+import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -121,7 +123,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
     open fun onAfterCancel(target: AjaxRequestTarget) {
     }
 
-    open fun onFileUpload(target: AjaxRequestTarget, fileUpload: FileUpload) {}
+    open fun onFileUpload(target: AjaxRequestTarget, fileUpload: File) {}
 
     private inner class TextFragment(
         val propertyName: String,
@@ -217,7 +219,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         val removeLabel: String
     ) :
         ResettableFormFragment<FileUpload>(propertyName, "fileUploadFragment", this, null) {
-        var fileUpload: FileUpload? = null
+        var fileUpload: UploadedFile = UploadedFile()
         private val bootstrapFileInputField = object : BootstrapFileInputField(
             "file",
             Model.ofList(mutableListOf()),
@@ -226,7 +228,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
         ) {
             override fun onSubmit(target: AjaxRequestTarget) {
                 super.onSubmit(target)
-                this@FileUploadFragment.fileUpload = this.fileUpload
+                this@FileUploadFragment.fileUpload = UploadedFile(this.fileUpload)
                 this.isEnabled = false
                 target.add(this@DynamicFormComponent.form)
             }
@@ -259,12 +261,12 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
 
         fun onFileUpload(target: AjaxRequestTarget) {
             this.fileUpload?.let {
-                this@DynamicFormComponent.onFileUpload(target, it)
+                this@DynamicFormComponent.onFileUpload(target, it.file)
             }
         }
 
         override fun onReset(target: AjaxRequestTarget, fileUpload: FileUpload?) {
-            this.fileUpload = null
+            this.fileUpload = UploadedFile()
             bootstrapFileInputField.isEnabled = true
             target.add(this)
         }

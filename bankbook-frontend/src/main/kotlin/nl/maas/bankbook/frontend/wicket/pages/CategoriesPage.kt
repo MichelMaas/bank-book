@@ -11,9 +11,9 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.upload.FileUpload
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
+import java.io.File
 import java.nio.file.Files
 
 class CategoriesPage : BasePage() {
@@ -44,10 +44,9 @@ class CategoriesPage : BasePage() {
                 target.add(tableWrapper)
             }
 
-            override fun onFileUpload(target: AjaxRequestTarget, fileUpload: FileUpload) {
+            override fun onFileUpload(target: AjaxRequestTarget, file: File) {
                 val tempFile = Files.createTempFile("uploaded", "csv").toFile()
-                fileUpload.writeTo(tempFile)
-                val parseFile = parserService.parseFile(tempFile)
+                val parseFile = parserService.parseFile(file)
                 modelCache.dataContainer.addNewFrom(parseFile)
                 target.add(this@CategoriesPage)
             }

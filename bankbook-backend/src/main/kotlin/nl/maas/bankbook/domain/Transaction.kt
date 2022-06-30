@@ -73,7 +73,7 @@ abstract class Transaction(
     }
 
     override fun replace(source: List<Transaction>): List<Transaction> {
-        return source.filter { it.toString().equals(this.toString()) }
+        return source.filter { it.equals(this) }
     }
 
     abstract fun counter(): String
