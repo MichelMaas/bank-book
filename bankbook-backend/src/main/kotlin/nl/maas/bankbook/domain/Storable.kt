@@ -38,4 +38,8 @@ interface Storable<T : Storable<T>> : Serializable {
         Files.write(Paths.get("${path}"), listOf(Gson().toJson(this)), Charsets.UTF_8)
         return this as T
     }
+
+    fun reload(): T {
+        return Storable.load(this::class) as T
+    }
 }

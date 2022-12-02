@@ -14,21 +14,29 @@ import java.time.Month
 import java.time.Year
 import java.time.format.DateTimeFormatter
 
-class Account private constructor(transactions: List<Transaction>) : Storable<Account> {
+class Account private constructor(
+    transactions: List<Transaction> = IterativeStorable.load(Transaction::class),
+    filters: List<Filter> = IterativeStorable.load(Filter::class)
+) : Storable<Account> {
 
-    val transactions: List<Transaction> get() = IterativeStorable.load(Transaction::class)
+    private constructor() : this(IterativeStorable.load(Transaction::class), IterativeStorable.load(Filter::class)) {
+
+    }
+
+    var transactions: List<Transaction> = transactions
 
     val payments: List<Payment> get() = transactions.filter { it::class.isInstance(Payment::class) } as List<Payment>
 
     val transfers: List<Transfer> get() = transactions.filter { it::class.isInstance(Transfer::class) } as List<Transfer>
 
-    private val filters: List<Filter> get() = IterativeStorable.load(Filter::class)
+    private var filters: List<Filter> = filters
+
 
     val currencySymbol get() = if (transactions.isNotEmpty()) transactions.first().currency.symbol else "€"
     val iban get() = if (transactions.isNotEmpty()) transactions.first().baseAccount else IBAN("NL00AAAA0000000000")
 
     private fun applyFilters(transactions: List<Transaction> = this.transactions, store: Boolean = true) {
-        filters?.let { filters ->
+        filters.let { filters ->
             filters.parallelStream().forEach { it.foundTransactions = filterTransactions(it.filter, transactions) }
             filters.sortedByDescending { it.foundTransactions.size }
                 .forEach { changeCategoriesForAll(it.foundTransactions, it.category) }
@@ -41,8 +49,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
         val DEFAULT_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
         fun loadOrCreate(): Account {
-            val filters = IterativeStorable.load(Filter::class)
-            return ((Storable.load(Account::class) ?: Account(listOf())))
+            return ((Storable.load(Account::class) ?: Account(listOf()))).reload()
         }
     }
 
@@ -199,14 +206,13 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
     fun changeCategoriesForAll(transactions: List<Transaction>, categories: String) {
         transactions.forEach {
             it.category = categories
-            it.store()
         }
     }
 
     fun filterTransactions(filter: String, transactions: List<Transaction> = this.transactions): List<Transaction> {
         val start = LocalTime.now()
         val properties = ContextProvider.ctx.getBean(PropertiesCache::class.java)
-        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isNullOrBlank() }
+        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
         var filtered: List<Transaction> = transactions.filter { tr ->
             filterWords.map { properties.translator.untranslate(BasePage::class, it) }.all { filterWord ->
                 tr.filterValues().joinToString(StringUtils.SPACE).contains(filterWord, true)
@@ -220,7 +226,7 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
 
     fun findTransaction(filter: String, transactions: List<Transaction> = this.transactions): Transaction {
         val start = LocalTime.now()
-        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isNullOrBlank() }.iterator()
+        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }.iterator()
         var filtered = transactions
         while (filtered.size > 1 || filterWords.hasNext()) {
             val next = filterWords.next()
@@ -238,15 +244,21 @@ class Account private constructor(transactions: List<Transaction>) : Storable<Ac
     fun addNewFrom(transactions: List<Transaction>): Account {
         val newTransactions = transactions.filter { new -> this.transactions.none { old -> old.id.equals(new.id) } }
         applyFilters(newTransactions, false)
-        transactions.forEach { it.store() }
+        this.transactions = newTransactions
         return this
     }
 
     fun findSimilarFilters(transactionsFilter: String): List<Tuple> {
-        return filters?.filter {
-            transactionsFilter.isNullOrBlank() || (transactionsFilter.split(StringUtils.SPACE)
+        return filters.filter {
+            transactionsFilter.isBlank() || (transactionsFilter.split(StringUtils.SPACE)
                 .all { wrd -> it.filter.contains(wrd) })
-        }?.map { Tuple(mapOf("Filter" to it.filter, "Category" to it.category)) }
+        }.map { Tuple(mapOf("Filter" to it.filter, "Category" to it.category)) }
+    }
+
+    override fun store(): Account {
+        IterativeStorable.storeAll(filters)
+        IterativeStorable.storeAll(transactions)
+        return super.store()
     }
 
 }

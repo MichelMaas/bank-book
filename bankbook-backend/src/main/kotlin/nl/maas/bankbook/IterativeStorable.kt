@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import nl.maas.bankbook.domain.Storable
 import nl.maas.bankbook.domain.annotations.StoreAs
+import org.apache.commons.lang3.NotImplementedException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -41,12 +42,42 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                 } else listOf<T>()
         }
 
+        fun <T : IterativeStorable<T>> storeAll(storables: List<T>): List<T> {
+            if (storables.size > 0) {
+                val storablesClass = storables[0]::class
+                val hasAltName = storablesClass.allSuperclasses.plus(storablesClass)
+                    .any { it.hasAnnotation<StoreAs>() }
+                val className =
+                    if (hasAltName) storablesClass.allSuperclasses.plus(storablesClass)
+                        .find { it.hasAnnotation<StoreAs>() }!!
+                        .findAnnotation<StoreAs>()!!.storeAs else storablesClass.java.simpleName
+                val path = path(className.lowercase())
+                val dir = Paths.get(path.substring(0, path.lastIndexOf("/")))
+                val oldList = load(storablesClass)
+                val newList = oldList.minus(storables.flatMap { it.replace(oldList) }).plus(storables)
+                Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
+                Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
+                return load(storablesClass)
+            } else {
+                return listOf()
+            }
+        }
+
         private fun encode(json: String): String {
             return String(Base64.getEncoder().encode(json.toByteArray()), Charsets.UTF_8)
         }
 
         private fun decode(json: String): String {
             return String(Base64.getDecoder().decode(json.toByteArray()))
+        }
+
+        private fun <T : IterativeStorable<T>> serialize(it: IterativeStorable<T>): String {
+            val jsonTree = Gson().toJsonTree(it) as JsonObject
+            jsonTree.addProperty(
+                "type",
+                it::class.qualifiedName
+            )
+            return Gson().toJson(jsonTree)
         }
     }
 
@@ -65,18 +96,17 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
         val oldList = load(this::class)
         val newList = oldList.minus(replace(oldList as List<T>)).plus(this)
         Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
-        Files.write(Paths.get("${path}"), newList.map { encode(serialize(it, hasAltName)) }, Charsets.UTF_8)
+        Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
         return this as T
     }
 
-    private fun serialize(it: IterativeStorable<T>, hasAltName: Boolean = false): String {
-        val jsonTree = Gson().toJsonTree(it) as JsonObject
-        jsonTree.addProperty(
-            "type",
-            it::class.qualifiedName
-        )
-        return Gson().toJson(jsonTree)
+
+    fun reloadAll(): List<T> {
+        return load(this::class) as List<T>
     }
 
+    override fun reload(): T {
+        throw NotImplementedException("Use #reloadAll() to reload!")
+    }
 
 }

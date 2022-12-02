@@ -73,8 +73,9 @@ class FiltersPage : BasePage() {
                 )
                 if ((defaultModelObject as Filter).saveFilter) {
                     (defaultModelObject as Filter).filter = this@FiltersPage.transactionsFilter
-                    (defaultModelObject as Filter).store()
+                    (defaultModelObject as Filter)
                 }
+                modelCache.dataContainer.store()
                 setUpTransactions()
                 setUpFilters()
                 target.add(transactionsContainer, filtersContainer)
