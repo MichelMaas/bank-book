@@ -19,16 +19,21 @@ class Account private constructor(
     filters: List<Filter> = IterativeStorable.load(Filter::class)
 ) : Storable<Account> {
 
-    private constructor() : this(IterativeStorable.load(Transaction::class), IterativeStorable.load(Filter::class)) {
+    private constructor() : this(
+        IterativeStorable.load(Transaction::class),
+        IterativeStorable.load(Filter::class)
+    ) {
 
     }
 
+    @Transient
     var transactions: List<Transaction> = transactions
 
     val payments: List<Payment> get() = transactions.filter { it::class.isInstance(Payment::class) } as List<Payment>
 
     val transfers: List<Transfer> get() = transactions.filter { it::class.isInstance(Transfer::class) } as List<Transfer>
 
+    @Transient
     private var filters: List<Filter> = filters
 
 
@@ -253,6 +258,10 @@ class Account private constructor(
             transactionsFilter.isBlank() || (transactionsFilter.split(StringUtils.SPACE)
                 .all { wrd -> it.filter.contains(wrd) })
         }.map { Tuple(mapOf("Filter" to it.filter, "Category" to it.category)) }
+    }
+
+    fun addFilter(filter: Filter) {
+        filters = filters.plus(filter)
     }
 
     override fun store(): Account {
