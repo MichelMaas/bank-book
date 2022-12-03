@@ -20,4 +20,13 @@ class Filter() : IterativeStorable<Filter> {
         return source.filter { it.filter.equals(this.filter) }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this::class.isInstance(other)) {
+            return (other as Filter).filter.equals(filter) &&
+                    (other as Filter).category.equals(category)
+        } else {
+            return false
+        }
+    }
+
 }

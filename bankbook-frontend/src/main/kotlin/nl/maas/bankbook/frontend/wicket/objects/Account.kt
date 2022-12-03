@@ -261,7 +261,7 @@ class Account private constructor(
     }
 
     fun addFilter(filter: Filter) {
-        filters = filters.plus(filter)
+        filters = filters.plus(filter).distinct()
     }
 
     override fun store(): Account {
