@@ -11,7 +11,7 @@
     <groupId>nl.maas.bankbook</groupId>
     <artifactId>bankbook</artifactId>
     <packaging>pom</packaging>
-    <version>2022.14</version>
+    <version>2022.15-SNAPSHOT</version>
 
     <modules>
         <module>bankbook-backend</module>
