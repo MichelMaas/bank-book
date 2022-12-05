@@ -15,22 +15,28 @@ open class DatePickerButton(
     id: String,
     private val dateTime: LocalDate = LocalDate.now(),
     private val type: PickerTypes = PickerTypes.DAY_MONTH_YEAR,
+    private val locale: String = Locale.getDefault().variant
 ) :
     DatetimePicker(
         id,
         Model.of(Date.from(dateTime.atStartOfDay(ZoneId.systemDefault()).toInstant())),
-        config(type, dateTime)
+        config(type, dateTime, locale)
     ) {
 
     companion object {
 
-        private fun config(type: PickerTypes, date: LocalDate): DatetimePickerConfig {
+        private fun config(
+            type: PickerTypes,
+            date: LocalDate,
+            locale: String = Locale.getDefault().variant
+        ): DatetimePickerConfig {
             val datetimePickerConfig = DatetimePickerConfig()
             datetimePickerConfig.useView(DatetimePickerConfig.ViewModeType.YEARS)
             datetimePickerConfig.withDate(date)
             datetimePickerConfig.useMaskInput(false)
             datetimePickerConfig.withFormat(type.format)
             datetimePickerConfig.withMaxDate(LocalDate.now())
+            datetimePickerConfig.useLocale(locale)
             return datetimePickerConfig
         }
 
@@ -47,7 +53,7 @@ open class DatePickerButton(
     }
 
     open fun onDateChanged(target: AjaxRequestTarget, date: LocalDate) {
-
+        println(date.month)
     }
 
     private fun parseInput(): LocalDate {

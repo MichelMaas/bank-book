@@ -57,13 +57,11 @@ abstract class CalendarPanel(
             Label(
                 "month",
                 propertiesCache.translator.translate(
-                    containingPage(),
                     "${
                         propertiesCache.translator.translate(
-                            containingPage(),
                             currentMonth.month.name
                         )
-                    } ${currentMonth.year}${propertiesCache.translator.translate(containingPage(), "yearIndicator")}"
+                    } ${currentMonth.year}${propertiesCache.translator.translate("yearIndicator")}"
                 )
             ),
             DayRepeater(),
@@ -150,7 +148,7 @@ abstract class CalendarPanel(
             addOrReplace(
                 Label(
                     "backLabel",
-                    propertiesCache.translator.translate(containingPage(), currentMonth.month.minus(1L).name).take(3)
+                    propertiesCache.translator.translate(currentMonth.month.minus(1L).name).take(3)
                 )
             )
             add(AttributeModifier.replace("class", "text-left border-right border-secondary btn btn-primary btn-block"))
@@ -174,7 +172,7 @@ abstract class CalendarPanel(
             addOrReplace(
                 Label(
                     "forwardLabel",
-                    propertiesCache.translator.translate(containingPage(), currentMonth.month.plus(1L).name).take(3)
+                    propertiesCache.translator.translate(currentMonth.month.plus(1L).name).take(3)
                 )
             )
             addClass()

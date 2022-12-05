@@ -3,7 +3,6 @@ package nl.maas.bankbook.frontend.wicket.components
 import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import nl.maas.bankbook.frontend.wicket.objects.Tuple
-import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -41,7 +40,7 @@ open class DynamicTableComponent(
             item.add(
                 Label(
                     "columnLabel",
-                    propertiesCache.translator.translate(findParent(BasePage::class.java)::class, item.modelObject)
+                    propertiesCache.translator.translate(item.modelObject)
                 )
             )
         }
@@ -65,7 +64,6 @@ open class DynamicTableComponent(
                 TooltipLabel(
                     "content",
                     propertiesCache.translator.translate(
-                        findParent(BasePage::class.java)::class,
                         item.modelObject.toString()
                     ),
                     BigInteger.valueOf(150).div(columns.size.toBigInteger()).toInt()

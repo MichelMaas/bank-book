@@ -56,7 +56,7 @@ class FiltersPage : BasePage() {
                 target.add(transactionsContainer, filtersContainer)
             }
         }
-        addOrReplace(search, Label("searchLabel", propertiesCache.translator.translate(this::class, "Search")))
+        addOrReplace(search, Label("searchLabel", propertiesCache.translator.translate("Search")))
     }
 
     private fun setUpCategories() {

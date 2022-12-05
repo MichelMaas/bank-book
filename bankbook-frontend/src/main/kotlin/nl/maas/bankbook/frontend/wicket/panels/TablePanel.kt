@@ -31,9 +31,9 @@ class TablePanel<T : Comparable<T>>(
         val bar = Bar()
         val labels = mutableSetOf<String>()
         data.keys.forEach { key ->
-            labels.addAll(data[key]!!.keys.map { propertiesCache.translator.translate(containingPage(), it) })
+            labels.addAll(data[key]!!.keys.map { propertiesCache.translator.translate(it) })
             val barDataSet = BarDataset()
-            barDataSet.label = propertiesCache.translator.translate(containingPage(), key)
+            barDataSet.label = propertiesCache.translator.translate(key)
             barDataSet.data = Data(NumberDataValue.of(data[key]!!.values.toList().map { it as Number }))
             barDataSet.backgroundColor =
                 IndexableOption(Colors.colors())

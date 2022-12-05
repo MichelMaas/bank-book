@@ -53,7 +53,7 @@ class TransactionsPage : BasePage() {
                 target.add(transactionsContainer)
             }
         }
-        addOrReplace(search, Label("searchLabel", propertiesCache.translator.translate(this::class, "Search")))
+        addOrReplace(search, Label("searchLabel", propertiesCache.translator.translate("Search")))
     }
 
     private fun setUpImport() {
@@ -125,7 +125,7 @@ class TransactionsPage : BasePage() {
 
         }.addSelect(
             "category",
-            propertiesCache.translator.translate(this::class, "Category"),
+            propertiesCache.translator.translate("Category"),
             Categories.values().toList()
         )
         detailsContainer.addOrReplace(component)

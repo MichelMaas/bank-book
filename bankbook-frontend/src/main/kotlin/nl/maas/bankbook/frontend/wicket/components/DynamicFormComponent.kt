@@ -224,7 +224,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
             "file",
             Model.ofList(mutableListOf()),
             FileInputConfig().showPreview(false).maxFileCount(1)
-                .withLocale(propertiesCache.translator.currentLanguage)
+                .withLocale(propertiesCache.translator.language)
         ) {
             override fun onSubmit(target: AjaxRequestTarget) {
                 super.onSubmit(target)
@@ -329,7 +329,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
 
     private inner class I18NChoiceRenderer : ChoiceRenderer<Serializable>() {
         override fun getDisplayValue(item: Serializable): String {
-            return propertiesCache.translator.translate(findBasePage(), item.toString())
+            return propertiesCache.translator.translate(item.toString())
         }
     }
 
@@ -346,7 +346,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
                     addOrReplace(
                         Label(
                             "submitName",
-                            propertiesCache.translator.translate(containingPage(), "confirm")
+                            propertiesCache.translator.translate("confirm")
                         )
                     )
                 }
@@ -367,7 +367,7 @@ open class DynamicFormComponent<T>(id: String, val formTitle: String, model: ICo
             add(object : AjaxLink<String>("reset", Model.of("Reset")) {
                 override fun onBeforeRender() {
                     super.onBeforeRender()
-                    addOrReplace(Label("resetName", propertiesCache.translator.translate(containingPage(), "reset")))
+                    addOrReplace(Label("resetName", propertiesCache.translator.translate("reset")))
                 }
 
                 override fun onClick(target: AjaxRequestTarget) {

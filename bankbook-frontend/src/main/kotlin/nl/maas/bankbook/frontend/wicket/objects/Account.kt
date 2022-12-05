@@ -5,7 +5,6 @@ import nl.maas.bankbook.domain.*
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
-import nl.maas.bankbook.frontend.wicket.pages.BasePage
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.time.Duration
@@ -219,8 +218,9 @@ class Account private constructor(
         val properties = ContextProvider.ctx.getBean(PropertiesCache::class.java)
         val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
         var filtered: List<Transaction> = transactions.filter { tr ->
-            filterWords.map { properties.translator.untranslate(BasePage::class, it) }.all { filterWord ->
-                tr.filterValues().joinToString(StringUtils.SPACE).contains(filterWord, true)
+            filterWords.all { filterWord ->
+                tr.filterValues().map { properties.translator.translate(it) }.joinToString(StringUtils.SPACE)
+                    .contains(filterWord, true)
             }
         }
         val end = LocalTime.now()

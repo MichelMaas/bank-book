@@ -21,7 +21,7 @@ class TransactionPage(val transaction: Transaction) : BasePage() {
     private fun setUpForm() {
         val form = DynamicFormComponent<Transaction>(
             "form",
-            "${propertiesCache.translator.translate(this::class, "transaction")} ${transaction.id}",
+            "${propertiesCache.translator.translate("transaction")} ${transaction.id}",
             CompoundPropertyModel.of(transaction)
         ).addSelect("category", "category", Categories.values().toList())
         addOrReplace(form)
@@ -30,13 +30,13 @@ class TransactionPage(val transaction: Transaction) : BasePage() {
     private fun setUpOverview() {
         val pairs = listOf<Pair<String, String>>(
             Pair(
-                propertiesCache.translator.translate(this::class, "date"),
+                propertiesCache.translator.translate("date"),
                 transaction.date.format(DEFAULT_DATE_FORMATTER)
             ),
-            Pair(propertiesCache.translator.translate(this::class, "amount"), transaction.mutation.toString()),
-            Pair(propertiesCache.translator.translate(this::class, "type"), transaction.mutationType.tidy),
-            Pair(propertiesCache.translator.translate(this::class, "counter"), transaction.counter()),
-            Pair(propertiesCache.translator.translate(this::class, "description"), transaction.description)
+            Pair(propertiesCache.translator.translate("amount"), transaction.mutation.toString()),
+            Pair(propertiesCache.translator.translate("type"), transaction.mutationType.tidy),
+            Pair(propertiesCache.translator.translate("counter"), transaction.counter()),
+            Pair(propertiesCache.translator.translate("description"), transaction.description)
         )
         val overview = object : ListView<Pair<String, String>>("overview", pairs) {
             override fun populateItem(item: ListItem<Pair<String, String>>) {

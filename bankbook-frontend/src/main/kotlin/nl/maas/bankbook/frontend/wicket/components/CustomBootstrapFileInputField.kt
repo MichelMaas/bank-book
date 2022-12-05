@@ -126,7 +126,7 @@ class CustomBootstrapFileInputField @JvmOverloads constructor(
             val variables: MutableMap<String, Any?> = HashMap()
             variables["markupId"] = Strings2.getMarkupId(this)
             for (label in LABELS) {
-                variables[label] = propertiesCache.translator.translate(containingPage(), label)
+                variables[label] = propertiesCache.translator.translate(label)
             }
 
             variables["eventName"] = ajaxUploadBehavior!!.event

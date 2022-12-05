@@ -34,9 +34,9 @@ class PiePanel<T : Comparable<T>>(
     private fun createBarData(): IModel<out Pie> {
         val pie = Pie()
         pie.data.labels
-            .addAll(TextLabel.of(names.map { propertiesCache.translator.translate(containingPage(), it) }))
+            .addAll(TextLabel.of(names.map { propertiesCache.translator.translate(it) }))
         val pieDataset = PieDataset()
-        pieDataset.label = propertiesCache.translator.translate(containingPage(), this.label)
+        pieDataset.label = propertiesCache.translator.translate(this.label)
         pieDataset.data = Data(NumberDataValue.of(data))
         pieDataset.backgroundColor = IndexableOption(Colors.colors())
         pie.data.datasets.add(pieDataset)

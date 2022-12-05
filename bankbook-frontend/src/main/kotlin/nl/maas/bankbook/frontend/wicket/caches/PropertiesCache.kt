@@ -4,16 +4,19 @@ import nl.maas.bankbook.frontend.wicket.objects.ApplicationProperties
 import nl.maas.bankbook.frontend.wicket.objects.I10N
 import nl.maas.bankbook.frontend.wicket.objects.Options
 import nl.maas.bankbook.frontend.wicket.objects.serializables.SerializableFileResourceReference
-import nl.maas.bankbook.frontend.wicket.pages.BasePage
+import nl.maas.bankbook.providers.Translator
 import nl.maas.bankbook.utils.FileUtils
 import nl.maas.bankbook.utils.JsonUtils
 import org.springframework.stereotype.Component
-import kotlin.reflect.KClass
+import javax.inject.Inject
 
 @Component
-class PropertiesCache : java.io.Serializable {
+class PropertiesCache(@Inject private val translatorProvider: TranslatorProvider) : java.io.Serializable {
+
+    val supportedLanguages get() = TranslatorProvider().translators.keys.toList()
     protected val i10N: I10N
-    val translator: Translator
+    val translator: Translator get() = translatorProvider.getTranslatorFor(options.language)
+
     val options: Options
     val applicationProperties: ApplicationProperties
     val iconReference =
@@ -28,23 +31,5 @@ class PropertiesCache : java.io.Serializable {
         applicationProperties = ApplicationProperties.load()
     }
 
-    constructor() {
-        translator = Translator(this)
-    }
-
-    inner class Translator(
-        val propertiesCache: PropertiesCache,
-        val supportedLanguages: List<String> = propertiesCache.i10N.languages.map { it.name }
-    ) : java.io.Serializable {
-        fun <T : KClass<out BasePage>> translate(page: T, key: String) =
-            i10N.translate(page, key, currentLanguage)
-
-        fun <T : KClass<out BasePage>> untranslate(page: T, key: String) =
-            i10N.untranslate(page, key, currentLanguage)
-
-        val currentLanguage
-            get() = propertiesCache.i10N.languages.firstOrNull { options.language.equals(it.code) }?.code
-                ?: propertiesCache.i10N.languages.first { "en".equals(it.code) }.code
-    }
 
 }

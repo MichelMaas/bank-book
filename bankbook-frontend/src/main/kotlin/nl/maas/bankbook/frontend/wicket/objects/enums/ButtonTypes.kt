@@ -23,6 +23,11 @@ enum class ButtonTypes(val pageClass: KClass<out BasePage>, val iconType: IconTy
     TEST(TestPage::class, FontAwesome5IconType.cogs_s);
 
     fun label(): String {
-        return ContextProvider.ctx.getBean(PropertiesCache::class.java).translator.translate(pageClass, "title")
+        return ContextProvider.ctx.getBean(PropertiesCache::class.java).translator.translate(
+            pageClass.simpleName!!.replace(
+                "Page",
+                ""
+            )
+        )
     }
 }

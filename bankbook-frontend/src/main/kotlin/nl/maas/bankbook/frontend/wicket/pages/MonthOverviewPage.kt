@@ -42,7 +42,8 @@ class MonthOverviewPage : BasePage() {
         addOrReplace(object : DatePickerButton(
             "datePicker",
             modelCache.localDate,
-            MONTH_YEAR
+            MONTH_YEAR,
+            propertiesCache.translator.locale
         ) {
             override fun onDateChanged(target: AjaxRequestTarget, date: LocalDate) {
                 super.onDateChanged(target, date)
@@ -58,7 +59,12 @@ class MonthOverviewPage : BasePage() {
 
     private fun makeUpDataTable() {
         val dynamicTableComponent = DynamicTableComponent("table", tuples.toMutableList())
-        val switchLabel = Label("switchLabel", "Categories").add(AttributeModifier("for", "customSwitches"))
+        val switchLabel = Label("switchLabel", propertiesCache.translator.translate("Categories")).add(
+            AttributeModifier(
+                "for",
+                "customSwitches"
+            )
+        )
         val switch = object : AjaxCheckBox("switch", Model.of(categories)) {
 
             override fun onInitialize() {
@@ -77,16 +83,16 @@ class MonthOverviewPage : BasePage() {
     private fun makeUpRightDataColumn() {
         val right = listOf(
             Pair(
-                propertiesCache.translator.translate(this::class, "Account"),
+                propertiesCache.translator.translate("Account"),
                 modelCache.dataContainer.iban.toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "totIn"),
+                propertiesCache.translator.translate("totIn"),
                 modelCache.dataContainer.totalIn(Year.of(modelCache.localDate.year), modelCache.localDate.month)
                     .toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "totOut"),
+                propertiesCache.translator.translate("totOut"),
                 modelCache.dataContainer.totalOut(Year.of(modelCache.localDate.year), modelCache.localDate.month)
                     .toString()
             )
@@ -107,14 +113,14 @@ class MonthOverviewPage : BasePage() {
     private fun makeUpLeftDataColumn() {
         val left = listOf(
             Pair(
-                propertiesCache.translator.translate(this::class, "totTrans"),
+                propertiesCache.translator.translate("totTrans"),
                 modelCache.dataContainer.totalTransactionsFor(
                     Year.of(modelCache.localDate.year),
                     modelCache.localDate.month
                 ).toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "result"),
+                propertiesCache.translator.translate("result"),
                 Amount(
                     modelCache.dataContainer.totalIn(
                         Year.of(modelCache.localDate.year), modelCache.localDate.month

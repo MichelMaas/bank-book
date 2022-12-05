@@ -52,7 +52,7 @@ class YearOverviewPage : BasePage() {
 
     private fun makeUpDataTable() {
         val dynamicTableComponent = DynamicTableComponent("table", tuples.toMutableList())
-        val switchLabel = Label("switchLabel", propertiesCache.translator.translate(this::class, "Categories")).add(
+        val switchLabel = Label("switchLabel", propertiesCache.translator.translate("Categories")).add(
             AttributeModifier(
                 "for",
                 "customSwitches"
@@ -77,15 +77,15 @@ class YearOverviewPage : BasePage() {
     private fun makeUpRightDataColumn() {
         val right = listOf(
             Pair(
-                propertiesCache.translator.translate(this::class, "Account"),
+                propertiesCache.translator.translate("Account"),
                 modelCache.dataContainer.iban.toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "totIn"),
+                propertiesCache.translator.translate("totIn"),
                 modelCache.dataContainer.totalIn(Year.of(modelCache.localDate.year)).toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "totOut"),
+                propertiesCache.translator.translate("totOut"),
                 modelCache.dataContainer.totalOut(Year.of(modelCache.localDate.year)).toString()
             )
         )
@@ -105,11 +105,11 @@ class YearOverviewPage : BasePage() {
     private fun makeUpLeftDataColumn() {
         val left = listOf(
             Pair(
-                propertiesCache.translator.translate(this::class, "totTrans"),
+                propertiesCache.translator.translate("totTrans"),
                 modelCache.dataContainer.totalTransactionsFor(Year.of(modelCache.localDate.year)).toString()
             ),
             Pair(
-                propertiesCache.translator.translate(this::class, "result"),
+                propertiesCache.translator.translate("result"),
                 Amount(
                     modelCache.dataContainer.totalIn(Year.of(modelCache.localDate.year)).value.plus(
                         modelCache.dataContainer.totalOut(

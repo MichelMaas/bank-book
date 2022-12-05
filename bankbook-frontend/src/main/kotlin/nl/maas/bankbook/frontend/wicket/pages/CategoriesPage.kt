@@ -52,11 +52,11 @@ class CategoriesPage : BasePage() {
             }
         }.addSelect(
             "category",
-            propertiesCache.translator.translate(CategoriesPage::class, "Category"),
+            propertiesCache.translator.translate("Category"),
             Categories.values().sortedBy { it }.toList()
-        ).addCheckBox("saveFilter", propertiesCache.translator.translate(CategoriesPage::class, "Save"), true)
+        ).addCheckBox("saveFilter", propertiesCache.translator.translate("Save"), true)
             .addFileUploadField("file")
-        val searchLabel = Label("searchLabel", propertiesCache.translator.translate(CategoriesPage::class, "search"))
+        val searchLabel = Label("searchLabel", propertiesCache.translator.translate("search"))
         addOrReplace(searchLabel, object : AjaxSearchField("search", Model.of(filter)) {
 
             override fun onChange(target: AjaxRequestTarget) {

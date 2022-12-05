@@ -34,9 +34,9 @@ class LinePanel<T : Comparable<T>>(
 //            .addAll(TextLabel.of(data.keys.toList()))
         data.keys.forEachIndexed { index, lineKey ->
             val data = this.data[lineKey]
-            labelsList.addAll(data!!.keys.map { propertiesCache.translator.translate(containingPage(), it) })
+            labelsList.addAll(data!!.keys.map { propertiesCache.translator.translate(it) })
             val lineDataset = LineDataset()
-            lineDataset.label = propertiesCache.translator.translate(containingPage(), lineKey)
+            lineDataset.label = propertiesCache.translator.translate(lineKey)
             lineDataset.setxAxisID(xLabel)
             lineDataset.setyAxisID(yLabel)
             lineDataset.data = Data(BigDecimalSafeNumberDataValue.of(data.values))

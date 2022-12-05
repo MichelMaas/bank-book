@@ -31,9 +31,9 @@ class BarPanel<T : Number>(
         val bar = Bar()
         val labels = mutableSetOf<String>()
         data.keys.forEach {
-            labels.addAll(data[it]!!.keys.map { propertiesCache.translator.translate(containingPage(), it) })
+            labels.addAll(data[it]!!.keys.map { propertiesCache.translator.translate(it) })
             val barDataSet = BarDataset()
-            barDataSet.label = propertiesCache.translator.translate(containingPage(), it)
+            barDataSet.label = propertiesCache.translator.translate(it)
             barDataSet.data = Data(BigDecimalSafeNumberDataValue.of(data[it]!!.values))
             bar.data.datasets.add(barDataSet)
         }

@@ -13,8 +13,9 @@ class Options private constructor(
     var watchedFolder: String = System.getProperty("user.home")
 ) : Storable<Options> {
 
-    val language: String
+    var language: String
         get() = CookieUtil.readLanguageCookie() ?: "en"
+        set(language: String) = CookieUtil.saveLanguageCookie(language)
 
     companion object {
         fun load(): Options =

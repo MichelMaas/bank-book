@@ -13,6 +13,6 @@ class TranslatedDayOfWeek private constructor(val propertiesCache: PropertiesCac
     }
 
     fun getDays(cls: KClass<out BasePage>): Array<String> {
-        return DayOfWeek.values().map { propertiesCache.translator.translate(cls, it.name) }.toTypedArray()
+        return DayOfWeek.values().map { propertiesCache.translator.translate(it.name) }.toTypedArray()
     }
 }
