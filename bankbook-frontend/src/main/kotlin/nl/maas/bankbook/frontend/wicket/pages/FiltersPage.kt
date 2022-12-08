@@ -4,7 +4,9 @@ import nl.maas.bankbook.domain.properties.Categories
 import nl.maas.bankbook.frontend.wicket.components.AjaxSearchField
 import nl.maas.bankbook.frontend.wicket.components.DynamicFormComponent
 import nl.maas.bankbook.frontend.wicket.components.DynamicTableComponent
+import nl.maas.bankbook.frontend.wicket.components.SimpleAjaxButton
 import nl.maas.bankbook.frontend.wicket.objects.Filter
+import nl.maas.bankbook.frontend.wicket.objects.Tuple
 import org.apache.commons.lang3.StringUtils.EMPTY
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -28,7 +30,11 @@ class FiltersPage : BasePage() {
     }
     }
 
+
     private var transactionsFilter = EMPTY
+
+    private val filters: MutableList<Tuple>
+        get() = modelCache.dataContainer.findSimilarFilters(transactionsFilter).toMutableList()
 
     override fun onBeforeRender() {
         super.onBeforeRender()
@@ -42,9 +48,27 @@ class FiltersPage : BasePage() {
     private fun setUpFilters() {
         val filters = DynamicTableComponent(
             "filters",
-            modelCache.dataContainer.findSimilarFilters(transactionsFilter).toMutableList()
+            filters
         )
-        filtersContainer.addOrReplace(filters)
+
+        val applyFilters = object : SimpleAjaxButton(
+            "applyBuytton",
+            "Apply",
+            translator = propertiesCache.translator,
+            block = true,
+            size = Size.SMALL
+        ) {
+            override fun onClick(target: AjaxRequestTarget) {
+                this@FiltersPage.filters.forEach {
+                    modelCache.dataContainer.changeCategoriesForAll(
+                        it.toFilterString(),
+                        it.columns.get("Category")!!.toString()
+                    )
+                }
+            }
+
+        }
+        filtersContainer.addOrReplace(filters, applyFilters)
     }
 
     private fun setUpSearchBar() {

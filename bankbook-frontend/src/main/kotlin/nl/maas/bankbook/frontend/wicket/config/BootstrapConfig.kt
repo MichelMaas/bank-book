@@ -26,6 +26,7 @@ class BootstrapConfig : WicketApplicationInitConfiguration {
     private lateinit var webApplication: WebApplication
     override fun init(webApplication: WebApplication) {
         this.webApplication = webApplication
+        webApplication.cspSettings.blocking().disabled()
         configure()
     }
 

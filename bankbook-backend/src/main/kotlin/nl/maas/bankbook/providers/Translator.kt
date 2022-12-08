@@ -3,7 +3,7 @@ package nl.maas.bankbook.providers
 import nl.maas.bankbook.utils.FileUtils
 import nl.maas.bankbook.utils.JsonUtils
 
-class Translator(language: String) {
+class Translator(language: String) : java.io.Serializable {
 
     val locale: String
     val language: String

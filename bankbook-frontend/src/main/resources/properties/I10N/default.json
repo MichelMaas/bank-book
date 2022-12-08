@@ -73,5 +73,6 @@
   "Folder": "Folder to monitor",
   "Reset": "Reset",
   "transactions": "Transactions",
-  "filters": "Filters"
+  "filters": "Filters",
+  "apply": "Apply"
 }

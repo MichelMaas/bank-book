@@ -3,7 +3,7 @@ package nl.maas.bankbook.providers
 import nl.maas.bankbook.utils.FileUtils
 import java.io.File
 
-open class TranslatorProvider {
+open class TranslatorProvider : java.io.Serializable {
 
     val translators: Map<String, Translator>
 

@@ -71,5 +71,6 @@
   "Theme": "テーマ",
   "Folder": "監視するフォルダ",
   "transactions": "総数",
-  "filters": "フィルター"
+  "filters": "フィルター",
+  "apply": "適用する"
 }
