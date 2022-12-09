@@ -6,7 +6,6 @@ import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.Model
 import java.time.LocalDate
-import java.time.Month
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -22,6 +21,24 @@ open class DatePickerButton(
         Model.of(Date.from(dateTime.atStartOfDay(ZoneId.systemDefault()).toInstant())),
         config(type, dateTime, locale)
     ) {
+
+    val japaneseNumerals: Map<String, String> =
+        listOf(
+            "一" to "1",
+            "二" to "2",
+            "三" to "3",
+            "四" to "4",
+            "五" to "5",
+            "六" to "6",
+            "七" to "7",
+            "八" to "8",
+            "九" to "9",
+            "十" to "10",
+            "十一" to "11",
+            "十二" to "12"
+        ).toMap()
+
+    val parsableInput get() = japaneseNumerals.map { input.replace(it.key, it.value) }.findLast { !input.equals(it) }
 
     companion object {
 
@@ -58,21 +75,21 @@ open class DatePickerButton(
 
     private fun parseInput(): LocalDate {
         var output: LocalDate
+
         when (type) {
-            PickerTypes.MONTH_YEAR -> output = LocalDate.parse(
-                "${
-                    input.replace(
-                        input.substringBefore(" "),
-                        Month.valueOf(input.substringBefore(" ").uppercase()).value.toString()
-                    )
-                } 01",
-                DateTimeFormatter.ofPattern("${type.format.replace("MMMM", "M")} dd").withLocale(Locale.getDefault())
-            )
+            PickerTypes.MONTH_YEAR -> {
+
+                output = LocalDate.parse(
+                    "1 $parsableInput",
+                    DateTimeFormatter.ofPattern("d MMM yyyy").withLocale(Locale.forLanguageTag(locale))
+                )
+            }
             PickerTypes.YEAR_ONLY -> output = LocalDate.parse(
-                "${input} 01 01",
+                "${parsableInput} 01 01",
                 DateTimeFormatter.ofPattern("${type.format} MM dd")
             )
-            PickerTypes.DAY_MONTH_YEAR -> output = LocalDate.parse(input, DateTimeFormatter.ofPattern(type.format))
+            PickerTypes.DAY_MONTH_YEAR -> output =
+                LocalDate.parse(parsableInput, DateTimeFormatter.ofPattern(type.format))
             else -> output = LocalDate.now()
         }
         return output
