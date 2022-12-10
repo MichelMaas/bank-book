@@ -5,7 +5,7 @@
     <parent>
         <groupId>nl.maas.bankbook</groupId>
         <artifactId>bankbook</artifactId>
-        <version>2022.17-SNAPSHOT</version>
+        <version>2022.17</version>
     </parent>
     <artifactId>bankbook-frontend</artifactId>
 
