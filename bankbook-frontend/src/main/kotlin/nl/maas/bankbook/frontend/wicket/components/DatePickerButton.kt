@@ -2,12 +2,12 @@ package nl.maas.bankbook.frontend.wicket.components
 
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.datetime.DatetimePicker
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.form.datetime.DatetimePickerConfig
+import nl.maas.bankbook.parsers.LocalDateParser
 import org.apache.wicket.ajax.AjaxEventBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.Model
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 open class DatePickerButton(
@@ -79,17 +79,17 @@ open class DatePickerButton(
 
         when (type) {
             PickerTypes.MONTH_YEAR -> {
-                output = LocalDate.parse(
+                output = LocalDateParser.parseStringTo(
                     "1 $parsableInput",
-                    DateTimeFormatter.ofPattern("d MMM yyyy").withLocale(Locale.forLanguageTag(locale))
+                    Locale.forLanguageTag(locale)
                 )
             }
-            PickerTypes.YEAR_ONLY -> output = LocalDate.parse(
+            PickerTypes.YEAR_ONLY -> output = LocalDateParser.parseStringTo(
                 "${parsableInput} 01 01",
-                DateTimeFormatter.ofPattern("${type.format} MM dd")
+                Locale.forLanguageTag(locale)
             )
             PickerTypes.DAY_MONTH_YEAR -> output =
-                LocalDate.parse(parsableInput, DateTimeFormatter.ofPattern(type.format))
+                LocalDateParser.parseStringTo(parsableInput, Locale.forLanguageTag(locale))
             else -> output = LocalDate.now()
         }
         return output
