@@ -38,7 +38,8 @@ open class DatePickerButton(
             "十二" to "12"
         ).toMap()
 
-    val parsableInput get() = japaneseNumerals.map { input.replace(it.key, it.value) }.findLast { !input.equals(it) }
+    val parsableInput
+        get() = japaneseNumerals.map { input.replace(it.key, it.value) }.findLast { !input.equals(it) } ?: input
 
     companion object {
 
@@ -78,7 +79,6 @@ open class DatePickerButton(
 
         when (type) {
             PickerTypes.MONTH_YEAR -> {
-
                 output = LocalDate.parse(
                     "1 $parsableInput",
                     DateTimeFormatter.ofPattern("d MMM yyyy").withLocale(Locale.forLanguageTag(locale))
