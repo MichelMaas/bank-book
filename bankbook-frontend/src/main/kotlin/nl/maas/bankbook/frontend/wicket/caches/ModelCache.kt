@@ -1,26 +1,75 @@
 package nl.maas.bankbook.frontend.wicket.caches
 
-import nl.maas.bankbook.frontend.wicket.objects.Account
+import nl.maas.bankbook.IterativeStorable
+import nl.maas.bankbook.domain.IBAN
+import nl.maas.bankbook.domain.Transaction
+import nl.maas.wicket.framework.objects.Tuple
 import org.springframework.stereotype.Component
+import java.time.Duration
 import java.time.LocalDate
-import javax.inject.Singleton
+import java.time.LocalDateTime
+import java.time.Year
 
 @Component
-@Singleton
-class ModelCache {
-    lateinit var dataContainer: Account;
-    var localDate: LocalDate = LocalDate.now()
+class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
-    init {
-        refresh()
+    private var transactions: List<Transaction> = IterativeStorable.load(Transaction::class)
+    val account get() = transactions.firstOrNull()?.baseAccount ?: IBAN("NL00NOBN000000000")
+    private var transactionTuples: List<Tuple> = listOf()
+    private var categoryTuples: List<Tuple> = listOf()
+
+    var date = LocalDate.now()
+
+    enum class PERIOD {
+        YEAR,
+        MONTH;
     }
 
-    fun refresh() {
-        dataContainer = Account.loadOrCreate()
+    override fun isEmpty(): Boolean {
+        return true
     }
 
-    fun isEmpty(): Boolean {
-        return dataContainer.transactions.isEmpty()
+    override fun refresh() {
+        transactions = IterativeStorable.load(Transaction::class)
     }
+
+    fun transactionsForPeriod(localDate: LocalDate, period: PERIOD): List<Transaction> {
+        val start = LocalDateTime.now()
+        val transactionsForPeriod = when (period) {
+            PERIOD.MONTH -> transactions.filter {
+                between(
+                    localDate.withDayOfMonth(1),
+                    localDate.withDayOfMonth(localDate.month.length(localDate.isLeapYear)),
+                    it.date
+                )
+            }
+
+            else -> transactions.filter {
+                between(
+                    localDate.withDayOfYear(1),
+                    localDate.withDayOfYear(Year.of(localDate.year).length()),
+                    it.date
+                )
+            }
+        }
+        val end = LocalDateTime.now()
+        println("Fetching transactions took ${Duration.between(start, end).toString()}")
+        return transactionsForPeriod
+    }
+
+    fun transactionsForPreviousPeriod(
+        localDate: LocalDate,
+        period: ModelCache.PERIOD
+    ): List<Transaction> {
+        return when (period) {
+            ModelCache.PERIOD.MONTH -> transactionsForPeriod(localDate.minusMonths(1), period)
+            else -> transactionsForPeriod(localDate.minusYears(1), period)
+        }
+    }
+
+    private fun between(startDate: LocalDate, endDate: LocalDate, date: LocalDate): Boolean {
+        return !date.isBefore(startDate) && !date.isAfter(endDate)
+    }
+
 
 }

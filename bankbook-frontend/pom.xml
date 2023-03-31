@@ -12,11 +12,19 @@
     <properties>
         <wicketstuff.version>9.5.0</wicketstuff.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <wicket.version>9.7.0</wicket.version>
-        <wicket-bootstrap.version>5.0.4</wicket-bootstrap.version>
+        <wicket.version>9.12.0</wicket.version>
+        <wicket-bootstrap.version>6.0.2</wicket-bootstrap.version>
         <wicket-bootstrap-less.version>4.0.4</wicket-bootstrap-less.version>
         <javafx.version>11</javafx.version>
+        <wicket.framework.lib.version>2023.9-SNAPSHOT</wicket.framework.lib.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -179,6 +187,18 @@
             <groupId>de.agilecoders.wicket</groupId>
             <artifactId>wicket-bootstrap-themes</artifactId>
             <version>${wicket-bootstrap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.maas.wicket.framework</groupId>
+            <artifactId>wicket.framework.lib</artifactId>
+            <version>${wicket.framework.lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.therealbush</groupId>
+            <artifactId>translator</artifactId>
+            <version>1.0.2</version>
         </dependency>
 
         <dependency>

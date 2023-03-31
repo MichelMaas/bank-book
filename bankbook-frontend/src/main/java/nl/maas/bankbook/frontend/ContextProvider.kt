@@ -13,7 +13,7 @@ class ContextProvider : ApplicationContextAware {
     }
 
     override fun setApplicationContext(context: ApplicationContext) {
-        ContextProvider.Companion.ctx = context as ConfigurableApplicationContext
+        ctx = context as ConfigurableApplicationContext
     }
 
 
