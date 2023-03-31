@@ -1,5 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.caches
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.IterativeStorable
 import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.Transaction
@@ -37,19 +39,27 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         val start = LocalDateTime.now()
         val transactionsForPeriod = when (period) {
             PERIOD.MONTH -> transactions.filter {
-                between(
-                    localDate.withDayOfMonth(1),
-                    localDate.withDayOfMonth(localDate.month.length(localDate.isLeapYear)),
-                    it.date
-                )
+                runBlocking {
+                    async {
+                        between(
+                            localDate.withDayOfMonth(1),
+                            localDate.withDayOfMonth(localDate.month.length(localDate.isLeapYear)),
+                            it.date
+                        )
+                    }.await()
+                }
             }
 
             else -> transactions.filter {
-                between(
-                    localDate.withDayOfYear(1),
-                    localDate.withDayOfYear(Year.of(localDate.year).length()),
-                    it.date
-                )
+                runBlocking {
+                    async {
+                        between(
+                            localDate.withDayOfYear(1),
+                            localDate.withDayOfYear(Year.of(localDate.year).length()),
+                            it.date
+                        )
+                    }.await()
+                }
             }
         }
         val end = LocalDateTime.now()
@@ -62,7 +72,15 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         period: ModelCache.PERIOD
     ): List<Transaction> {
         return when (period) {
-            ModelCache.PERIOD.MONTH -> transactionsForPeriod(localDate.minusMonths(1), period)
+            ModelCache.PERIOD.MONTH -> runCatching {
+                transactionsForPeriod(
+                    localDate.minusMonths(1),
+                    period
+                )
+            }.getOrDefault(
+                listOf()
+            )
+
             else -> transactionsForPeriod(localDate.minusYears(1), period)
         }
     }
