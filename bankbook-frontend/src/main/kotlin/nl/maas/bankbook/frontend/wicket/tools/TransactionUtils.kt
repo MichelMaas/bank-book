@@ -1,5 +1,8 @@
 package nl.maas.bankbook.frontend.wicket.tools
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.wicket.framework.objects.Tuple
@@ -14,7 +17,7 @@ class TransactionUtils {
     @Inject
     lateinit var modelCache: ModelCache
 
-    fun transactionsToTuples(
+    suspend fun transactionsToTuples(
         transactions: List<Transaction>,
         categorized: Boolean,
         period: ModelCache.PERIOD
@@ -22,24 +25,31 @@ class TransactionUtils {
         if (transactions.isEmpty()) {
             return listOf()
         }
-        return when (categorized) {
-            true -> {
-                val previous =
-                    modelCache.transactionsForPreviousPeriod(transactions.first().date, period).groupBy { it.category }
-                return transactions.groupBy { it.category }
-                    .map {
-                        createCategoryTuple(
-                            previous[it.key]?.sumOf { it.mutation.value } ?: BigDecimal.ZERO,
-                            it.key to it.value,
-                            transactions.first().date,
-                            period
-                        )
-                    }
-            }
+        return coroutineScope {
+            when (categorized) {
+                true -> {
+                    val previous =
+                        modelCache.transactionsForPreviousPeriod(transactions.first().date, period).groupBy {
+                            async { it.category }.await()
+                        }
+                    return@coroutineScope transactions.groupBy { async { it.category }.await() }
+                        .map {
+                            async {
+                                createCategoryTuple(
+                                    previous[it.key]?.sumOf { it.mutation.value } ?: BigDecimal.ZERO,
+                                    it.key to it.value,
+                                    transactions.first().date,
+                                    period
+                                )
+                            }.await()
+                        }
+                }
 
-            else -> transactions.map { createTransactionTuple(it) }
+                else -> async { transactions.map { createTransactionTuple(it) } }.await()
+            }
         }
     }
+
 
     private fun createTransactionTuple(transaction: Transaction): Tuple {
         return Tuple(

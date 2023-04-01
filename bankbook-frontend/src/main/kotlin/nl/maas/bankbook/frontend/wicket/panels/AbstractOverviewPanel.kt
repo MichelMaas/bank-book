@@ -1,6 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.panels
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TransactionUtils
@@ -16,10 +17,14 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.spring.injection.annot.SpringBean
 import java.math.BigDecimal
+import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = ModelCache.PERIOD.YEAR) :
     RIAPanel() {
+    private val creationStart = LocalDateTime.now()
+    private lateinit var renderStart: LocalDateTime
 
     @SpringBean
     private lateinit var modelCache: ModelCache
@@ -32,9 +37,25 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     @SpringBean
     private lateinit var transactionUtils: TransactionUtils
 
+    override fun onInitialize() {
+        super.onInitialize()
+        println(
+            "Initializing ${this::class.simpleName} took ${
+                Duration.between(creationStart, LocalDateTime.now())
+            }"
+        )
+    }
+
     override fun onBeforeRender() {
         super.onBeforeRender()
+        renderStart = LocalDateTime.now()
         addOrReplace(createPanel())
+    }
+
+    override fun onAfterRender() {
+        super.onAfterRender()
+        val renderEnd = LocalDateTime.now()
+        println("Rendering ${this::class.simpleName} took ${Duration.between(renderStart, renderEnd).toString()}")
     }
 
     private fun createPanel(): Component {
@@ -91,12 +112,14 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
 
     private fun createTable(transactions: List<Transaction>): Component {
-        val tuples = transactionUtils.transactionsToTuples(transactions, categorized, period)
+        val tuples = runBlocking { transactionUtils.transactionsToTuples(transactions, categorized, period) }
+        val translateColumns = if (!categorized) arrayOf("Category") else arrayOf()
         return DynamicDataTable.get(
             DynamicPanel.ROW_CONTENT_ID,
             tuples,
             15,
-            translator
+            translator,
+            *translateColumns
         ).sm().striped().invertHeader()
     }
 

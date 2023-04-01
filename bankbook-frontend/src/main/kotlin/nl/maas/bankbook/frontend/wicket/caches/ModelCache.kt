@@ -11,8 +11,10 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Year
+import javax.inject.Singleton
 
 @Component
+@Singleton
 class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     private var transactions: List<Transaction> = IterativeStorable.load(Transaction::class)

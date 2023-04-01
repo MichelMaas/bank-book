@@ -2,6 +2,7 @@ package nl.maas.bankbook.frontend.wicket.pages
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.NavbarButton
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.objects.BankBookBasePageProperties
@@ -107,9 +108,10 @@ class OverviewPage(pageParameters: PageParameters = PageParameters().add("period
 
 
     private fun createTable(transactions: List<Transaction>): Component {
+        val tuples = runBlocking { transactionUtils.transactionsToTuples(transactions, categorized, period) }
         return DynamicDataTable.get(
             ROW_CONTENT_ID,
-            transactionUtils.transactionsToTuples(transactions, categorized, period),
+            tuples,
             15,
             translator
         ).sm().striped()
