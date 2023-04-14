@@ -1,6 +1,7 @@
 package nl.maas.bankbook.frontend.wicket.panels
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.Transaction
@@ -55,6 +56,8 @@ class FiltersPanel : RIAPanel() {
     private val TRANSACTIONS = "Transactions"
 
     private fun createDynamicPanel(): DynamicPanel {
+        val filterTable = createFilterTable()
+        val transactionsTable = createTransactionsTable()
         panel = DynamicPanel("panel")
             .addRows(
                 SEARCH to intArrayOf(12),
@@ -62,15 +65,15 @@ class FiltersPanel : RIAPanel() {
                 FILTER_BUTTON to intArrayOf(4, 8),
                 TRANSACTIONS to intArrayOf(12)
             )
-            .addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar())
-            .addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm())
-            .addOrReplaceComponentToColumn(FILTERS, 1, createFilterTable())
+            .addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar(transactionsTable, filterTable))
+            .addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable))
+            .addOrReplaceComponentToColumn(FILTERS, 1, filterTable)
             .addOrReplaceComponentToColumn(FILTER_BUTTON, 1, createFilterButton())
-            .addOrReplaceComponentToColumn(TRANSACTIONS, 0, createTransactionsTable())
+            .addOrReplaceComponentToColumn(TRANSACTIONS, 0, transactionsTable)
         return panel
     }
 
-    private fun createTransactionsTable(): Component {
+    private fun createTransactionsTable(): DynamicDataTable {
         val tuples =
             runBlocking { tupleUtils.transactionsToTuples(filterCache.transactions, false, ModelCache.PERIOD.NONE) }
         return DynamicDataTable.get(ROW_CONTENT_ID, tuples, 15, 50, translator, "Category").invertHeader().sm()
@@ -94,12 +97,12 @@ class FiltersPanel : RIAPanel() {
         }
     }
 
-    private fun createFilterTable(): Component {
+    private fun createFilterTable(): DynamicDataTable {
         val filterTuples = tupleUtils.filtersToTuples(filterCache.filters)
         return DynamicDataTable.get(ROW_CONTENT_ID, filterTuples, 6, 40, translator).invertHeader().sm().striped()
     }
 
-    private fun createFilterForm(): Component {
+    private fun createFilterForm(filterTable: DynamicDataTable): Component {
         val categoryFilter = CategoryFilter(filterString, Categories.values().sorted().first(), true)
         return object :
             DynamicFormComponent<CategoryFilter>(
@@ -110,19 +113,40 @@ class FiltersPanel : RIAPanel() {
             ) {
             override fun onSubmitCompleted(target: AjaxRequestTarget, typedModelObject: CategoryFilter) {
                 super.onSubmitCompleted(target, typedModelObject)
+                typedModelObject.filterString = filterCache.filter
                 typedModelObject.store()
                 modelCache.applyCategorieOn(filterCache.transactions, typedModelObject)
-                reload(target)
+                modelCache.refresh()
+                filterCache.filter(filterCache.filter)
+                val filtersToTuples = tupleUtils.filtersToTuples(filterCache.filters)
+                filterTable.update(filtersToTuples, target)
             }
         }.addSelect("category", "Category", Categories.values().toList(), categoryFilter.category)
             .addCheckbox("store", "Store", categoryFilter.store)
     }
 
-    private fun createSearchBar(): Component {
+    private fun createSearchBar(transactionTable: DynamicDataTable, filterTable: DynamicDataTable): Component {
         return object : AjaxSearchField(ROW_CONTENT_ID, CompoundPropertyModel.of(filterString)) {
             override fun onChange(target: AjaxRequestTarget) {
-                filterCache.filter(convertedInput)
-                reload(target)
+                filterCache.filter(convertedInput ?: StringUtils.EMPTY)
+                runBlocking {
+                    val transTuples = async {
+                        tupleUtils.transactionsToTuples(
+                            filterCache.transactions,
+                            false,
+                            ModelCache.PERIOD.NONE
+                        )
+                    }
+                    val filTuples = async {
+                        tupleUtils.filtersToTuples(filterCache.filters)
+                    }
+
+                    transactionTable.update(
+                        transTuples.await(), target
+                    )
+
+                    filterTable.update(filTuples.await(), target)
+                }
             }
         }
     }
@@ -131,13 +155,25 @@ class FiltersPanel : RIAPanel() {
         private var _transactions: List<Transaction> =
             modelCache.transactionsForPeriod(LocalDate.now(), ModelCache.PERIOD.NONE)
         private var _filters: List<CategoryFilter> = modelCache.findFilters("s")
+        private var _filter = StringUtils.EMPTY
 
         val transactions: List<Transaction> get() = _transactions
         val filters: List<CategoryFilter> get() = _filters
+        val filter: String get() = _filter
+
 
         fun filter(filter: String) {
-            _transactions = runBlocking { modelCache.filterTransactions(filter, _transactions) }
-            _filters = runBlocking { modelCache.findFilters(filter) }
+            if (filter.length < this._filter.length) {
+                _transactions = modelCache.transactionsForFilter(filter)
+            } else {
+                runBlocking {
+                    val launch1 = async { modelCache.filterTransactions(filter, transactions) }
+                    val launch2 = async { modelCache.findFilters(filter) }
+                    _transactions = launch1.await()
+                    _filters = launch2.await()
+                }
+            }
+            this._filter = filter
         }
     }
 }

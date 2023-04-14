@@ -137,4 +137,9 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             }
         }
     }
+
+
+    override fun isAvailable(): Boolean {
+        return !modelCache.isEmpty()
+    }
 }

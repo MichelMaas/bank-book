@@ -2,6 +2,8 @@ package nl.maas.bankbook.domain
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.annotations.StoreAs
 import org.apache.commons.lang3.NotImplementedException
 import java.nio.file.Files
@@ -27,18 +29,22 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                 .findAnnotation<StoreAs>()!!.storeAs else clazz.java.simpleName
             val path = Paths.get(path(className!!))
 
-            return if (path.toFile().exists()) Files.readAllLines(path).map { decode(it) }
-                .map { Gson().fromJson(it, JsonObject::class.java) as JsonObject }
-                .map {
-                    Gson().fromJson(
-                        it,
-                        if (it.has("type"))
-                            Class.forName(
-                                it.get("type").asString
-                            ) as Class<T> else
-                            clazz.java
-                    )
-                } else listOf<T>()
+            return runBlocking {
+                if (path.toFile().exists()) Files.readAllLines(path).map { async { decode(it) }.await() }
+                    .map { async { Gson().fromJson(it, JsonObject::class.java) as JsonObject }.await() }
+                    .map {
+                        async {
+                            Gson().fromJson(
+                                it,
+                                if (it.has("type"))
+                                    Class.forName(
+                                        it.get("type").asString
+                                    ) as Class<T> else
+                                    clazz.java
+                            )
+                        }.await()
+                    } else listOf<T>()
+            }
         }
 
         fun <T : IterativeStorable<T>> storeAll(storables: List<T>): List<T> {
@@ -52,11 +58,11 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                         .findAnnotation<StoreAs>()!!.storeAs else storablesClass.java.simpleName
                 val path = path(className.lowercase())
                 val dir = Paths.get(path.substring(0, path.lastIndexOf("/")))
-//                val oldList = load(storablesClass)
-//                val toRemove = storables.flatMap { runBlocking { async { it.replace(oldList) }.await() } }
-//                val newList = oldList.minus(toRemove).plus(storables)
+                val oldList = load(storablesClass)
+                val toRemove = storables.flatMap { runBlocking { async { it.replace(oldList) }.await() } }
+                val newList = oldList.minus(toRemove).plus(storables)
                 Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
-                Files.write(Paths.get("${path}"), storables.map { encode(serialize(it)) }, Charsets.UTF_8)
+                Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
                 return load(storablesClass)
             } else {
                 return listOf()

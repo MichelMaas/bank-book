@@ -1,8 +1,6 @@
 package nl.maas.bankbook.frontend.wicket.caches
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.IterativeStorable
@@ -32,11 +30,12 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     }
 
     override fun isEmpty(): Boolean {
-        return true
+        return transactions.isEmpty()
     }
 
     override fun refresh() {
         transactions = IterativeStorable.load(Transaction::class)
+        categoryFilters = IterativeStorable.load(CategoryFilter::class)
     }
 
     fun transactionsForPeriod(localDate: LocalDate, period: PERIOD): List<Transaction> {
@@ -108,7 +107,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 async { it.category = categoryFilter.category.name }
             }
         }
-        IterativeStorable.storeAll(transactions)
+        GlobalScope.launch { async { IterativeStorable.storeAll(transactions) } }
     }
 
     suspend fun filterTransactions(
@@ -163,5 +162,13 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
     }
 
+    fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
+        categoryFilters.forEach { runBlocking { async { applyCategorieOn(transactions, it) }.await() } }
+        transactions =
+            transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
+                .plus(newTransactions)
+        GlobalScope.launch { IterativeStorable.storeAll(transactions) }
+        refresh()
+    }
 
 }
