@@ -16,7 +16,7 @@
         <wicket-bootstrap.version>6.0.2</wicket-bootstrap.version>
         <wicket-bootstrap-less.version>4.0.4</wicket-bootstrap-less.version>
         <javafx.version>11</javafx.version>
-        <wicket.framework.lib.version>2023.9-SNAPSHOT</wicket.framework.lib.version>
+        <wicket.framework.lib.version>2023.11-SNAPSHOT</wicket.framework.lib.version>
     </properties>
 
     <repositories>
@@ -69,18 +69,18 @@
             <version>9.0.0-M2</version>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-undertow</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
         <!--        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jetty</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-jetty</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

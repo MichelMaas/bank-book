@@ -4,7 +4,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
-import nl.maas.bankbook.frontend.wicket.tools.TransactionUtils
+import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.DynamicDataTable
 import nl.maas.wicket.framework.components.base.DynamicPanel
 import nl.maas.wicket.framework.components.base.KeyValueView
@@ -35,7 +35,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private var categorized = true
 
     @SpringBean
-    private lateinit var transactionUtils: TransactionUtils
+    private lateinit var tupleUtils: TupleUtils
 
     override fun onInitialize() {
         super.onInitialize()
@@ -112,12 +112,13 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
 
     private fun createTable(transactions: List<Transaction>): Component {
-        val tuples = runBlocking { transactionUtils.transactionsToTuples(transactions, categorized, period) }
+        val tuples = runBlocking { tupleUtils.transactionsToTuples(transactions, categorized, period) }
         val translateColumns = if (!categorized) arrayOf("Category") else arrayOf()
         return DynamicDataTable.get(
             DynamicPanel.ROW_CONTENT_ID,
             tuples,
             15,
+            50,
             translator,
             *translateColumns
         ).sm().striped().invertHeader()

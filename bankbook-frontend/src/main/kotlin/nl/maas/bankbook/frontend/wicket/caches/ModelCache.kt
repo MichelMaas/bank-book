@@ -1,32 +1,34 @@
 package nl.maas.bankbook.frontend.wicket.caches
 
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
-import nl.maas.bankbook.IterativeStorable
+import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.IBAN
+import nl.maas.bankbook.domain.IterativeStorable
 import nl.maas.bankbook.domain.Transaction
-import nl.maas.wicket.framework.objects.Tuple
+import nl.maas.wicket.framework.services.Translator
+import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
-import java.time.Duration
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Year
-import javax.inject.Singleton
+import java.time.*
+import javax.inject.Inject
 
 @Component
-@Singleton
 class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
+    @Inject
+    private lateinit var translator: Translator
+
     private var transactions: List<Transaction> = IterativeStorable.load(Transaction::class)
+    private var categoryFilters: List<CategoryFilter> = IterativeStorable.load(CategoryFilter::class)
     val account get() = transactions.firstOrNull()?.baseAccount ?: IBAN("NL00NOBN000000000")
-    private var transactionTuples: List<Tuple> = listOf()
-    private var categoryTuples: List<Tuple> = listOf()
 
     var date = LocalDate.now()
 
     enum class PERIOD {
         YEAR,
-        MONTH;
+        MONTH,
+        NONE;
     }
 
     override fun isEmpty(): Boolean {
@@ -52,7 +54,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 }
             }
 
-            else -> transactions.filter {
+            PERIOD.YEAR -> transactions.filter {
                 runBlocking {
                     async {
                         between(
@@ -63,10 +65,16 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                     }.await()
                 }
             }
+
+            else -> transactions.sortedByDescending { runBlocking { async { it.date }.await() } }
         }
         val end = LocalDateTime.now()
         println("Fetching transactions took ${Duration.between(start, end).toString()}")
-        return transactionsForPeriod
+        if (transactionsForPeriod.size > 100) {
+            return transactionsForPeriod.subList(0, 99)
+        } else {
+            return transactionsForPeriod
+        }
     }
 
     fun transactionsForPreviousPeriod(
@@ -89,6 +97,70 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     private fun between(startDate: LocalDate, endDate: LocalDate, date: LocalDate): Boolean {
         return !date.isBefore(startDate) && !date.isAfter(endDate)
+    }
+
+    fun applyCategorieOn(
+        transactions: List<Transaction> = this.transactions,
+        categoryFilter: CategoryFilter
+    ) {
+        runBlocking {
+            filterTransactions(categoryFilter.filterString, transactions).forEach {
+                async { it.category = categoryFilter.category.name }
+            }
+        }
+        IterativeStorable.storeAll(transactions)
+    }
+
+    suspend fun filterTransactions(
+        filter: String,
+        transactions: List<Transaction>
+    ): List<Transaction> {
+        val start = LocalTime.now()
+        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
+        var filtered: List<Transaction> = coroutineScope {
+            transactions.filter { tr ->
+                async {
+                    filterWords.all { filterWord ->
+                        async {
+                            tr.filterValues().map { translator.translate(it) }.joinToString(StringUtils.SPACE)
+                                .contains(filterWord, true)
+                        }.await()
+                    }
+                }.await()
+            }.sortedByDescending { it.date }
+        }
+
+        val end = LocalTime.now()
+        val between = Duration.between(start, end)
+        println("Filtering took: ${between}")
+        return filtered
+    }
+
+    fun transactionsForFilter(filter: String): List<Transaction> {
+        return runBlocking { filterTransactions(filter, transactions) }
+    }
+
+    fun applyCategorieOnAll(categoryFilter: CategoryFilter) {
+        applyCategorieOn(transactions, categoryFilter)
+    }
+
+    fun findFilters(filter: String): List<CategoryFilter> {
+        if (filter.isNullOrBlank()) {
+            return categoryFilters
+        }
+        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
+        return runBlocking {
+            categoryFilters.filter { tr ->
+                async {
+                    filterWords.all { filterWord ->
+                        async {
+                            tr.filterValues().map { translator.translate(it) }.joinToString(StringUtils.SPACE)
+                                .contains(filterWord, true)
+                        }.await()
+                    }
+                }.await()
+            }
+        }
     }
 
 

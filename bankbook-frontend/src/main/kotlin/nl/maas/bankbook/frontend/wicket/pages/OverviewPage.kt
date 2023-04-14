@@ -7,7 +7,7 @@ import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.objects.BankBookBasePageProperties
 import nl.maas.bankbook.frontend.wicket.objects.enums.ButtonTypes
-import nl.maas.bankbook.frontend.wicket.tools.TransactionUtils
+import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.DynamicDataTable
 import nl.maas.wicket.framework.components.base.DynamicPanel
 import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
@@ -33,7 +33,7 @@ class OverviewPage(pageParameters: PageParameters = PageParameters().add("period
     private val period: ModelCache.PERIOD
 
     @SpringBean
-    private lateinit var transactionUtils: TransactionUtils
+    private lateinit var tupleUtils: TupleUtils
 
     init {
         period = pageParameters.get("period").toEnum(ModelCache.PERIOD::class.java)
@@ -108,11 +108,12 @@ class OverviewPage(pageParameters: PageParameters = PageParameters().add("period
 
 
     private fun createTable(transactions: List<Transaction>): Component {
-        val tuples = runBlocking { transactionUtils.transactionsToTuples(transactions, categorized, period) }
+        val tuples = runBlocking { tupleUtils.transactionsToTuples(transactions, categorized, period) }
         return DynamicDataTable.get(
             ROW_CONTENT_ID,
             tuples,
             15,
+            50,
             translator
         ).sm().striped()
     }

@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties(prefix = BootstrapProperties.PROPERTY_PREFIX)
 class BootstrapProperties : BootstrapSettings() {
     var isEnabled = true
-    var theme: BootswatchTheme = BootswatchTheme.Materia
+    var theme: BootswatchTheme = BootswatchTheme.Spacelab
 
     companion object {
         const val PROPERTY_PREFIX = "nl.maas.bankbook.frontend.wicket.config"

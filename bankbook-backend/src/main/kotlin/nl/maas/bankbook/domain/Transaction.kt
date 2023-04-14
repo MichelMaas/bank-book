@@ -1,6 +1,5 @@
 package nl.maas.bankbook.domain
 
-import nl.maas.bankbook.IterativeStorable
 import nl.maas.bankbook.domain.annotations.StoreAs
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
