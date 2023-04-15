@@ -5,7 +5,7 @@ import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.IterativeStorable
 import nl.maas.bankbook.domain.Transaction
-import nl.maas.wicket.framework.services.Translator
+import nl.maas.bankbook.frontend.translation.CachingGoogleTranslator
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
 import java.time.*
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     @Inject
-    private lateinit var translator: Translator
+    private lateinit var translator: CachingGoogleTranslator
 
     private var transactions: List<Transaction> = IterativeStorable.load(Transaction::class)
     private var categoryFilters: List<CategoryFilter> = IterativeStorable.load(CategoryFilter::class)
@@ -107,7 +107,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 async { it.category = categoryFilter.category.name }
             }
         }
-        GlobalScope.launch { async { IterativeStorable.storeAll(transactions) } }
+        GlobalScope.launch { async { IterativeStorable.storeAll(transactions) } }.invokeOnCompletion { refresh() }
     }
 
     suspend fun filterTransactions(
@@ -121,7 +121,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 async {
                     filterWords.all { filterWord ->
                         async {
-                            tr.filterValues().map { translator.translate(it) }.joinToString(StringUtils.SPACE)
+                            tr.filterValues(translator).map { it }.joinToString(StringUtils.SPACE)
                                 .contains(filterWord, true)
                         }.await()
                     }
@@ -153,7 +153,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 async {
                     filterWords.all { filterWord ->
                         async {
-                            tr.filterValues().map { translator.translate(it) }.joinToString(StringUtils.SPACE)
+                            tr.filterValues().map { it }.joinToString(StringUtils.SPACE)
                                 .contains(filterWord, true)
                         }.await()
                     }
@@ -167,8 +167,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         transactions =
             transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
                 .plus(newTransactions)
-        GlobalScope.launch { IterativeStorable.storeAll(transactions) }
-        refresh()
+        GlobalScope.launch { IterativeStorable.storeAll(transactions) }.invokeOnCompletion { refresh() }
     }
 
 }

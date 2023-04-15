@@ -2,7 +2,7 @@ package nl.maas.bankbook.frontend.translation
 
 import nl.maas.bankbook.domain.IterativeStorable
 
-class Translation(val language: String, val original: String, val translation: String) :
+class Translation(val language: String, val original: String, var translation: String) :
     IterativeStorable<Translation> {
     override fun replace(source: List<Translation>): List<Translation> {
         return source.filter { it.equals(this) }
@@ -13,7 +13,9 @@ class Translation(val language: String, val original: String, val translation: S
             return false
         } else {
             val ot = other as Translation
-            return this.language.equals(ot.translation) && this.original.equals(ot.original)
+            return this.language.equals(ot.language, true) && this.original.equals(
+                ot.original, true
+            )
         }
     }
 }

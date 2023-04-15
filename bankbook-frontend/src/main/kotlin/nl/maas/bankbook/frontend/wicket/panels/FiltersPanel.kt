@@ -66,7 +66,7 @@ class FiltersPanel : RIAPanel() {
                 TRANSACTIONS to intArrayOf(12)
             )
             .addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar(transactionsTable, filterTable))
-            .addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable))
+            .addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable, transactionsTable))
             .addOrReplaceComponentToColumn(FILTERS, 1, filterTable)
             .addOrReplaceComponentToColumn(FILTER_BUTTON, 1, createFilterButton())
             .addOrReplaceComponentToColumn(TRANSACTIONS, 0, transactionsTable)
@@ -99,10 +99,11 @@ class FiltersPanel : RIAPanel() {
 
     private fun createFilterTable(): DynamicDataTable {
         val filterTuples = tupleUtils.filtersToTuples(filterCache.filters)
-        return DynamicDataTable.get(ROW_CONTENT_ID, filterTuples, 6, 40, translator).invertHeader().sm().striped()
+        return DynamicDataTable.get(ROW_CONTENT_ID, filterTuples, 6, 40, translator, "Category").invertHeader().sm()
+            .striped()
     }
 
-    private fun createFilterForm(filterTable: DynamicDataTable): Component {
+    private fun createFilterForm(filterTable: DynamicDataTable, transactionTable: DynamicDataTable): Component {
         val categoryFilter = CategoryFilter(filterString, Categories.values().sorted().first(), true)
         return object :
             DynamicFormComponent<CategoryFilter>(
@@ -111,17 +112,32 @@ class FiltersPanel : RIAPanel() {
                 CompoundPropertyModel.of(categoryFilter),
                 translator
             ) {
-            override fun onSubmitCompleted(target: AjaxRequestTarget, typedModelObject: CategoryFilter) {
-                super.onSubmitCompleted(target, typedModelObject)
+
+            override fun onSubmit(target: AjaxRequestTarget, typedModelObject: CategoryFilter) {
+                super.onSubmit(target, typedModelObject)
                 typedModelObject.filterString = filterCache.filter
                 typedModelObject.store()
                 modelCache.applyCategorieOn(filterCache.transactions, typedModelObject)
                 modelCache.refresh()
                 filterCache.filter(filterCache.filter)
+            }
+
+            override fun onSubmitCompleted(target: AjaxRequestTarget, typedModelObject: CategoryFilter) {
+                super.onSubmitCompleted(target, typedModelObject)
                 val filtersToTuples = tupleUtils.filtersToTuples(filterCache.filters)
                 filterTable.update(filtersToTuples, target)
+                val transactionsToTuples =
+                    runBlocking {
+                        tupleUtils.transactionsToTuples(
+                            filterCache.transactions,
+                            false,
+                            ModelCache.PERIOD.NONE
+                        )
+                    }
+                transactionTable.update(transactionsToTuples, target)
             }
-        }.addSelect("category", "Category", Categories.values().toList(), categoryFilter.category)
+
+        }.addSelect("category", "Category", Categories.values().toList().sortedBy { it.name }, categoryFilter.category)
             .addCheckbox("store", "Store", categoryFilter.store)
     }
 

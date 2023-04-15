@@ -3,6 +3,7 @@ package nl.maas.bankbook.domain
 import nl.maas.bankbook.domain.annotations.StoreAs
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
+import nl.maas.bankbook.providers.Translator
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -55,11 +56,13 @@ abstract class Transaction(
         }\nCounter: ${counter()}\n}"
     }
 
-    fun filterValues(): Array<String> {
+    fun filterValues(translator: Translator): Array<String> {
         return this::class.memberProperties.filterNot { "id".equals(it.name) }.map {
 
             if (LocalDate::class.starProjectedType.equals(it.returnType)) {
                 (it.call(this) as LocalDate).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+            } else if (it.name.equals("category")) {
+                translator.translate(it.call(this).toString())
             } else {
                 it.call(this).toString()
             }

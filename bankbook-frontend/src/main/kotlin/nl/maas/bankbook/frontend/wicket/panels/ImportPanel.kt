@@ -52,8 +52,8 @@ class ImportPanel : RIAPanel() {
             tuples,
             30,
             translator = translator,
-            translateContent = arrayOf("Category")
-        )
+            translateContent = arrayOf("NONE")
+        ).sm().striped().invertHeader()
     }
 
     private fun createForm(): Component {

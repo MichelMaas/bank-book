@@ -113,7 +113,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     private fun createTable(transactions: List<Transaction>): Component {
         val tuples = runBlocking { tupleUtils.transactionsToTuples(transactions, categorized, period) }
-        val translateColumns = if (!categorized) arrayOf("Category") else arrayOf()
+        val translateColumns = if (!categorized) arrayOf("Category") else arrayOf("NONE")
         return DynamicDataTable.get(
             DynamicPanel.ROW_CONTENT_ID,
             tuples,

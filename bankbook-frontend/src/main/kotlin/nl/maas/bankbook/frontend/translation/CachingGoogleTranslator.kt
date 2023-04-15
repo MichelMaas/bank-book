@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class CachingGoogleTranslator() : Translator {
+class CachingGoogleTranslator() : Translator, nl.maas.bankbook.providers.Translator {
 
     private var translations = IterativeStorable.load(Translation::class)
 
@@ -34,8 +34,7 @@ class CachingGoogleTranslator() : Translator {
     }
 
     fun updateTranslations(word: String, translation: String) {
-        translations = translations.plus(Translation(language, word, translation))
-        IterativeStorable.storeAll(translations)
+        translations = IterativeStorable.storeAll(listOf(Translation(language, word, translation)))
     }
 
     fun translations() = translations
