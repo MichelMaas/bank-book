@@ -7,7 +7,7 @@
         {
           "name": "BasePage",
           "labels": {
-            "title": "Bank Book",
+            "title": "Filerenamer",
             "January": "January",
             "February": "February",
             "March": "March",
@@ -27,66 +27,31 @@
             "Friday": "Friday",
             "Saturday": "Saturday",
             "Sunday": "Sunday",
-            "YearIndicator": "",
-            "nothing": "Nothing",
-            "totTrans": "Tot. Trans",
-            "result": "Result",
-            "account": "Account",
-            "totIn": "Total in",
-            "totOut": "Total out",
-            "categories": "Categories",
-            "groceries": "Groceries",
-            "car": "Car",
-            "other": "Other",
-            "home": "Home",
-            "shopping": "Shopping",
-            "clothing": "Clothing",
-            "vacation": "Vacation",
-            "unknown": "Unknown",
-            "child_benefits": "Child benefits",
-            "EATING_OUT_TAKE_OUT": "Eating out, Take out",
-            "insurance": "Insurance",
-            "loans": "Loans",
-            "school": "Education",
-            "telecom": "Telecom",
-            "tax_returns": "Tax returns",
-            "utilities": "Utilities",
-            "tax": "Taxes",
-            "income": "Income",
-            "saving": "Savings",
-            "investments": "Investments",
-            "sports": "Sports",
-            "health": "Health",
-            "public_transport": "Public transport",
-            "category": "Category",
-            "amount": "Amount",
-            "previous": "Previous period",
-            "difference": "Difference",
-            "counter": "Receiver",
-            "description": "Description",
-            "date": "Date"
+            "YearIndicator": ""
           }
         },
         {
-          "name": "YearOverviewPage",
+          "name": "TestPage",
           "labels": {
-            "title": "Jaaroverzicht"
+            "title": "Tests"
           }
         },
         {
-          "name": "MonthOverviewPage",
+          "name": "SearchPage",
           "labels": {
-            "title": "Maandoverzicht"
+            "title": "Search"
           }
         },
         {
-          "name": "CategoriesPage",
+          "name": "OverviewPage",
           "labels": {
-            "title": "Categories",
-            "search": "Search",
-            "save": "Save filter",
-            "confirm": "Confirm",
-            "reset": "Reset"
+            "title": "Overview"
+          }
+        },
+        {
+          "name": "DetailPage",
+          "labels": {
+            "title": "Detail"
           }
         },
         {
@@ -96,20 +61,7 @@
             "Language": "Language",
             "Theme": "Theme",
             "Confirm": "Confirm",
-            "Folder": "Folder to monitor",
             "Reset": "Reset"
-          }
-        },
-        {
-          "name": "TransactionsPage",
-          "labels": {
-            "title": "Transactions"
-          }
-        },
-        {
-          "name": "FiltersPage",
-          "labels": {
-            "title": "Filters"
           }
         }
       ]
@@ -121,7 +73,7 @@
         {
           "name": "BasePage",
           "labels": {
-            "title": "Bankboekje",
+            "title": "Filerenamer",
             "January": "Januari",
             "February": "Februari",
             "March": "Maart",
@@ -141,66 +93,31 @@
             "Friday": "Vrijdag",
             "Saturday": "Zaterdag",
             "Sunday": "Zondag",
-            "YearIndicator": "",
-            "nothing": "Geen",
-            "totTrans": "Totaal trans.",
-            "result": "Resultaat",
-            "account": "Rekening",
-            "totIn": "Totaal bij",
-            "totOut": "Totaal af",
-            "categories": "Categorieën",
-            "groceries": "Boodschappen",
-            "EATING_OUT_TAKE_OUT": "Uit eten, Afhalen",
-            "car": "Auto",
-            "other": "Overig",
-            "home": "Huis",
-            "shopping": "Winkelen",
-            "clothing": "Kleding",
-            "vacation": "Vakantie",
-            "unknown": "Onbekend",
-            "child_benefits": "Kinderbijdrage",
-            "insurance": "Verzekering",
-            "loans": "Leningen",
-            "school": "Opleiding",
-            "telecom": "Telecom",
-            "tax_returns": "Belastingteruggaaf",
-            "utilities": "Nuts",
-            "tax": "Belastingen",
-            "income": "Inkomen",
-            "saving": "Sparen",
-            "investments": "Beleggingen",
-            "sports": "Sport",
-            "health": "Gezondheid",
-            "public_transport": "OV",
-            "category": "Categorie",
-            "amount": "Bedrag",
-            "previous": "Vorige periode",
-            "difference": "Verschil",
-            "counter": "Ontvanger",
-            "description": "Omschrijving",
-            "date": "Datum"
+            "YearIndicator": ""
           }
         },
         {
-          "name": "YearOverviewPage",
+          "name": "TestPage",
           "labels": {
-            "title": "Jaaroverzicht"
+            "title": "Tests"
           }
         },
         {
-          "name": "MonthOverviewPage",
+          "name": "SearchPage",
           "labels": {
-            "title": "Maandoverzicht"
+            "title": "Zoeken"
           }
         },
         {
-          "name": "CategoriesPage",
+          "name": "OverviewPage",
           "labels": {
-            "title": "Categorieën",
-            "search": "Zoeken",
-            "save": "Bewaar filter",
-            "confirm": "Bevestig",
-            "reset": "Ongedaan maken"
+            "title": "Overzicht"
+          }
+        },
+        {
+          "name": "DetailPage",
+          "labels": {
+            "title": "Detail"
           }
         },
         {
@@ -209,33 +126,20 @@
             "title": "Opties",
             "Language": "Taal",
             "Theme": "Thema",
-            "Confirm": "Bevestig",
-            "Folder": "Map om te monitoren",
-            "Reset": "Ongedaan maken"
-          }
-        },
-        {
-          "name": "TransactionsPage",
-          "labels": {
-            "title": "Transacties"
-          }
-        },
-        {
-          "name": "FiltersPage",
-          "labels": {
-            "title": "Filters"
+            "Confirm": "Bevestigen",
+            "Reset": "Herstellen"
           }
         }
       ]
     },
     {
       "code": "jp",
-      "name": "Japanese",
+      "name": "日本語",
       "pages": [
         {
           "name": "BasePage",
           "labels": {
-            "title": "預金",
+            "title": "Filerenamer",
             "January": "1月",
             "February": "2月",
             "March": "3月",
@@ -255,66 +159,31 @@
             "Friday": "金曜日",
             "Saturday": "土曜日",
             "Sunday": "日曜日",
-            "YearIndicator": "年",
-            "nothing": "ない",
-            "totTrans": "転送の総数",
-            "result": "結果",
-            "account": "銀行口座",
-            "totIn": "合計追加",
-            "totOut": "合計償却",
-            "categories": "カテゴリ",
-            "groceries": "食料品",
-            "EATING_OUT_TAKE_OUT": "レストラン、持ち帰り",
-            "car": "自動車",
-            "other": "その他",
-            "home": "家",
-            "shopping": "買えもの",
-            "clothing": "洋服",
-            "vacation": "旅行",
-            "unknown": "不明",
-            "child_benefits": "児童手当",
-            "insurance": "保険",
-            "loans": "ローン",
-            "school": "教育",
-            "telecom": "テレコム",
-            "tax_returns": "税金還付",
-            "utilities": "ユーティリティ",
-            "tax": "税金",
-            "income": "所得",
-            "saving": "保存",
-            "investments": "投資",
-            "sports": "スポーツ",
-            "health": "健康",
-            "public_transport": "公共交通機関",
-            "category": "カテゴリ",
-            "amount": "額",
-            "previous": "前期",
-            "difference": "違い",
-            "counter": "レシーバー",
-            "description": "説明",
-            "date": "日にち"
+            "YearIndicator": "年"
           }
         },
         {
-          "name": "YearOverviewPage",
+          "name": "TestPage",
           "labels": {
-            "title": "年次レビュー"
+            "title": "寺家"
           }
         },
         {
-          "name": "MonthOverviewPage",
+          "name": "SearchPage",
           "labels": {
-            "title": "月次概要"
+            "title": "Zoeken"
           }
         },
         {
-          "name": "CategoriesPage",
+          "name": "OverviewPage",
           "labels": {
-            "title": "カテゴリ",
-            "search": "探す",
-            "save": "フィルターを保存する",
-            "confirm": "確認",
-            "reset": "回復する"
+            "title": "概要"
+          }
+        },
+        {
+          "name": "DetailPage",
+          "labels": {
+            "title": "Detail"
           }
         },
         {
@@ -324,20 +193,7 @@
             "Language": "国語",
             "Theme": "テーマ",
             "Confirm": "確認",
-            "Folder": "監視するフォルダ",
             "Reset": "回復する"
-          }
-        },
-        {
-          "name": "TransactionsPage",
-          "labels": {
-            "title": "総数"
-          }
-        },
-        {
-          "name": "FiltersPage",
-          "labels": {
-            "title": "フィルター"
           }
         }
       ]

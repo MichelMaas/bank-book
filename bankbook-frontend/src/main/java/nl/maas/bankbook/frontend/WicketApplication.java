@@ -1,38 +1,39 @@
 package nl.maas.bankbook.frontend;
 
-import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache;
-import nl.maas.bankbook.frontend.wicket.pages.YearOverviewPage;
+import nl.maas.bankbook.frontend.wicket.pages.MainPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.resource.FileSystemResourceReference;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.nio.file.Path;
 
 @SpringBootApplication
-@EnableAsync
 public class WicketApplication extends WebApplication {
 
-    private static final String USER_HOME = "user-home";
-
     public static void main(String[] args) throws Exception {
-        ConfigurableApplicationContext run = new SpringApplicationBuilder()
-                .sources(WicketApplication.class)
-                .run();
+        SpringApplication.run(WicketApplication.class, args);
     }
 
     public static void restart() {
         final ConfigurableApplicationContext[] ctx = {ContextProvider.ctx};
+        ApplicationArguments args = ctx[0].getBean(ApplicationArguments.class);
+        BrowserManager manager = ctx[0].getBean(BrowserManager.class);
+        manager.close();
         Thread thread = new Thread(() -> {
-            ctx[0].getBean(PropertiesCache.class);
+            ctx[0].close();
+            ctx[0] = SpringApplication.run(WicketApplication.class, args.getSourceArgs());
         });
+
         thread.setDaemon(false);
         thread.start();
     }
 
+    public WicketApplication() {
+    }
 
     @Override
     protected void internalInit() {
@@ -43,6 +44,6 @@ public class WicketApplication extends WebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return YearOverviewPage.class;
+        return MainPage.class;
     }
 }

@@ -1,5 +1,7 @@
 package nl.maas.bankbook.parsers
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Banks
@@ -47,7 +49,7 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
     }
 
     fun createTransactions(): List<Transaction> {
-        return map.values.map { createTransaction(it) }.distinctBy { it.id }
+        return map.values.map { runBlocking { async { createTransaction(it) }.await() } }.distinctBy { it.id }
     }
 
     fun determineSourceAccount(doc: Map<Int, MutableList<String>>): IBAN {

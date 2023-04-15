@@ -5,19 +5,11 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search</title>
+    <title>DataTable</title>
 </head>
 <body>
 <wicket:panel>
-    <div>
-        <form wicket:id="searchForm">
-            <div class="form-group">
-                <label wicket:for="formFileSm" class="form-label">File</label>
-                <input class="form-control" wicket:id="formFileSm" type="file">
-            </div>
-            <button type="submit" class="btn btn-primary"><span wicket:id="submitName"/></button>
-        </form>
-    </div>
+    <wicket:container wicket:id="panel"/>
 </wicket:panel>
 </body>
 </html>

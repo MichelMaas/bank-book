@@ -1,5 +1,7 @@
 package nl.maas.bankbook.utils
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.StringUtils
 import java.io.File
 import java.nio.file.Files
@@ -11,16 +13,22 @@ import java.util.stream.Collectors
 class FileUtils {
     companion object {
         fun findFile(fileName: String): String {
-            val files = if (Files.exists(Path.of(fileName))) listOf(Path.of(fileName)) else Files.find(
-                Paths.get("../../").toRealPath(), 8,
-                BiPredicate({ path, basicFileAttributes ->
-                    val file: File = path.toFile()
-                    !file.isDirectory() &&
-                            file.absolutePath.endsWith(fileName, true)
-                })
-            ).collect(Collectors.toList())
-            return files.firstOrNull() { it.toRealPath().toString().contains("bank-book") }?.toRealPath()
-                .toString() ?: StringUtils.EMPTY
+            val files = runBlocking {
+                if (Files.exists(Path.of(fileName))) listOf(Path.of(fileName)) else async {
+                    Files.find(
+                        Paths.get(System.getProperty("app.dir")).toRealPath(), 3,
+                        BiPredicate({ path, basicFileAttributes ->
+                            val file: File = path.toFile()
+                            !file.isDirectory() &&
+                                    file.absolutePath.endsWith(fileName, true)
+                        })
+                    )
+                }.await().collect(Collectors.toList())
+            }
+            return runBlocking {
+                files.firstOrNull() { async { it.toRealPath().toString().contains("bank-book") }.await() }?.toRealPath()
+                    .toString() ?: StringUtils.EMPTY
+            }
         }
     }
 }

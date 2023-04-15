@@ -23,5 +23,6 @@ enum class Categories {
     INVESTMENTS,
     HEALTH,
     SHOPPING,
+    HOBBIES,
     OTHER;
 }

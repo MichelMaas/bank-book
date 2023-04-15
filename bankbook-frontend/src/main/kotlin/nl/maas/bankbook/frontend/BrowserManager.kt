@@ -38,7 +38,6 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
     val pathDelimiter = if (os.equals("win")) "\\" else "/"
     private fun startBrowser() {
         val url = "http://localhost:8080"
-
         try {
             if (os.indexOf("win") >= 0) {
                 startWinBrowser(url)
@@ -125,7 +124,10 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
     private fun startWebDriver(url: String) {
         val options = EdgeOptions()
         options.addArguments("--app=$url")
-        options.setExperimentalOption("excludeSwitches", arrayOf("enable-automation"))
+            .setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"))
+            .addArguments("--remote-allow-origins=*")
+            .addArguments("-inprivate")
+
         try {
             driver = EdgeDriver(options)
             driver[url]
@@ -158,11 +160,6 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
     }
 
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        val mode = System.getProperty("mode")
-        if ("headless".equals(mode?.lowercase())) {
-            println("Starting in headless mode!")
-        } else {
-            startBrowser()
-        }
+        startBrowser()
     }
 }

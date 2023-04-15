@@ -19,12 +19,10 @@ class CookieUtil {
 
 
         fun saveLanguageCookie(language: String) {
+            val webResponse = RequestCycle.get().response as WebResponse
             val cookie = Cookie(languageCookie, language)
-            cookie.secure = true
-            cookie.maxAge = 7 * 24 * 60 * 60
-            val cookieUtils = CookieUtils()
-            cookieUtils.remove(languageCookie)
-            cookieUtils.save(languageCookie, language)
+            clearLanguageCooky(webResponse)
+            webResponse.addCookie(cookie)
         }
 
         private fun clearLanguageCooky(webResponse: WebResponse) {
