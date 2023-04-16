@@ -170,4 +170,9 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         GlobalScope.launch { IterativeStorable.storeAll(transactions) }.invokeOnCompletion { refresh() }
     }
 
+    suspend fun deleteFilter(filter: CategoryFilter): Deferred<List<CategoryFilter>> {
+        categoryFilters = categoryFilters.minus(filter)
+        return GlobalScope.async { IterativeStorable.remove(listOf(filter)) }
+    }
+
 }

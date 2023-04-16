@@ -1,16 +1,16 @@
 package nl.maas.bankbook.frontend.wicket.panels
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Categories
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
-import nl.maas.wicket.framework.components.base.DynamicDataTable
-import nl.maas.wicket.framework.components.base.DynamicFormComponent
-import nl.maas.wicket.framework.components.base.DynamicPanel
+import nl.maas.wicket.framework.components.base.*
 import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
 import nl.maas.wicket.framework.components.elemental.AjaxSearchField
 import nl.maas.wicket.framework.components.elemental.SimpleAjaxButton
@@ -54,23 +54,79 @@ class FiltersPanel : RIAPanel() {
     private val FILTERS = "Filters"
     private val FILTER_BUTTON = "FilterButton"
     private val TRANSACTIONS = "Transactions"
-
+    private var selectedFilter: CategoryFilter? = null
     private fun createDynamicPanel(): DynamicPanel {
         val filterTable = createFilterTable()
         val transactionsTable = createTransactionsTable()
         panel = DynamicPanel("panel")
-            .addRows(
-                SEARCH to intArrayOf(12),
-                FILTERS to intArrayOf(4, 8),
-                FILTER_BUTTON to intArrayOf(4, 8),
-                TRANSACTIONS to intArrayOf(12)
-            )
-            .addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar(transactionsTable, filterTable))
-            .addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable, transactionsTable))
-            .addOrReplaceComponentToColumn(FILTERS, 1, filterTable)
-            .addOrReplaceComponentToColumn(FILTER_BUTTON, 1, createFilterButton())
-            .addOrReplaceComponentToColumn(TRANSACTIONS, 0, transactionsTable)
+        panel.addRow(SEARCH, 12)
+        if (selectedFilter == null) {
+            panel.addRow(FILTERS, 4, 8)
+        } else {
+            panel.addRow(FILTERS, 4, 6, 2)
+            panel.addOrReplaceComponentToColumn(FILTERS, 2, createFilterButtons(filterTable))
+        }
+        panel.addRow(TRANSACTIONS, 12)
+        panel.addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar(transactionsTable, filterTable))
+        panel.addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable, transactionsTable))
+        panel.addOrReplaceComponentToColumn(FILTERS, 1, filterTable)
+        panel.addOrReplaceComponentToColumn(TRANSACTIONS, 0, transactionsTable)
         return panel
+    }
+
+    private fun createFilterButtons(filterTable: DynamicDataTable): Component {
+        return ButtonGroup(ROW_CONTENT_ID,
+            object : SimpleAjaxButton(
+                ComponentListView.CONTENT_ID,
+                "Delete",
+                Buttons.Type.Danger,
+                Size.SMALL,
+                translator,
+                true
+            ) {
+                override fun onClick(target: AjaxRequestTarget) {
+                    val filter = selectedFilter
+                    GlobalScope.launch {
+                        filter?.let {
+                            modelCache.deleteFilter(it).invokeOnCompletion {
+                                modelCache.refresh()
+                                filterCache.filter(filterString)
+                                reload(target)
+                            }
+                        }
+                    }
+                    println("Deleted ${selectedFilter?.filterString}")
+                    selectedFilter = null
+                    filterCache.filter(filterString)
+                    reload(target)
+                }
+            },
+            object : SimpleAjaxButton(
+                ComponentListView.CONTENT_ID,
+                "Cancel",
+                Buttons.Type.Warning,
+                Size.SMALL,
+                translator,
+                true
+            ) {
+                override fun onClick(target: AjaxRequestTarget) {
+                    selectedFilter = null
+                    reload(target)
+                }
+            }, object : SimpleAjaxButton(
+                ComponentListView.CONTENT_ID,
+                "Apply",
+                Buttons.Type.Primary,
+                SimpleAjaxButton.Size.SMALL,
+                translator,
+                true
+            ) {
+                override fun onClick(target: AjaxRequestTarget) {
+                    selectedFilter?.let { modelCache.applyCategorieOnAll(it) }
+                    reload(target)
+                }
+
+            })
     }
 
     private fun createTransactionsTable(): DynamicDataTable {
@@ -80,27 +136,21 @@ class FiltersPanel : RIAPanel() {
             .striped()
     }
 
-    private fun createFilterButton(): Component {
-        return object : SimpleAjaxButton(
-            ROW_CONTENT_ID,
-            "Apply",
-            Buttons.Type.Primary,
-            SimpleAjaxButton.Size.SMALL,
-            translator,
-            true
-        ) {
-            override fun onClick(target: AjaxRequestTarget) {
-                filterCache.filters.forEach { modelCache.applyCategorieOnAll(it) }
-                reload(target)
-            }
-
-        }
-    }
-
     private fun createFilterTable(): DynamicDataTable {
         val filterTuples = tupleUtils.filtersToTuples(filterCache.filters)
-        return DynamicDataTable.get(ROW_CONTENT_ID, filterTuples, 6, 40, translator, "Category").invertHeader().sm()
-            .striped()
+        return DynamicDataTable.get(
+            ROW_CONTENT_ID,
+            filterTuples,
+            6,
+            40,
+            translator,
+            "Category",
+            onTupleClick = { ajaxRequestTarget, tuple ->
+                selectedFilter = modelCache.findFilters(tuple.toFilterString()).firstOrNull()
+                reload(ajaxRequestTarget)
+            }, showClicked = true
+        ).invertHeader().sm()
+            .striped().hover()
     }
 
     private fun createFilterForm(filterTable: DynamicDataTable, transactionTable: DynamicDataTable): Component {

@@ -69,6 +69,28 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
             }
         }
 
+        fun <T : IterativeStorable<T>> remove(storables: List<T>): List<T> {
+            if (storables.size > 0) {
+                val storablesClass = storables[0]::class
+                val hasAltName = storablesClass.allSuperclasses.plus(storablesClass)
+                    .any { it.hasAnnotation<StoreAs>() }
+                val className =
+                    if (hasAltName) storablesClass.allSuperclasses.plus(storablesClass)
+                        .find { it.hasAnnotation<StoreAs>() }!!
+                        .findAnnotation<StoreAs>()!!.storeAs else storablesClass.java.simpleName
+                val path = path(className.lowercase())
+                val dir = Paths.get(path.substring(0, path.lastIndexOf("/")))
+                val oldList = load(storablesClass)
+                val toRemove = storables.flatMap { runBlocking { async { it.replace(oldList) }.await() } }
+                val newList = oldList.minus(toRemove)
+                Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
+                Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
+                return load(storablesClass)
+            } else {
+                return listOf()
+            }
+        }
+
         private fun encode(json: String): String {
             return String(Base64.getEncoder().encode(json.toByteArray()), Charsets.UTF_8)
         }
