@@ -32,7 +32,7 @@ class SettingsPanel : RIAPanel() {
     }
 
     private fun createCollapsables(): Component {
-        return CollapsablePanelGroup(ROW_CONTENT_ID, createTranslationsSettings())
+        return CollapsablePanelGroup(ROW_CONTENT_ID, 60, createTranslationsSettings())
     }
 
     private fun createTranslationsSettings(): CollapsablePanel {
@@ -49,7 +49,7 @@ class SettingsPanel : RIAPanel() {
         return runBlocking {
             async {
                 CollapsablePanelGroup(
-                    CollapsablePanel.CONTENT_ID,
+                    CollapsablePanel.CONTENT_ID, 40,
                     *collapsablePanels
                 )
             }.await()
