@@ -7,8 +7,13 @@ import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.DynamicDataTable
 import nl.maas.wicket.framework.components.base.DynamicPanel
+import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
 import nl.maas.wicket.framework.components.base.KeyValueView
 import nl.maas.wicket.framework.components.base.Switch
+import nl.maas.wicket.framework.components.charts.BarChart
+import nl.maas.wicket.framework.components.charts.PieChart
+import nl.maas.wicket.framework.components.charts.data.BarchartData
+import nl.maas.wicket.framework.components.charts.data.PieChartData
 import nl.maas.wicket.framework.components.elemental.DatePickerButton
 import nl.maas.wicket.framework.panels.RIAPanel
 import nl.maas.wicket.framework.services.Translator
@@ -64,17 +69,53 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             "Year" to intArrayOf(12),
             "Summary" to intArrayOf(6, 6),
             "Toggle" to intArrayOf(2, 10),
-            "Table" to intArrayOf(12)
+            "Table" to intArrayOf(12),
+            "Graphs" to intArrayOf(6, 6)
         ).addOrReplaceComponentToColumn("Year", 0, createYearBar())
             .addOrReplaceComponentToColumn("Summary", 0, createSummaryLeft(transactions))
             .addOrReplaceComponentToColumn("Summary", 1, createSummaryRight(transactions))
             .addOrReplaceComponentToColumn("Toggle", 0, createToggle())
             .addOrReplaceComponentToColumn("Table", 0, createTable(transactions))
+            .addOrReplaceComponentsToRow("Graphs", createPieChart(transactions), createBarChart(transactions))
+    }
+
+    private fun createBarChart(transactions: List<Transaction>): Component {
+        return BarChart(ROW_CONTENT_ID, "Amount per category", createBarData(transactions), translator)
+    }
+
+    private fun createBarData(transactions: List<Transaction>): BarchartData<BigDecimal> {
+        val barchartData = BarchartData<BigDecimal>()
+        val groupBy = transactions.groupBy { it.category }
+        groupBy.forEach { group ->
+            barchartData.addBar(
+                group.key,
+                BarchartData.BarHistory(period.name, group.value.sumOf { it.mutation.value })
+            )
+        }
+        return barchartData
+    }
+
+    private fun createPieChart(transactions: List<Transaction>): Component {
+        return PieChart(ROW_CONTENT_ID, "Percentage of expense per category", createPieData(transactions), translator)
+    }
+
+    private fun createPieData(transactions: List<Transaction>): PieChartData<out Number> {
+        val pieChartData = PieChartData<Int>()
+        val groupBy = transactions.groupBy { it.category }
+        val totalAmount = transactions.sumOf { it.mutation.value }
+        groupBy.forEach {
+            pieChartData.addSlice(
+                it.key, it.value.sumOf { it.mutation.value }.div(totalAmount).times(
+                    BigDecimal.valueOf(100)
+                ).toInt()
+            )
+        }
+        return pieChartData
     }
 
     private fun createSummaryRight(transactions: List<Transaction>): Component {
         return KeyValueView(
-            DynamicPanel.ROW_CONTENT_ID, translator,
+            ROW_CONTENT_ID, translator,
             "Total transactions" to transactions.size,
             "Result" to transactions.sumOf { it.mutation.value }
         )
@@ -82,7 +123,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     private fun createSummaryLeft(transactions: List<Transaction>): Component {
         return KeyValueView(
-            DynamicPanel.ROW_CONTENT_ID, translator,
+            ROW_CONTENT_ID, translator,
             "Account" to modelCache.account,
             "Total in" to transactions.filter { it.mutation.value > BigDecimal.ZERO }
                 .sumOf { it.mutation.value },
@@ -98,7 +139,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
         }
         val switch =
             object : Switch(
-                DynamicPanel.ROW_CONTENT_ID,
+                ROW_CONTENT_ID,
                 CompoundPropertyModel.of(categorized),
                 translator.translate("Toggle categories")
             ) {
@@ -113,14 +154,13 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     private fun createTable(transactions: List<Transaction>): Component {
         val tuples = runBlocking { tupleUtils.transactionsToTuples(transactions, categorized, period) }
-        val translateColumns = if (!categorized) arrayOf("Category") else arrayOf("NONE")
         return DynamicDataTable.get(
-            DynamicPanel.ROW_CONTENT_ID,
+            ROW_CONTENT_ID,
             tuples,
-            15,
+            12,
             50,
             translator,
-            *translateColumns
+            "Category"
         ).sm().striped().invertHeader()
     }
 
@@ -129,7 +169,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             ModelCache.PERIOD.MONTH -> DatePickerButton.Companion.PickerTypes.MONTH_YEAR
             else -> DatePickerButton.Companion.PickerTypes.YEAR_ONLY
         }
-        return object : DatePickerButton(DynamicPanel.ROW_CONTENT_ID, modelCache.date, type, translator.language) {
+        return object : DatePickerButton(ROW_CONTENT_ID, modelCache.date, type, translator.language) {
             override fun onDateChanged(target: AjaxRequestTarget, date: LocalDate) {
                 super.onDateChanged(target, date)
                 modelCache.date = date

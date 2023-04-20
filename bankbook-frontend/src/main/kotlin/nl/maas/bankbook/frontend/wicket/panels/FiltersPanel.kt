@@ -185,7 +185,9 @@ class FiltersPanel : RIAPanel() {
             override fun onSubmit(target: AjaxRequestTarget, typedModelObject: CategoryFilter) {
                 super.onSubmit(target, typedModelObject)
                 typedModelObject.filterString = filterCache.filter
-                typedModelObject.store()
+                if (typedModelObject.store) {
+                    typedModelObject.store()
+                }
                 modelCache.applyCategorieOn(filterCache.transactions, typedModelObject)
                 modelCache.refresh()
                 filterCache.filter(filterCache.filter)

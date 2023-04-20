@@ -52,7 +52,7 @@ class ImportPanel : RIAPanel() {
             tuples,
             30,
             translator = translator,
-            translateContent = arrayOf("NONE")
+            translateContent = arrayOf("Category")
         ).sm().striped().invertHeader()
     }
 
