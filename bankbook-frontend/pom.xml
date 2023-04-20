@@ -5,7 +5,7 @@
     <parent>
         <groupId>nl.maas.bankbook</groupId>
         <artifactId>bankbook</artifactId>
-        <version>2023.3-SNAPSHOT</version>
+        <version>2023.3</version>
     </parent>
     <artifactId>bankbook-frontend</artifactId>
 
@@ -16,7 +16,7 @@
         <wicket-bootstrap.version>6.0.2</wicket-bootstrap.version>
         <wicket-bootstrap-less.version>4.0.4</wicket-bootstrap-less.version>
         <javafx.version>11</javafx.version>
-        <wicket.framework.lib.version>2023.14</wicket.framework.lib.version>
+        <wicket.framework.lib.version>2023.15</wicket.framework.lib.version>
     </properties>
 
     <repositories>

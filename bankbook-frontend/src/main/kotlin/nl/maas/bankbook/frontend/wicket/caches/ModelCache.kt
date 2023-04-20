@@ -163,11 +163,11 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     }
 
     fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
-        categoryFilters.forEach { runBlocking { async { applyCategorieOn(transactions, it) }.await() } }
+        categoryFilters.forEach { runBlocking { async { applyCategorieOn(newTransactions, it) }.await() } }
         transactions =
             transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
                 .plus(newTransactions)
-        GlobalScope.launch { IterativeStorable.storeAll(transactions) }.invokeOnCompletion { refresh() }
+        GlobalScope.launch { IterativeStorable.storeAll(transactions) }
     }
 
     suspend fun deleteFilter(filter: CategoryFilter): Deferred<List<CategoryFilter>> {

@@ -42,12 +42,12 @@ class FiltersPanel : RIAPanel() {
 
     override fun onInitialize() {
         super.onInitialize()
-        filterCache.filter("")
     }
 
     override fun onBeforeRender() {
         super.onBeforeRender()
         addOrReplace(createDynamicPanel())
+        filterCache.filter(filterString)
     }
 
     private val SEARCH = "Search"
@@ -66,10 +66,12 @@ class FiltersPanel : RIAPanel() {
             panel.addRow(FILTERS, 4, 6, 2)
             panel.addOrReplaceComponentToColumn(FILTERS, 2, createFilterButtons(filterTable))
         }
+        panel.addRow(FILTER_BUTTON, 4, 8)
         panel.addRow(TRANSACTIONS, 12)
         panel.addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar(transactionsTable, filterTable))
         panel.addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable, transactionsTable))
         panel.addOrReplaceComponentToColumn(FILTERS, 1, filterTable)
+        panel.addOrReplaceComponentToColumn(FILTER_BUTTON, 1, createFilterButton())
         panel.addOrReplaceComponentToColumn(TRANSACTIONS, 0, transactionsTable)
         return panel
     }
@@ -127,6 +129,23 @@ class FiltersPanel : RIAPanel() {
                 }
 
             })
+    }
+
+    private fun createFilterButton(): Component {
+        return object : SimpleAjaxButton(
+            ROW_CONTENT_ID,
+            "Apply all",
+            Buttons.Type.Primary,
+            SimpleAjaxButton.Size.SMALL,
+            translator,
+            true
+        ) {
+            override fun onClick(target: AjaxRequestTarget) {
+                filterCache.filters.forEach { modelCache.applyCategorieOnAll(it) }
+                reload(target)
+            }
+
+        }
     }
 
     private fun createTransactionsTable(): DynamicDataTable {

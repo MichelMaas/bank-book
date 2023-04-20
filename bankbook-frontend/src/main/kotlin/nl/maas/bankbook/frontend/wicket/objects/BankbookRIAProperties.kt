@@ -10,6 +10,7 @@ import nl.maas.wicket.framework.objects.RiaPageProperties
 import nl.maas.wicket.framework.objects.enums.NavbarOrientation
 
 class BankbookRIAProperties : RiaPageProperties<ModelCache>(
+    "Bank book",
     if (ContextProvider.ctx.getBean(ModelCache::class.java).isEmpty()) ImportPanel() else YearOverviewPanel(),
     ContextProvider.ctx.getBean(ModelCache::class.java),
     ContextProvider.ctx.getBean(CachingGoogleTranslator::class.java),
