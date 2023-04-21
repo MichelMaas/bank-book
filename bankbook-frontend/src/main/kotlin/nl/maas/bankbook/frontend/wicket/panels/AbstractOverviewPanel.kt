@@ -3,14 +3,15 @@ package nl.maas.bankbook.frontend.wicket.panels
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
+import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
+import nl.maas.bankbook.frontend.wicket.config.BootstrapProperties
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.DynamicDataTable
 import nl.maas.wicket.framework.components.base.DynamicPanel
 import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
 import nl.maas.wicket.framework.components.base.KeyValueView
 import nl.maas.wicket.framework.components.base.Switch
-import nl.maas.wicket.framework.components.charts.BarChart
 import nl.maas.wicket.framework.components.charts.PieChart
 import nl.maas.wicket.framework.components.charts.data.BarchartData
 import nl.maas.wicket.framework.components.charts.data.PieChartData
@@ -41,6 +42,9 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     @SpringBean
     private lateinit var tupleUtils: TupleUtils
+
+    @Transient
+    private val properties = ContextProvider.ctx.getBean(BootstrapProperties::class.java)
 
     override fun onInitialize() {
         super.onInitialize()
@@ -76,11 +80,17 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             .addOrReplaceComponentToColumn("Summary", 1, createSummaryRight(transactions))
             .addOrReplaceComponentToColumn("Toggle", 0, createToggle())
             .addOrReplaceComponentToColumn("Table", 0, createTable(transactions))
-            .addOrReplaceComponentsToRow("Graphs", createPieChart(transactions), createBarChart(transactions))
+            .addOrReplaceComponentsToRow("Graphs", createOutChart(transactions), createInChart(transactions))
     }
 
-    private fun createBarChart(transactions: List<Transaction>): Component {
-        return BarChart(ROW_CONTENT_ID, "Amount per category", createBarData(transactions), translator)
+    private fun createInChart(transactions: List<Transaction>): Component {
+        return PieChart(
+            ROW_CONTENT_ID,
+            "Income",
+            createPieData(transactions.filter { it.mutation.value > BigDecimal.ZERO }),
+            translator,
+            properties.theme
+        )
     }
 
     private fun createBarData(transactions: List<Transaction>): BarchartData<BigDecimal> {
@@ -95,8 +105,14 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
         return barchartData
     }
 
-    private fun createPieChart(transactions: List<Transaction>): Component {
-        return PieChart(ROW_CONTENT_ID, "Percentage of expense per category", createPieData(transactions), translator)
+    private fun createOutChart(transactions: List<Transaction>): Component {
+        return PieChart(
+            ROW_CONTENT_ID,
+            "Expense",
+            createPieData(transactions.filter { it.mutation.value < BigDecimal.ZERO }),
+            translator,
+            properties.theme
+        )
     }
 
     private fun createPieData(transactions: List<Transaction>): PieChartData<out Number> {
@@ -105,9 +121,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
         val totalAmount = transactions.sumOf { it.mutation.value }
         groupBy.forEach {
             pieChartData.addSlice(
-                it.key, it.value.sumOf { it.mutation.value }.div(totalAmount).times(
-                    BigDecimal.valueOf(100)
-                ).toInt()
+                it.key, it.value.sumOf { it.mutation.value }.toInt()
             )
         }
         return pieChartData
@@ -143,6 +157,11 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
                 CompoundPropertyModel.of(categorized),
                 translator.translate("Toggle categories")
             ) {
+                override fun onInitialize() {
+                    super.onInitialize()
+                    isEnabled = ModelCache.PERIOD.MONTH.equals(period)
+                }
+
                 override fun onUpdate(target: AjaxRequestTarget, modelObject: Boolean) {
                     categorized = modelObject
                     reload(target)

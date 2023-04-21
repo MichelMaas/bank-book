@@ -69,11 +69,11 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
         val end = LocalDateTime.now()
         println("Fetching transactions took ${Duration.between(start, end).toString()}")
-        if (transactionsForPeriod.size > 100) {
-            return transactionsForPeriod.subList(0, 99)
-        } else {
-            return transactionsForPeriod
-        }
+//        if (transactionsForPeriod.size > 100) {
+//            return transactionsForPeriod.subList(0, 99)
+//        } else {
+        return transactionsForPeriod
+//        }
     }
 
     fun transactionsForPreviousPeriod(
