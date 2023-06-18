@@ -8,6 +8,8 @@ import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Categories
+import nl.maas.bankbook.frontend.services.DataManagementService
+import nl.maas.bankbook.frontend.translation.CachingGoogleTranslator
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.*
@@ -15,7 +17,6 @@ import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTE
 import nl.maas.wicket.framework.components.elemental.AjaxSearchField
 import nl.maas.wicket.framework.components.elemental.SimpleAjaxButton
 import nl.maas.wicket.framework.panels.RIAPanel
-import nl.maas.wicket.framework.services.Translator
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -27,10 +28,10 @@ import java.time.LocalDate
 class FiltersPanel : RIAPanel() {
 
     @SpringBean
-    private lateinit var translator: Translator
+    private lateinit var translator: CachingGoogleTranslator
 
     @SpringBean
-    private lateinit var modelCache: ModelCache
+    private lateinit var modelCache: DataManagementService
 
     @SpringBean
     private lateinit var tupleUtils: TupleUtils
@@ -90,7 +91,7 @@ class FiltersPanel : RIAPanel() {
                     val filter = selectedFilter
                     GlobalScope.launch {
                         filter?.let {
-                            modelCache.deleteFilter(it).invokeOnCompletion {
+                            async { modelCache.deleteFilter(it) }.invokeOnCompletion {
                                 modelCache.refresh()
                                 filterCache.filter(filterString)
                                 reload(target)
@@ -254,7 +255,7 @@ class FiltersPanel : RIAPanel() {
                 _transactions = modelCache.transactionsForFilter(filter)
             } else {
                 runBlocking {
-                    val launch1 = async { modelCache.filterTransactions(filter, transactions) }
+                    val launch1 = async { modelCache.filterTransactions(filter, transactions, translator) }
                     val launch2 = async { modelCache.findFilters(filter) }
                     _transactions = launch1.await()
                     _filters = launch2.await()

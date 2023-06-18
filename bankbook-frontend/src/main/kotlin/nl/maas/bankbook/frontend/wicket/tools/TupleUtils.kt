@@ -5,6 +5,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.Transaction
+import nl.maas.bankbook.frontend.services.DataProvider
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.wicket.framework.objects.Tuple
 import org.springframework.stereotype.Component
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class TupleUtils {
 
     @Inject
-    lateinit var modelCache: ModelCache
+    lateinit var modelCache: DataProvider
 
     suspend fun transactionsToTuples(
         _transactions: List<Transaction>,

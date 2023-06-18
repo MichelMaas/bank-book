@@ -1,18 +1,24 @@
 package nl.maas.bankbook.frontend.wicket.caches
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.IterativeStorable
 import nl.maas.bankbook.domain.Transaction
+import nl.maas.bankbook.frontend.services.DataProvider
 import nl.maas.bankbook.frontend.translation.CachingGoogleTranslator
 import org.apache.commons.lang3.StringUtils
-import org.springframework.stereotype.Component
-import java.time.*
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Year
 import javax.inject.Inject
 
-@Component
-class ModelCache : nl.maas.wicket.framework.services.ModelCache {
+//@Component
+class ModelCache : nl.maas.wicket.framework.services.ModelCache, DataProvider {
 
     @Inject
     private lateinit var translator: CachingGoogleTranslator
@@ -38,7 +44,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         categoryFilters = IterativeStorable.load(CategoryFilter::class)
     }
 
-    fun transactionsForPeriod(localDate: LocalDate, period: PERIOD): List<Transaction> {
+    override fun transactionsForPeriod(localDate: LocalDate, period: PERIOD): List<Transaction> {
         val start = LocalDateTime.now()
         val transactionsForPeriod = when (period) {
             PERIOD.MONTH -> transactions.filter {
@@ -76,7 +82,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 //        }
     }
 
-    fun transactionsForPreviousPeriod(
+    override fun transactionsForPreviousPeriod(
         localDate: LocalDate,
         period: ModelCache.PERIOD
     ): List<Transaction> {
@@ -94,56 +100,31 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
     }
 
-    private fun between(startDate: LocalDate, endDate: LocalDate, date: LocalDate): Boolean {
+    override fun between(startDate: LocalDate, endDate: LocalDate, date: LocalDate): Boolean {
         return !date.isBefore(startDate) && !date.isAfter(endDate)
     }
 
-    fun applyCategorieOn(
-        transactions: List<Transaction> = this.transactions,
+    override fun applyCategorieOn(
+        transactions: List<Transaction>,
         categoryFilter: CategoryFilter
     ) {
         runBlocking {
-            filterTransactions(categoryFilter.filterString, transactions).forEach {
+            filterTransactions(categoryFilter.filterString, transactions, translator).forEach {
                 async { it.category = categoryFilter.category.name }
             }
         }
         GlobalScope.launch { async { IterativeStorable.storeAll(transactions) } }.invokeOnCompletion { refresh() }
     }
 
-    suspend fun filterTransactions(
-        filter: String,
-        transactions: List<Transaction>
-    ): List<Transaction> {
-        val start = LocalTime.now()
-        val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
-        var filtered: List<Transaction> = coroutineScope {
-            transactions.filter { tr ->
-                async {
-                    filterWords.all { filterWord ->
-                        async {
-                            tr.filterValues(translator).map { it }.joinToString(StringUtils.SPACE)
-                                .contains(filterWord, true)
-                        }.await()
-                    }
-                }.await()
-            }.sortedByDescending { it.date }
-        }
-
-        val end = LocalTime.now()
-        val between = Duration.between(start, end)
-        println("Filtering took: ${between}")
-        return filtered
+    override fun transactionsForFilter(filter: String): List<Transaction> {
+        return runBlocking { filterTransactions(filter, transactions, translator) }
     }
 
-    fun transactionsForFilter(filter: String): List<Transaction> {
-        return runBlocking { filterTransactions(filter, transactions) }
-    }
-
-    fun applyCategorieOnAll(categoryFilter: CategoryFilter) {
+    override fun applyCategorieOnAll(categoryFilter: CategoryFilter) {
         applyCategorieOn(transactions, categoryFilter)
     }
 
-    fun findFilters(filter: String): List<CategoryFilter> {
+    override fun findFilters(filter: String): List<CategoryFilter> {
         if (filter.isNullOrBlank()) {
             return categoryFilters
         }
@@ -162,7 +143,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
     }
 
-    fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
+    override fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
         categoryFilters.forEach { runBlocking { async { applyCategorieOn(newTransactions, it) }.await() } }
         transactions =
             transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
@@ -170,9 +151,9 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         GlobalScope.launch { IterativeStorable.storeAll(transactions) }
     }
 
-    suspend fun deleteFilter(filter: CategoryFilter): Deferred<List<CategoryFilter>> {
+    override suspend fun deleteFilter(filter: CategoryFilter): List<CategoryFilter> {
         categoryFilters = categoryFilters.minus(filter)
-        return GlobalScope.async { IterativeStorable.remove(listOf(filter)) }
+        return GlobalScope.async { IterativeStorable.remove(listOf(filter)) }.await()
     }
 
 }

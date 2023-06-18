@@ -2,6 +2,7 @@ package nl.maas.bankbook.frontend.wicket.panels
 
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
+import nl.maas.bankbook.frontend.services.DataProvider
 import nl.maas.bankbook.frontend.services.ParserService
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
@@ -27,7 +28,7 @@ class ImportPanel : RIAPanel() {
     private lateinit var parserService: ParserService
 
     @SpringBean
-    private lateinit var modelCache: ModelCache
+    private lateinit var modelCache: DataProvider
 
     @SpringBean
     private lateinit var tupleUtils: TupleUtils

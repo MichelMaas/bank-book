@@ -1,13 +1,13 @@
 package nl.maas.bankbook.frontend.wicket.pages
 
 import com.giffing.wicket.spring.boot.context.scan.WicketHomePage
-import nl.maas.bankbook.frontend.wicket.caches.ModelCache
+import nl.maas.bankbook.frontend.services.DataManagementService
 import nl.maas.bankbook.frontend.wicket.objects.BankbookRIAProperties
 import nl.maas.bankbook.frontend.wicket.panels.*
 import nl.maas.wicket.framework.pages.RIAPage
 
 @WicketHomePage
-class MainPage : RIAPage<ModelCache>(BankbookRIAProperties()) {
+class MainPage : RIAPage<DataManagementService>(BankbookRIAProperties()) {
     init {
         registerPanels(
             "Year Overview" to YearOverviewPanel(),

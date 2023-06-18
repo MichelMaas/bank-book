@@ -1,8 +1,10 @@
 package nl.maas.bankbook.frontend.persistence.entities
 
 import nl.maas.bankbook.domain.IBAN
+import nl.maas.bankbook.frontend.persistence.converters.IBANConverter
 import nl.maas.jpa.framework.entity.AbstractEntity
 import javax.persistence.Column
+import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.Table
 
@@ -10,5 +12,6 @@ import javax.persistence.Table
 @Table(name = "ACCOUNTS")
 class Account : AbstractEntity() {
     @Column(name = "IBAN")
+    @Convert(converter = IBANConverter::class)
     var iban: IBAN = IBAN("NL00NOBN000000000")
 }

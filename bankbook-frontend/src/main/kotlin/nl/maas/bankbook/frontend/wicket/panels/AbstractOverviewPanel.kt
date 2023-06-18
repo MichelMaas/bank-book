@@ -4,6 +4,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.ContextProvider
+import nl.maas.bankbook.frontend.services.DataManagementService
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.config.BootstrapProperties
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
@@ -33,10 +34,13 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private lateinit var renderStart: LocalDateTime
 
     @SpringBean
-    private lateinit var modelCache: ModelCache
+    private lateinit var modelCache: DataManagementService
 
     @SpringBean
     private lateinit var translator: Translator
+
+    @SpringBean
+    private lateinit var dataManagementService: DataManagementService
 
     private var categorized = true
 
@@ -58,6 +62,14 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     override fun onBeforeRender() {
         super.onBeforeRender()
         renderStart = LocalDateTime.now()
+        println(
+            "Number of transactions found for year: ${
+                dataManagementService.transactionsForPeriod(
+                    LocalDate.now(),
+                    ModelCache.PERIOD.YEAR
+                ).size
+            }"
+        )
         addOrReplace(createPanel())
     }
 
@@ -199,6 +211,6 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
 
     override fun isAvailable(): Boolean {
-        return !modelCache.isEmpty()
+        return modelCache.transactionsForPeriod(modelCache.date, period).isNotEmpty()
     }
 }
