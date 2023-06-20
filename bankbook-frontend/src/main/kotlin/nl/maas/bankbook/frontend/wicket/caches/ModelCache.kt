@@ -38,9 +38,9 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         categoryFilters = IterativeStorable.load(CategoryFilter::class)
     }
 
-    fun transactionsForPeriod(localDate: LocalDate, period: PERIOD): List<Transaction> {
+    fun transactionsForPeriod(localDate: LocalDate, period: PERIOD, category: String): List<Transaction> {
         val start = LocalDateTime.now()
-        val transactionsForPeriod = when (period) {
+        var transactionsForPeriod = when (period) {
             PERIOD.MONTH -> transactions.filter {
                 runBlocking {
                     async {
@@ -68,12 +68,10 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
             else -> transactions.sortedByDescending { runBlocking { async { it.date }.await() } }
         }
         val end = LocalDateTime.now()
+        if (category.isNotBlank()) transactionsForPeriod = transactionsForPeriod.filter { it.category.equals(category) }
         println("Fetching transactions took ${Duration.between(start, end).toString()}")
-//        if (transactionsForPeriod.size > 100) {
-//            return transactionsForPeriod.subList(0, 99)
-//        } else {
+
         return transactionsForPeriod
-//        }
     }
 
     fun transactionsForPreviousPeriod(
@@ -84,13 +82,14 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
             ModelCache.PERIOD.MONTH -> runCatching {
                 transactionsForPeriod(
                     localDate.minusMonths(1),
-                    period
+                    period,
+                    StringUtils.EMPTY
                 )
             }.getOrDefault(
                 listOf()
             )
 
-            else -> transactionsForPeriod(localDate.minusYears(1), period)
+            else -> transactionsForPeriod(localDate.minusYears(1), period, StringUtils.EMPTY)
         }
     }
 

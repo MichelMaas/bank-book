@@ -18,6 +18,7 @@ import nl.maas.wicket.framework.components.elemental.DatePickerButton
 import nl.maas.wicket.framework.components.elemental.DatePickerButton.Companion.PickerTypes.MONTH_YEAR
 import nl.maas.wicket.framework.components.elemental.DatePickerButton.Companion.PickerTypes.YEAR_ONLY
 import nl.maas.wicket.framework.pages.BasePage
+import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
@@ -57,7 +58,7 @@ class OverviewPage(pageParameters: PageParameters = PageParameters().add("period
     }
 
     private fun createPanel(): Component {
-        val transactions = modelCache.transactionsForPeriod(modelCache.date, period)
+        val transactions = modelCache.transactionsForPeriod(modelCache.date, period, StringUtils.EMPTY)
         return DynamicPanel("panel").addRows(
             "Year" to intArrayOf(12),
             "Summary" to intArrayOf(6, 6),

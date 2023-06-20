@@ -240,7 +240,7 @@ class FiltersPanel : RIAPanel() {
 
     private inner class FilterCache() : Serializable {
         private var _transactions: List<Transaction> =
-            modelCache.transactionsForPeriod(LocalDate.now(), ModelCache.PERIOD.NONE)
+            modelCache.transactionsForPeriod(LocalDate.now(), ModelCache.PERIOD.NONE, StringUtils.EMPTY)
         private var _filters: List<CategoryFilter> = modelCache.findFilters("s")
         private var _filter = StringUtils.EMPTY
 

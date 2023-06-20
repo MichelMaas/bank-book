@@ -18,6 +18,7 @@ import nl.maas.wicket.framework.components.charts.data.PieChartData
 import nl.maas.wicket.framework.components.elemental.DatePickerButton
 import nl.maas.wicket.framework.panels.RIAPanel
 import nl.maas.wicket.framework.services.Translator
+import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
@@ -39,6 +40,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private lateinit var translator: Translator
 
     private var categorized = true
+    private var category: String = StringUtils.EMPTY
 
     @SpringBean
     private lateinit var tupleUtils: TupleUtils
@@ -68,7 +70,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     }
 
     private fun createPanel(): Component {
-        val transactions = modelCache.transactionsForPeriod(modelCache.date, period)
+        val transactions = modelCache.transactionsForPeriod(modelCache.date, period, category)
         return DynamicPanel("panel").addRows(
             "Year" to intArrayOf(12),
             "Summary" to intArrayOf(6, 6),
@@ -95,7 +97,8 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     private fun createBarData(transactions: List<Transaction>): BarchartData<BigDecimal> {
         val barchartData = BarchartData<BigDecimal>()
-        val groupBy = transactions.groupBy { it.category }
+        val groupBy =
+            if (category.isBlank()) transactions.groupBy { it.category } else transactions.groupBy { it.counter() }
         groupBy.forEach { group ->
             barchartData.addBar(
                 group.key,
@@ -117,7 +120,8 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     private fun createPieData(transactions: List<Transaction>): PieChartData<out Number> {
         val pieChartData = PieChartData<Int>()
-        val groupBy = transactions.groupBy { it.category }
+        val groupBy =
+            if (category.isBlank()) transactions.groupBy { it.category } else transactions.groupBy { it.counter() }
         val totalAmount = transactions.sumOf { it.mutation.value }
         groupBy.forEach {
             pieChartData.addSlice(
@@ -159,11 +163,12 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             ) {
                 override fun onInitialize() {
                     super.onInitialize()
-                    isEnabled = ModelCache.PERIOD.MONTH.equals(period)
+                    isEnabled = ModelCache.PERIOD.MONTH.equals(period) || (category.isNotBlank() || !categorized)
                 }
 
                 override fun onUpdate(target: AjaxRequestTarget, modelObject: Boolean) {
                     categorized = modelObject
+                    if (categorized) category = StringUtils.EMPTY
                     reload(target)
                 }
             }
@@ -179,7 +184,12 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             12,
             50,
             translator,
-            "Category"
+            "Category",
+            onTupleClick = { target, tuple ->
+                categorized = false
+                category = tuple.getValueForColumn("Category").toString()
+                reload(target)
+            }
         ).sm().striped().invertHeader()
     }
 
