@@ -13,12 +13,12 @@ class ParserService {
     @Inject
     lateinit var propertiesCache: PropertiesCache
 
-    fun parseFile(file: String): List<Transaction> {
-        return Parser.parse(file).createTransactions()
+    fun parseFile(file: String, extension: String): List<Transaction> {
+        return parseFile(File(file), extension)
     }
 
-    fun parseFile(file: File): List<Transaction> {
-        return Parser.parse(file).createTransactions()
+    fun parseFile(file: File, extension: String): List<Transaction> {
+        return Parser.parse(file, extension).createTransactions()
     }
 
 }

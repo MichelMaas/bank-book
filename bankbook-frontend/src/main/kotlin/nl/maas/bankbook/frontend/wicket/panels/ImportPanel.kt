@@ -71,7 +71,7 @@ class ImportPanel : RIAPanel() {
                 super.onFileUpload(target, fileUpload)
                 val file = fileUpload.writeToTempFile()
                 super.onFileUpload(target, fileUpload)
-                transactions = parserService.parseFile(file)
+                transactions = parserService.parseFile(file, fileUpload.clientFileName.substringAfterLast("."))
                 modelCache.addOrUpdateTransactions(transactions)
                 reload(target)
             }

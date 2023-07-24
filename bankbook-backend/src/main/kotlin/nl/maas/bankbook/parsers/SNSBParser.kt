@@ -9,12 +9,12 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) :
-    Parser(map, 15, 0, 1, 2, 3, 7, 10, 13, 14, 17) {
+    CSVParser(map, 15, 0, 1, 2, 3, 7, 10, 13, 14, 17) {
 
 
     private val datePattern = "dd-MM-yyyy"
 
-    override fun createPayment(record: MutableList<String>): Transaction {
+    override fun createPayment(record: List<String>): Transaction {
         val currency =
             Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }
         return Payment(
@@ -28,7 +28,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) :
         )
     }
 
-    override fun createTransfer(record: MutableList<String>): Transaction {
+    override fun createTransfer(record: List<String>): Transaction {
         val currency =
             Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }
         return Transfer(
