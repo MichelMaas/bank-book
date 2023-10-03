@@ -23,6 +23,9 @@ class BrowserManager private constructor() : ApplicationListener<ApplicationRead
 
 
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        startBrowser()
+        val mode = System.getProperty("mode")
+        if (mode.isNullOrBlank() || !mode.equals("headless")) {
+            startBrowser()
+        }
     }
 }

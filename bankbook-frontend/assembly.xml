@@ -47,11 +47,11 @@
             <outputDirectory>open</outputDirectory>
             <fileMode>0755</fileMode>
         </fileSet>
-        <fileSet>
-            <directory>webdrivers</directory>
-            <outputDirectory>webdrivers</outputDirectory>
-            <fileMode>0755</fileMode>
-        </fileSet>
+        <!--        <fileSet>-->
+        <!--            <directory>webdrivers</directory>-->
+        <!--            <outputDirectory>webdrivers</outputDirectory>-->
+        <!--            <fileMode>0755</fileMode>-->
+        <!--        </fileSet>-->
         <fileSet>
             <directory>src/main/resources</directory>
             <outputDirectory>config</outputDirectory>
