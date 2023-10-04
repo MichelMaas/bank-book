@@ -1,0 +1,7 @@
+wicket:
+  external:
+    agilcoders:
+      bootstrap:
+        theme: creative
+server:
+  port: 20081

@@ -16,6 +16,7 @@
     <modules>
         <module>bankbook-backend</module>
         <module>bankbook-frontend</module>
+        <module>bankbook-client</module>
     </modules>
 
     <scm>
