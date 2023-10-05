@@ -12,11 +12,11 @@ function createShortcut() {
     echo "[Desktop Entry]
         Version=${project.version}
         Type=Application
-        Name=FX Analyzer
-        Comment=The Drive to Develop
+        Name=Bank Book
+        Comment=The Bank Book Desktop Client
         Categories=Tools;Files;
         Terminal=false
-        Icon=$folder/bankbook/icon.png
+        Icon=$folder/lib/bankbook.ico
         Exec=java -Xms256m -Xmx512m -server -jar $folder/lib/bankbook-client-${project.version}-exec.war" > $HOME/.local/share/applications/bankbook.desktop
   fi
 }
