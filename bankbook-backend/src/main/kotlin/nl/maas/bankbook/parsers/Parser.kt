@@ -7,6 +7,7 @@ import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.domain.enums.Banks
 import nl.maas.bankbook.utils.CSVUtils
 import org.apache.commons.lang3.NotImplementedException
+import org.apache.commons.text.StringEscapeUtils
 import java.io.File
 import java.nio.file.Paths
 
@@ -42,6 +43,7 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
             val bankName = CSVUtils.findBaseAccount(parsedFile).substring(4, 8)
             return when (Banks.valueOf(bankName)) {
                 Banks.SNSB -> SNSBParser(parsedFile)
+                Banks.INGB -> INGBParser(parsedFile)
                 else -> throw NotImplementedException("No parser yet implemented for bank ${bankName}")
             }
         }
@@ -69,6 +71,10 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
     private fun validate(): Boolean {
         val isValidCSV = true
         return isValidCSV && validateForBank()
+    }
+
+    protected fun escapeJSON(string: String): String {
+        return StringEscapeUtils.escapeJson(string)
     }
 
     protected abstract fun createPayment(record: MutableList<String>): Transaction

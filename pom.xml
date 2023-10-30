@@ -38,6 +38,7 @@
         <jvm.options>--illegal-access=permit --add-opens java.base/java.lang=ALL-UNNAMED</jvm.options>
         <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <kotlinx-coroutines-core.version>1.6.1</kotlinx-coroutines-core.version>
+        <wicket.framework.lib.version>2023.20-SNAPSHOT</wicket.framework.lib.version>
     </properties>
 
     <repositories>

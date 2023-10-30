@@ -2,16 +2,14 @@ package nl.maas.bankbook.frontend.wicket.panels
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons
 import kotlinx.coroutines.runBlocking
+import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.config.BootstrapProperties
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
-import nl.maas.wicket.framework.components.base.DynamicDataTable
-import nl.maas.wicket.framework.components.base.DynamicPanel
+import nl.maas.wicket.framework.components.base.*
 import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
-import nl.maas.wicket.framework.components.base.KeyValueView
-import nl.maas.wicket.framework.components.base.Switch
 import nl.maas.wicket.framework.components.charts.PieChart
 import nl.maas.wicket.framework.components.charts.data.BarchartData
 import nl.maas.wicket.framework.components.charts.data.PieChartData
@@ -72,17 +70,35 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private fun createPanel(): Component {
         val transactions = modelCache.transactionsForPeriod(modelCache.date, period, category)
         return DynamicPanel("panel").addRows(
-            "Year" to intArrayOf(12),
+            "Vars" to intArrayOf(6, 6),
             "Summary" to intArrayOf(6, 6),
             "Toggle" to intArrayOf(2, 10),
             "Table" to intArrayOf(12),
             "Graphs" to intArrayOf(6, 6)
-        ).addOrReplaceComponentToColumn("Year", 0, createYearBar())
+        ).addOrReplaceComponentToColumn("Vars", 0, createAccountSelector())
+            .addOrReplaceComponentToColumn("Vars", 1, createYearBar())
             .addOrReplaceComponentToColumn("Summary", 0, createSummaryLeft(transactions))
             .addOrReplaceComponentToColumn("Summary", 1, createSummaryRight(transactions))
             .addOrReplaceComponentToColumn("Toggle", 0, createToggle())
             .addOrReplaceComponentToColumn("Table", 0, createTable(transactions))
             .addOrReplaceComponentsToRow("Graphs", createOutChart(transactions), createInChart(transactions))
+    }
+
+    private fun createAccountSelector(): Component {
+        val form = object :
+            DynamicFormComponent<ModelCache>(
+                ROW_CONTENT_ID,
+                "Account",
+                CompoundPropertyModel<ModelCache>(modelCache),
+                translator,
+            ) {
+            override fun <M> onSelectChanged(propertyName: String, value: M, target: AjaxRequestTarget) {
+                modelCache.account = value as IBAN
+                reload(target)
+            }
+        }.addSelect("account", "Account", modelCache.accounts, modelCache.account)
+        form.showButons = false
+        return form
     }
 
     private fun createInChart(transactions: List<Transaction>): Component {
@@ -142,7 +158,6 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private fun createSummaryLeft(transactions: List<Transaction>): Component {
         return KeyValueView(
             ROW_CONTENT_ID, translator,
-            "Account" to modelCache.account,
             "Total in" to transactions.filter { it.mutation.value > BigDecimal.ZERO }
                 .sumOf { it.mutation.value },
             "Total out" to transactions.filter { it.mutation.value < BigDecimal.ZERO }

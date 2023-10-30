@@ -17,10 +17,13 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     @Inject
     private lateinit var translator: CachingGoogleTranslator
 
-    private var transactions: List<Transaction> = IterativeStorable.load(Transaction::class)
+    private var _transactions: List<Transaction> =
+        IterativeStorable.load(Transaction::class)
     private var categoryFilters: List<CategoryFilter> = IterativeStorable.load(CategoryFilter::class)
-    val account get() = transactions.firstOrNull()?.baseAccount ?: IBAN("NL00NOBN000000000")
+    var account = _transactions.firstOrNull()?.baseAccount ?: IBAN("NL00NOBN000000000")
+    val accounts get() = _transactions.map { it.baseAccount }.distinct()
 
+    private val transactions get() = _transactions.filter { it.baseAccount.equals(account) }
     var date = LocalDate.now()
 
     enum class PERIOD {
@@ -34,7 +37,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     }
 
     override fun refresh() {
-        transactions = IterativeStorable.load(Transaction::class)
+        _transactions = IterativeStorable.load(Transaction::class)
         categoryFilters = IterativeStorable.load(CategoryFilter::class)
     }
 
@@ -163,8 +166,8 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
         categoryFilters.forEach { runBlocking { async { applyCategorieOn(newTransactions, it) }.await() } }
-        transactions =
-            transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
+        _transactions =
+            _transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
                 .plus(newTransactions)
         GlobalScope.launch { IterativeStorable.storeAll(transactions) }
     }

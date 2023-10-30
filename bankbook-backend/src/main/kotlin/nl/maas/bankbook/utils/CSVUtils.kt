@@ -15,6 +15,7 @@ class CSVUtils {
 
         fun parseFile(file: File): Map<Int, MutableList<String>> {
             return CSVFormat.DEFAULT.parse(FileReader(file)).mapIndexed { id, it -> id to it.toList() }.toMap()
+                .filterNot { it.value.none { el -> IBAN.validate(el) } }
         }
 
         fun findBaseAccount(csv: Map<Int, MutableList<String>>): String {
@@ -25,7 +26,7 @@ class CSVUtils {
         }
 
         fun allEquals(idx: Int, cell: String, values: List<List<String>>): Boolean {
-            return values.map { it[idx] }.all { cell.equals(it) }
+            return values.map { it[idx] }.all { IBAN.validate(it) }
         }
     }
 

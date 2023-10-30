@@ -9,11 +9,11 @@ class Transfer(
     date: LocalDate,
     baseAccount: IBAN,
     val counterAccount: IBAN,
-    val counterHolder: String,
+    counterName: String,
     currency: Currency,
     mutation: Amount,
     mutationType: MutationTypes,
     description: String
-) : Transaction(id, date, baseAccount, currency, mutation, mutationType, description) {
-    override fun counter() = counterHolder
+) : Transaction(id, date, baseAccount, currency, mutation, mutationType, description, counterName = counterName) {
+    override fun counter() = counterName
 }

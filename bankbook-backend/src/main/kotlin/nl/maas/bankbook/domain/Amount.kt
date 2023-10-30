@@ -7,7 +7,7 @@ import java.math.RoundingMode
 class Amount constructor(val value: BigDecimal, val symbol: String) : java.io.Serializable,
     Comparable<BigDecimal> by value {
 
-    constructor(str: String, symbol: String) : this(BigDecimal(str), symbol)
+    constructor(str: String, symbol: String) : this(BigDecimal(str.replace(",", ".")), symbol)
 
     init {
         this.value.setScale(2, RoundingMode.HALF_UP)

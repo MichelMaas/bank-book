@@ -25,7 +25,6 @@
         <wicket-bootstrap.version>6.0.4</wicket-bootstrap.version>
         <wicket-bootstrap-less.version>4.0.4</wicket-bootstrap-less.version>
         <javafx.version>11</javafx.version>
-        <wicket.framework.lib.version>2023.19</wicket.framework.lib.version>
     </properties>
 
     <dependencies>

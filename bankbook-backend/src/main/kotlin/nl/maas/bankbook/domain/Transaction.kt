@@ -21,7 +21,8 @@ abstract class Transaction(
     override val mutation: Amount,
     val mutationType: MutationTypes,
     val description: String,
-    var category: String = UNKNOWN
+    var category: String = UNKNOWN,
+    val counterName: String = StringUtils.EMPTY,
 ) : Event, IterativeStorable<Transaction> {
 
     companion object {
