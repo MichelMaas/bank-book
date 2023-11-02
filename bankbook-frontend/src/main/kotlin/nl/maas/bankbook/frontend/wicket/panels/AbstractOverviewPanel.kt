@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
+import org.apache.wicket.model.Model
 import org.apache.wicket.spring.injection.annot.SpringBean
 import java.math.BigDecimal
 import java.time.Duration
@@ -70,7 +71,7 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private fun createPanel(): Component {
         val transactions = modelCache.transactionsForPeriod(modelCache.date, period, category)
         return DynamicPanel("panel").addRows(
-            "Vars" to intArrayOf(6, 6),
+            "Vars" to intArrayOf(5, 6),
             "Summary" to intArrayOf(6, 6),
             "Toggle" to intArrayOf(2, 10),
             "Table" to intArrayOf(12),
@@ -92,11 +93,24 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
                 CompoundPropertyModel<ModelCache>(modelCache),
                 translator,
             ) {
+
+            override fun onBeforeRender() {
+                super.onBeforeRender()
+                toggleVisibleFor("account" to !modelCache.allAccounts)
+            }
+
             override fun <M> onSelectChanged(propertyName: String, value: M, target: AjaxRequestTarget) {
                 modelCache.account = value as IBAN
                 reload(target)
             }
-        }.addSelect("account", "Account", modelCache.accounts, modelCache.account)
+
+            override fun onSwitchToggled(propertyName: String, switch: Boolean, target: AjaxRequestTarget) {
+                reload(target)
+            }
+        }.addSwitch("allAccounts", "All", modelCache.allAccounts)
+            .addSelect("account", "Account", modelCache.accounts, modelCache.account)
+
+
         form.showButons = false
         return form
     }
@@ -193,10 +207,11 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
 
     private fun createTable(transactions: List<Transaction>): Component {
         val tuples = runBlocking { tupleUtils.transactionsToTuples(transactions, categorized, period) }
+        val rowsPerPage = if (modelCache.allAccounts) 12 else 10
         return DynamicDataTable.get(
             ROW_CONTENT_ID,
             tuples,
-            12,
+            rowsPerPage,
             50,
             translator,
             "Category",
@@ -213,13 +228,15 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             ModelCache.PERIOD.MONTH -> DatePickerButton.Companion.PickerTypes.MONTH_YEAR
             else -> DatePickerButton.Companion.PickerTypes.YEAR_ONLY
         }
-        return object : DatePickerButton(ROW_CONTENT_ID, modelCache.date, type, translator.language) {
+        val picker = object : DatePickerButton(ROW_CONTENT_ID, modelCache.date, type, translator.language) {
             override fun onDateChanged(target: AjaxRequestTarget, date: LocalDate) {
                 super.onDateChanged(target, date)
                 modelCache.date = date
                 reload(target)
             }
         }
+        picker.label = Model.of(translator.translate("Date"))
+        return picker
     }
 
 

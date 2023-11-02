@@ -22,8 +22,14 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     private var categoryFilters: List<CategoryFilter> = IterativeStorable.load(CategoryFilter::class)
     var account = _transactions.firstOrNull()?.baseAccount ?: IBAN("NL00NOBN000000000")
     val accounts get() = _transactions.map { it.baseAccount }.distinct()
+    var allAccounts: Boolean = true
 
-    private val transactions get() = _transactions.filter { it.baseAccount.equals(account) }
+    private val transactions
+        get() = if (allAccounts) _transactions else _transactions.filter {
+            it.baseAccount.equals(
+                account
+            )
+        }
     var date = LocalDate.now()
 
     enum class PERIOD {

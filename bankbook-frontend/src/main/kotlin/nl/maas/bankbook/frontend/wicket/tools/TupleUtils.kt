@@ -29,7 +29,7 @@ class TupleUtils {
         val transactions =
             if (_transactions.size > 100) _transactions.sortedByDescending { runBlocking { async { it.date }.await() } }
                 .subList(0, 99) else _transactions
-        return coroutineScope {
+        val tuples = coroutineScope {
             when (categorized) {
                 true -> {
                     val previous =
@@ -52,6 +52,7 @@ class TupleUtils {
                 else -> async { transactions.map { createTransactionTuple(it) } }.await()
             }
         }
+        return tuples
     }
 
     fun filtersToTuples(filters: List<CategoryFilter>): List<Tuple> {
