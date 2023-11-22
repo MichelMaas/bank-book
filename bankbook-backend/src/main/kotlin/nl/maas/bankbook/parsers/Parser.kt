@@ -11,13 +11,19 @@ import org.apache.commons.text.StringEscapeUtils
 import java.io.File
 import java.nio.file.Paths
 
-abstract class Parser private constructor(protected val map: Map<Int, MutableList<String>>) {
+abstract class Parser private constructor(
+    protected val map: Map<Int, MutableList<String>>,
+    private val _occupiedIDs: MutableList<Long>
+) {
 
     protected lateinit var POSITIONS: Positions
         private set
 
+    protected val occupiedIDs get() = _occupiedIDs.toTypedArray()
+
     protected constructor(
         map: Map<Int, MutableList<String>>,
+        occupiedIDs: MutableList<Long>,
         ID: Int,
         DATE: Int,
         SOURCE: Int,
@@ -28,22 +34,22 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
         TYPE_CODE: Int,
         TYPE: Int,
         DESCRIPTION: Int
-    ) : this(map) {
+    ) : this(map, occupiedIDs) {
         this.POSITIONS =
             Positions(ID, DATE, SOURCE, COUNTER, COUNTER_NAME, CURRENCY, AMOUNT, TYPE_CODE, TYPE, DESCRIPTION)
     }
 
     companion object {
-        fun parse(file: String): Parser {
-            return parse(Paths.get(file).toFile())
+        fun parse(file: String, occupiedIDs: List<Long>): Parser {
+            return parse(Paths.get(file).toFile(), occupiedIDs)
         }
 
-        fun parse(file: File): Parser {
+        fun parse(file: File, occupiedIDs: List<Long>): Parser {
             val parsedFile = CSVUtils.parseFile(file)
             val bankName = CSVUtils.findBaseAccount(parsedFile).substring(4, 8)
             return when (Banks.valueOf(bankName)) {
-                Banks.SNSB -> SNSBParser(parsedFile)
-                Banks.INGB -> INGBParser(parsedFile)
+                Banks.SNSB -> SNSBParser(parsedFile, occupiedIDs)
+                Banks.INGB -> INGBParser(parsedFile, occupiedIDs)
                 else -> throw NotImplementedException("No parser yet implemented for bank ${bankName}")
             }
         }
@@ -60,9 +66,13 @@ abstract class Parser private constructor(protected val map: Map<Int, MutableLis
 
     protected fun createTransaction(record: MutableList<String>): Transaction {
         if (record[POSITIONS.COUNTER].isNullOrBlank()) {
-            return createPayment(record)
+            val payment = createPayment(record)
+            _occupiedIDs.add(payment.id)
+            return payment
         } else {
-            return createTransfer(record)
+            val transfer = createTransfer(record)
+            _occupiedIDs.add(transfer.id)
+            return transfer
         }
     }
 

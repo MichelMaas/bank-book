@@ -14,7 +14,7 @@ import nl.maas.wicket.framework.components.base.*
 import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
 import nl.maas.wicket.framework.components.elemental.AjaxSearchField
 import nl.maas.wicket.framework.components.elemental.SimpleAjaxButton
-import nl.maas.wicket.framework.panels.RIAPanel
+import nl.maas.wicket.framework.objects.Tuple
 import nl.maas.wicket.framework.services.Translator
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.Component
@@ -24,13 +24,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import java.io.Serializable
 import java.time.LocalDate
 
-class FiltersPanel : RIAPanel() {
+class FiltersPanel : StoreWaitingPanel() {
 
     @SpringBean
     private lateinit var translator: Translator
 
-    @SpringBean
-    private lateinit var modelCache: ModelCache
 
     @SpringBean
     private lateinit var tupleUtils: TupleUtils
@@ -151,8 +149,28 @@ class FiltersPanel : RIAPanel() {
     private fun createTransactionsTable(): DynamicDataTable {
         val tuples =
             runBlocking { tupleUtils.transactionsToTuples(filterCache.transactions, false, ModelCache.PERIOD.NONE) }
-        return DynamicDataTable.get(ROW_CONTENT_ID, tuples, 15, 50, translator, "Category").invertHeader().sm()
+        return DynamicDataTable.get(
+            ROW_CONTENT_ID,
+            tuples,
+            15,
+            50,
+            translator,
+            "Category"
+//            ,
+//            onTupleClick = tupleClicked()
+        ).invertHeader().sm()
             .striped()
+    }
+
+    private fun tupleClicked() = { target: AjaxRequestTarget, tuple: Tuple ->
+        modelCache.selectedTransaction =
+            runBlocking {
+                modelCache.filterTransactions(
+                    tuple.toFilterString(translator, *tuple.columns.keys.toTypedArray()),
+                    filterCache.transactions
+                )
+            }.firstOrNull()
+        switchToPanel(TransactionPanel(), target)
     }
 
     private fun createFilterTable(): DynamicDataTable {
@@ -188,7 +206,7 @@ class FiltersPanel : RIAPanel() {
                 if (typedModelObject.store) {
                     typedModelObject.store()
                 }
-                modelCache.applyCategorieOn(filterCache.transactions, typedModelObject)
+                modelCache.applyCategorieOn(filterCache.transactions, typedModelObject, true)
                 modelCache.refresh()
                 filterCache.filter(filterCache.filter)
             }

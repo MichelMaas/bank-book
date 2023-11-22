@@ -2,11 +2,13 @@ package nl.maas.bankbook.domain
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.stream.MalformedJsonException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.annotations.StoreAs
 import org.apache.commons.lang3.NotImplementedException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 import kotlin.reflect.KClass
@@ -28,10 +30,24 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
             ) clazz.allSuperclasses.plus(clazz).find { it.hasAnnotation<StoreAs>() }!!
                 .findAnnotation<StoreAs>()!!.storeAs else clazz.java.simpleName
             val path = Paths.get(path(className!!))
+            restore(path)
+            return readLines(path, clazz)
+        }
 
+        private fun restore(path: Path) {
+            if (path.toFile().exists()) {
+                val codedLines = Files.readAllLines(path)
+                val recodedLines = codedLines.map { decode(it) }.map { encode(it) }
+                if (codedLines.any { cl -> recodedLines.none { rl -> cl.equals(rl) } }) {
+                    Files.write(path, recodedLines)
+                }
+            }
+        }
+
+        private fun <T : IterativeStorable<T>> readLines(path: Path, clazz: KClass<T>): List<T> {
             return runBlocking {
                 if (path.toFile().exists()) Files.readAllLines(path).map { async { decode(it) }.await() }
-                    .map { async { Gson().fromJson(it, JsonObject::class.java) as JsonObject }.await() }
+                    .map { async { toJSONObject(it) }.await() }.filterNotNull()
                     .map {
                         async {
                             Gson().fromJson(
@@ -44,6 +60,16 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                             )
                         }.await()
                     } else listOf<T>()
+            }
+        }
+
+        private fun toJSONObject(it: String): JsonObject? {
+            try {
+                return Gson().fromJson(it, JsonObject::class.java) as JsonObject
+            } catch (ex: MalformedJsonException) {
+                println("Failed to parse string to JSON:")
+                println(it)
+                return null
             }
         }
 
@@ -96,7 +122,7 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
         }
 
         private fun decode(json: String): String {
-            return String(Base64.getDecoder().decode(json.toByteArray()))
+            return String(Base64.getDecoder().decode(json.toByteArray()), Charsets.UTF_8)
         }
 
         private fun <T : IterativeStorable<T>> serialize(it: IterativeStorable<T>): String {

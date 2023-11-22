@@ -5,6 +5,7 @@ import nl.maas.bankbook.utils.JsonUtils
 data class Categories(val category: Map<String, String>) {
     companion object {
         val UNKNOWN = "UNKNOWN"
+        val MANUAL = "MANUAL"
         private val resourcePath = "/constants/categories.json"
         private val libPath = "lib/categories.json"
 

@@ -1,15 +1,16 @@
 package nl.maas.bankbook.frontend.wicket.panels
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.Transaction
-import nl.maas.bankbook.frontend.services.ParserService
+import nl.maas.bankbook.frontend.services.FileImportService
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.DynamicDataTable
 import nl.maas.wicket.framework.components.base.DynamicFormComponent
 import nl.maas.wicket.framework.components.base.DynamicPanel
 import nl.maas.wicket.framework.components.base.DynamicPanel.Companion.ROW_CONTENT_ID
-import nl.maas.wicket.framework.panels.RIAPanel
 import nl.maas.wicket.framework.services.Translator
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -18,16 +19,14 @@ import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.spring.injection.annot.SpringBean
 import java.io.Serializable
 
-class ImportPanel : RIAPanel() {
+class ImportPanel : StoreWaitingPanel() {
 
     @SpringBean
     private lateinit var translator: Translator
 
     @SpringBean
-    private lateinit var parserService: ParserService
+    private lateinit var fileImportService: FileImportService
 
-    @SpringBean
-    private lateinit var modelCache: ModelCache
 
     @SpringBean
     private lateinit var tupleUtils: TupleUtils
@@ -68,15 +67,13 @@ class ImportPanel : RIAPanel() {
             }
 
             override fun onFileUpload(target: AjaxRequestTarget, fileUpload: FileUpload) {
+                activateLoader(target)
                 super.onFileUpload(target, fileUpload)
                 val file = fileUpload.writeToTempFile()
-                super.onFileUpload(target, fileUpload)
-                transactions = parserService.parseFile(file)
-                modelCache.addOrUpdateTransactions(transactions)
+                GlobalScope.run { async { transactions = fileImportService.importFile(file) } }
                 reload(target)
             }
-        }
-            .addFileUploadField("file")
+        }.addFileUploadField("file")
     }
 
     private inner class FileWrapper(var file: FileUpload? = null) : Serializable

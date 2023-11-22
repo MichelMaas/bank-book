@@ -3,6 +3,7 @@ package nl.maas.bankbook.frontend.wicket.tools
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
+import nl.maas.bankbook.domain.Amount
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
@@ -68,7 +69,7 @@ class TupleUtils {
     private fun createTransactionTuple(transaction: Transaction): Tuple {
         return Tuple(
             "Receiver" to transaction.counter(),
-            "Amount" to transaction.mutation.value,
+            "Amount" to transaction.mutation.toString(),
             "Description" to transaction.description,
             "Category" to transaction.category
         )
@@ -81,11 +82,12 @@ class TupleUtils {
         period: ModelCache.PERIOD
     ): Tuple {
         val currentAmount = pair.second.sumOf { it.mutation.value }
+        val symbol = pair.second.first().currency.symbol
         return Tuple(
             "Category" to pair.first,
-            "Amount" to currentAmount,
+            "Amount" to Amount(currentAmount, symbol).toString(),
             "Previous period" to previousAmount,
-            "Difference" to currentAmount.minus(previousAmount)
+            "Difference" to Amount(currentAmount.minus(previousAmount), symbol).toString()
         )
     }
 }

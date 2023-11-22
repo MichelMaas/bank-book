@@ -3,12 +3,14 @@ package nl.maas.bankbook.domain
 import nl.maas.bankbook.domain.annotations.StoreAs
 import nl.maas.bankbook.domain.enums.MutationTypes
 import nl.maas.bankbook.domain.properties.Categories.Companion.UNKNOWN
-import nl.maas.bankbook.providers.Translator
+import nl.maas.wicket.framework.services.Translator
+import nl.maas.wicket.framework.services.TranslatorPlaceHolder
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import javax.annotation.OverridingMethodsMustInvokeSuper
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
@@ -18,12 +20,14 @@ abstract class Transaction(
     val date: LocalDate,
     val baseAccount: IBAN,
     val currency: Currency,
-    override val mutation: Amount,
+    var mutation: Amount,
     val mutationType: MutationTypes,
-    val description: String,
+    var description: String,
     var category: String = UNKNOWN,
-    val counterName: String = StringUtils.EMPTY,
+    var counterName: String = StringUtils.EMPTY,
+    val parentId: Long = 0
 ) : Event, IterativeStorable<Transaction> {
+
 
     companion object {
         fun EMPTY(account: IBAN, currency: Currency) = object : Transaction(
@@ -37,10 +41,18 @@ abstract class Transaction(
         }
     }
 
-    var splitExpenses: List<Expense> = listOf()
-
+    @OverridingMethodsMustInvokeSuper
     override fun equals(other: Any?): Boolean {
-        return this::class.isInstance(other) && (other as Transaction).id.equals(this.id)
+        if (!Transaction::class.isInstance(other)) return false
+
+        val transaction = other as Transaction
+        return date.equals(transaction.date) && baseAccount.equals(transaction.baseAccount) && mutation.toString()
+            .equals(transaction.mutation.toString()) && counter().equals(transaction.counter())
+    }
+
+    override fun hashCode(): Int {
+        val dummyTranslator = TranslatorPlaceHolder()
+        return filterValues(dummyTranslator).sumOf { it.hashCode() }
     }
 
     override fun toString(): String {
@@ -69,10 +81,6 @@ abstract class Transaction(
             }
 
         }.toTypedArray()
-    }
-
-    fun splitExpense(amount: Amount, category: String) {
-        splitExpenses = listOf(Expense("${this.id}_${splitExpenses.size}", amount, category))
     }
 
     override fun replace(source: List<Transaction>): List<Transaction> {

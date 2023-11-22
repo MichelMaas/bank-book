@@ -1,18 +1,24 @@
 package nl.maas.bankbook.frontend.wicket.caches
 
 import kotlinx.coroutines.*
-import nl.maas.bankbook.domain.CategoryFilter
-import nl.maas.bankbook.domain.IBAN
-import nl.maas.bankbook.domain.IterativeStorable
-import nl.maas.bankbook.domain.Transaction
+import nl.maas.bankbook.domain.*
+import nl.maas.bankbook.domain.properties.Categories
 import nl.maas.bankbook.frontend.translation.CachingGoogleTranslator
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
-import java.time.*
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Year
 import javax.inject.Inject
 
 @Component
 class ModelCache : nl.maas.wicket.framework.services.ModelCache {
+
+    val occupiedIDs: List<Long> get() = _transactions.map { it.id }
+    private var storeInProgress = false
+    private var blockRequested = false
+    val shouldHoldRender get() = storeInProgress || blockRequested
 
     @Inject
     private lateinit var translator: CachingGoogleTranslator
@@ -24,6 +30,8 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     val accounts get() = _transactions.map { it.baseAccount }.distinct()
     var allAccounts: Boolean = true
 
+    @Transient
+    var selectedTransaction: Transaction? = null
     private val transactions
         get() = if (allAccounts) _transactions else _transactions.filter {
             it.baseAccount.equals(
@@ -45,6 +53,18 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     override fun refresh() {
         _transactions = IterativeStorable.load(Transaction::class)
         categoryFilters = IterativeStorable.load(CategoryFilter::class)
+    }
+
+    fun isStoring() = storeInProgress
+
+    fun requestBlockWhile(interval: Long, check: (ModelCache) -> Boolean) {
+        GlobalScope.launch {
+            blockRequested = true
+            while (check(this@ModelCache)) {
+                Thread.sleep(interval)
+            }
+            blockRequested = false
+        }
     }
 
     fun transactionsForPeriod(localDate: LocalDate, period: PERIOD, category: String): List<Transaction> {
@@ -108,21 +128,22 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     fun applyCategorieOn(
         transactions: List<Transaction> = this.transactions,
-        categoryFilter: CategoryFilter
+        categoryFilter: CategoryFilter,
+        storeNow: Boolean
     ) {
         runBlocking {
             filterTransactions(categoryFilter.filterString, transactions).forEach {
                 async { it.category = categoryFilter.category.name }
             }
         }
-        GlobalScope.launch { async { IterativeStorable.storeAll(transactions) } }.invokeOnCompletion { refresh() }
+        if (storeNow) invokeStorage(transactions)
     }
 
     suspend fun filterTransactions(
         filter: String,
         transactions: List<Transaction>
     ): List<Transaction> {
-        val start = LocalTime.now()
+//        TimerUtil.start()
         val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
         var filtered: List<Transaction> = coroutineScope {
             transactions.filter { tr ->
@@ -136,19 +157,17 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 }.await()
             }.sortedByDescending { it.date }
         }
-
-        val end = LocalTime.now()
-        val between = Duration.between(start, end)
-        println("Filtering took: ${between}")
+//        val end = LocalTime.now()
+//        TimerUtil.stop("Filtering took")
         return filtered
     }
 
     fun transactionsForFilter(filter: String): List<Transaction> {
-        return runBlocking { filterTransactions(filter, transactions) }
+        return runBlocking { filterTransactions(filter, _transactions) }
     }
 
     fun applyCategorieOnAll(categoryFilter: CategoryFilter) {
-        applyCategorieOn(transactions, categoryFilter)
+        applyCategorieOn(_transactions, categoryFilter, true)
     }
 
     fun findFilters(filter: String): List<CategoryFilter> {
@@ -170,17 +189,40 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
     }
 
+    fun applyCategoriesOnNewTransactions(transactions: List<Transaction>) {
+        val filterIterator = categoryFilters.iterator()
+        while (transactions.any { Categories.UNKNOWN.equals(it.category) } && filterIterator.hasNext()) {
+            val current = filterIterator.next()
+            runBlocking { async { applyCategorieOn(transactions, current, false) }.await() }
+        }
+    }
+
     fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
-        categoryFilters.forEach { runBlocking { async { applyCategorieOn(newTransactions, it) }.await() } }
-        _transactions =
-            _transactions.filter { runBlocking { async { !newTransactions.contains(it) }.await() } }
-                .plus(newTransactions)
-        GlobalScope.launch { IterativeStorable.storeAll(transactions) }
+//        categoryFilters.forEach { runBlocking { async { applyCategorieOn(newTransactions, it, false) }.await() } }
+        applyCategoriesOnNewTransactions(newTransactions)
+//        _transactions =
+//            newTransactions.filter { nt -> runBlocking { async { !_transactions.contains(nt) }.await() } }
+//                .plus(_transactions)
+        invokeStorage(newTransactions)
+    }
+
+    private fun invokeStorage(transactions: List<Transaction> = _transactions) {
+        while (storeInProgress) {
+            Thread.sleep(1000)
+        }
+        storeInProgress = true
+        IterativeStorable.storeAll(transactions)
+        refresh()
+        storeInProgress = false
     }
 
     suspend fun deleteFilter(filter: CategoryFilter): Deferred<List<CategoryFilter>> {
         categoryFilters = categoryFilters.minus(filter)
         return GlobalScope.async { IterativeStorable.remove(listOf(filter)) }
+    }
+
+    fun getChildrenFor(id: Long): List<Transaction> {
+        return _transactions.filter { Transfer::class.isInstance(it) && (it as Transfer).parentId.equals(id) }
     }
 
 }

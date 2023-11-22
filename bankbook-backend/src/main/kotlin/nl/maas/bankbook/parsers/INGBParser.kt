@@ -2,20 +2,21 @@ package nl.maas.bankbook.parsers
 
 import nl.maas.bankbook.domain.*
 import nl.maas.bankbook.domain.enums.MutationTypes.*
+import nl.maas.bankbook.utils.UUIDUtil
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class INGBParser internal constructor(map: Map<Int, MutableList<String>>) :
-    Parser(map, -1, 0, 2, 3, 1, -1, 6, 4, 7, 8) {
+class INGBParser internal constructor(map: Map<Int, MutableList<String>>, occupiedIDs: List<Long>) :
+    Parser(map, occupiedIDs.toMutableList(), -1, 0, 2, 3, 1, -1, 6, 4, 7, 8) {
     private val datePattern: String = "yyyyMMdd"
     private val currency = Currency.getInstance(Locale.getDefault())
     private val mutationTypesMap = mapOf("BA" to BEA, "ID" to IDB, "GT" to OVB, "GM" to GEA, "OV" to OVB, "VZ" to DPS)
 
     override fun createPayment(record: MutableList<String>): Transaction {
         return Payment(
-            makeUUID(),
+            UUIDUtil.createUUID(occupiedIDs),
             toDate(record[POSITIONS.DATE]),
             IBAN(record[POSITIONS.SOURCE]),
             currency,
@@ -40,7 +41,7 @@ class INGBParser internal constructor(map: Map<Int, MutableList<String>>) :
 
     override fun createTransfer(record: MutableList<String>): Transaction {
         return Transfer(
-            makeUUID(), toDate(record[POSITIONS.DATE]),
+            UUIDUtil.createUUID(occupiedIDs), toDate(record[POSITIONS.DATE]),
             IBAN(record[POSITIONS.SOURCE]),
             IBAN(record[POSITIONS.COUNTER]),
             record[POSITIONS.COUNTER_NAME],
@@ -51,7 +52,6 @@ class INGBParser internal constructor(map: Map<Int, MutableList<String>>) :
         )
     }
 
-    private fun makeUUID() = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
 
     override fun validateForBank(): Boolean {
         return map.all { IBAN.validate(it.value[POSITIONS.SOURCE]) }

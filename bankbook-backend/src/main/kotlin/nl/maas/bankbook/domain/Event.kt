@@ -4,5 +4,4 @@ import java.io.Serializable
 
 interface Event : Serializable {
     val id: Comparable<*>
-    val mutation: Amount
 }

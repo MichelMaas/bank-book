@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class Amount constructor(val value: BigDecimal, val symbol: String) : java.io.Serializable,
+class Amount(var value: BigDecimal, val symbol: String) : java.io.Serializable,
     Comparable<BigDecimal> by value {
 
     constructor(str: String, symbol: String) : this(BigDecimal(str.replace(",", ".")), symbol)
@@ -16,4 +16,5 @@ class Amount constructor(val value: BigDecimal, val symbol: String) : java.io.Se
     override fun toString(): String {
         return "${symbol} ${value.toString().replace(",", StringUtils.EMPTY).replace('.', ',')}"
     }
+
 }

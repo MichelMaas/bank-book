@@ -2,14 +2,15 @@ package nl.maas.bankbook.parsers
 
 import nl.maas.bankbook.domain.*
 import nl.maas.bankbook.domain.enums.MutationTypes
+import nl.maas.bankbook.utils.UUIDUtil
 import org.apache.commons.lang3.math.NumberUtils
 import org.apache.commons.validator.GenericValidator
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) :
-    Parser(map, 15, 0, 1, 2, 3, 7, 10, 13, 14, 17) {
+class SNSBParser internal constructor(map: Map<Int, MutableList<String>>, occupiedIDs: List<Long>) :
+    Parser(map, occupiedIDs.toMutableList(), 15, 0, 1, 2, 3, 7, 10, 13, 14, 17) {
 
 
     private val datePattern = "dd-MM-yyyy"
@@ -18,7 +19,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) :
         val currency =
             Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }
         return Payment(
-            record[POSITIONS.ID].toLong(),
+            UUIDUtil.createUUID(occupiedIDs),
             LocalDate.parse(record[POSITIONS.DATE], DateTimeFormatter.ofPattern(datePattern)),
             IBAN(record[POSITIONS.SOURCE]),
             currency,
@@ -32,7 +33,7 @@ class SNSBParser internal constructor(map: Map<Int, MutableList<String>>) :
         val currency =
             Currency.getAvailableCurrencies().first { it.currencyCode.equals(record[POSITIONS.CURRENCY], true) }
         return Transfer(
-            record[POSITIONS.ID].toLong(),
+            UUIDUtil.createUUID(occupiedIDs),
             LocalDate.parse(record[POSITIONS.DATE], DateTimeFormatter.ofPattern(datePattern)),
             IBAN(record[POSITIONS.SOURCE]),
             IBAN(record[POSITIONS.COUNTER]),

@@ -14,7 +14,6 @@ import nl.maas.wicket.framework.components.charts.PieChart
 import nl.maas.wicket.framework.components.charts.data.BarchartData
 import nl.maas.wicket.framework.components.charts.data.PieChartData
 import nl.maas.wicket.framework.components.elemental.DatePickerButton
-import nl.maas.wicket.framework.panels.RIAPanel
 import nl.maas.wicket.framework.services.Translator
 import org.apache.commons.lang3.StringUtils
 import org.apache.wicket.Component
@@ -28,12 +27,10 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = ModelCache.PERIOD.YEAR) :
-    RIAPanel() {
+    StoreWaitingPanel() {
     private val creationStart = LocalDateTime.now()
     private lateinit var renderStart: LocalDateTime
 
-    @SpringBean
-    private lateinit var modelCache: ModelCache
 
     @SpringBean
     private lateinit var translator: Translator

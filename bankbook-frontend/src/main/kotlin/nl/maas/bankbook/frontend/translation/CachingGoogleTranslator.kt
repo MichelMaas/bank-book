@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class CachingGoogleTranslator() : Translator, nl.maas.bankbook.providers.Translator {
+class CachingGoogleTranslator() : Translator {
 
     private var translations = IterativeStorable.load(Translation::class)
 

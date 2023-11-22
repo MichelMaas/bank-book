@@ -207,7 +207,6 @@
         <dependency>
             <groupId>nl.maas.wicket.framework</groupId>
             <artifactId>wicket.framework.lib</artifactId>
-            <version>${wicket.framework.lib.version}</version>
         </dependency>
 
         <dependency>
