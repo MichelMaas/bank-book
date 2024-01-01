@@ -38,7 +38,7 @@ class TransactionPanel : RIAPanel() {
 
     private lateinit var transaction: Transaction
 
-    private var newChild: ManualTransaction = ManualTransaction.EMPTY
+    private var newChild: Boolean = false
 
     override fun onBeforeRender() {
         super.onBeforeRender()
@@ -86,48 +86,18 @@ class TransactionPanel : RIAPanel() {
             "List" to intArrayOf(12),
             "Buttons" to intArrayOf(2, 2, 8),
             "New" to intArrayOf(12)
-        ).addOrReplaceComponentToColumn("List", 0, createChildList())
-            .addOrReplaceComponentToColumn("Buttons", 0, createAddButton(payment))
-            .addOrReplaceComponentToColumn("New", 0, createNewChildForm(!newChild.empty))
+        ).addOrReplaceComponentToColumn("List", 0, createChildList(payment))
+            .addOrReplaceComponentToColumn("Buttons", 0, createAddButton())
+            .addOrReplaceComponentToColumn("New", 0, createNewChildForm(payment))
         return panel
     }
 
-    private fun createNewChildForm(visible: Boolean): Component {
+    private fun createNewChildForm(payment: Payment): Component {
         val formComponent = object : DynamicFormComponent<ManualTransaction>(
             ROW_CONTENT_ID,
             "New transaction",
-            CompoundPropertyModel.of(newChild),
-            translator
-        ) {
-            override fun onAfterSubmit(target: AjaxRequestTarget, typedModelObject: ManualTransaction) {
-                if (!typedModelObject.empty) {
-                    typedModelObject.store()
-                }
-                newChild = ManualTransaction.EMPTY
-            }
-
-            override fun onSubmitCompleted(target: AjaxRequestTarget, typedModelObject: ManualTransaction) {
-                reload(target)
-            }
-        }.addTextBox("description", "Description")
-            .addTextBox("mutation", "Amount ${newChild.currency.symbol}", AmountTransformer())
-            .addSelect("category", "Category", Categories.values().toList(), Categories.MANUAL)
-            .addTextBox("counterName", "Receiver")
-        formComponent.isVisible = visible
-        return formComponent
-    }
-
-    private fun createAddButton(payment: Payment): Component {
-        return object : SimpleAjaxButton(
-            ROW_CONTENT_ID,
-            "+",
-            Buttons.Type.Outline_Primary,
-            SimpleAjaxButton.Size.SMALL,
-            translator,
-            true
-        ) {
-            override fun onClick(target: AjaxRequestTarget) {
-                newChild = ManualTransaction(
+            CompoundPropertyModel.of(
+                ManualTransaction(
                     UUIDUtil.createUUID(modelCache.occupiedIDs.toTypedArray()),
                     payment.id,
                     LocalDate.now(),
@@ -137,24 +107,75 @@ class TransactionPanel : RIAPanel() {
                     MutationTypes.MAN,
                     StringUtils.EMPTY
                 )
+            ),
+            translator
+        ) {
+            override fun onSubmit(target: AjaxRequestTarget, typedModelObject: ManualTransaction) {
+                val parts = modelCache.getChildrenFor(transaction.id).plus(typedModelObject).sumOf { it.mutation.value }
+                if ((transaction.mutation.value > BigDecimal.ZERO && parts > transaction.mutation.value) || (transaction.mutation.value < BigDecimal.ZERO && parts < transaction.mutation.value)) {
+                    warn(
+                        "The sum of all partial amounts (${
+                            Amount(
+                                parts,
+                                transaction.mutation.symbol
+                            )
+                        }) should not be larger then the amount of the source transaction (${transaction.mutation})"
+                    )
+                } else if (!typedModelObject.empty) {
+                    modelCache.addOrUpdateTransactions(typedModelObject, applyCategories = false)
+                }
+                newChild = false
+            }
+
+            override fun onAfterCancel(target: AjaxRequestTarget, typedModelObject: ManualTransaction) {
+                newChild = false
+                reload(target)
+            }
+
+            override fun onSubmitCompleted(target: AjaxRequestTarget, typedModelObject: ManualTransaction) {
+                reload(target)
+            }
+        }.addTextBox("description", "Description")
+            .addTextBox("mutation", "Amount ${transaction.currency.symbol}", AmountTransformer())
+            .addSelect("category", "Category", Categories.values().toList(), Categories.MANUAL)
+            .addTextBox("counterName", "Receiver")
+        formComponent.isVisible = newChild
+        return formComponent
+    }
+
+    private fun createAddButton(): Component {
+        return object : SimpleAjaxButton(
+            ROW_CONTENT_ID,
+            "+",
+            Buttons.Type.Outline_Primary,
+            SimpleAjaxButton.Size.SMALL,
+            translator,
+            true
+        ) {
+            override fun onClick(target: AjaxRequestTarget) {
+                newChild = true
                 reload(target)
             }
         }
     }
 
-    private fun createChildList(): Component {
-        val children = modelCache.getChildrenFor(transaction.id)
-        val tuples = runBlocking { tupleUtils.transactionsToTuples(children, true, ModelCache.PERIOD.NONE) }
+    private fun createChildList(payment: Payment): Component {
+        val tuples =
+            runBlocking { tupleUtils.transactionsToTuples(payment.getChildren(), false, ModelCache.PERIOD.NONE) }
         return DynamicDataTable.get(ROW_CONTENT_ID, tuples, 3, 20, translator)
     }
 
     private fun createForm(): Component {
-        return DynamicFormComponent<Transaction>(
+        return object : DynamicFormComponent<Transaction>(
             ROW_CONTENT_ID,
             "Details",
             CompoundPropertyModel.of(transaction),
             translator
-        ).addSelect("category", "Category", Categories.values().toList(), transaction.category)
+        ) {
+            override fun onAfterSubmit(target: AjaxRequestTarget, typedModelObject: Transaction) {
+                super.onAfterSubmit(target, typedModelObject)
+            }
+        }.addSelect("category", "Category", Categories.values().toList(), transaction.category)
     }
 
     private fun createSummaryRight(): Component {

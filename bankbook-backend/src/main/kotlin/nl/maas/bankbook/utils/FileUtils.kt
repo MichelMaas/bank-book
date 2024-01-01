@@ -16,7 +16,7 @@ class FileUtils {
             val files = runBlocking {
                 if (Files.exists(Path.of(fileName))) listOf(Path.of(fileName)) else async {
                     Files.find(
-                        Paths.get(System.getProperty("app.dir")).toRealPath(), 5,
+                        Paths.get("").toRealPath(), 5,
                         BiPredicate({ path, basicFileAttributes ->
                             val file: File = path.toFile()
                             !file.isDirectory() &&

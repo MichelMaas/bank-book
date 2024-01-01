@@ -155,9 +155,8 @@ class FiltersPanel : StoreWaitingPanel() {
             15,
             50,
             translator,
-            "Category"
-//            ,
-//            onTupleClick = tupleClicked()
+            "Category",
+            onTupleClick = tupleClicked()
         ).invertHeader().sm()
             .striped()
     }

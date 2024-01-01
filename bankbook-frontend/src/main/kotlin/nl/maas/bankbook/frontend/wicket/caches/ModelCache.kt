@@ -52,6 +52,8 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     override fun refresh() {
         _transactions = IterativeStorable.load(Transaction::class)
+        _transactions.filter { !it.parentId.equals(0L) }
+            .forEach { _transactions.first { prt -> prt.id.equals(it.parentId) }.addChild(it as ManualTransaction) }
         categoryFilters = IterativeStorable.load(CategoryFilter::class)
     }
 
@@ -143,7 +145,6 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         filter: String,
         transactions: List<Transaction>
     ): List<Transaction> {
-//        TimerUtil.start()
         val filterWords = filter.split(StringUtils.SPACE).filterNot { it.isBlank() }
         var filtered: List<Transaction> = coroutineScope {
             transactions.filter { tr ->
@@ -157,8 +158,6 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
                 }.await()
             }.sortedByDescending { it.date }
         }
-//        val end = LocalTime.now()
-//        TimerUtil.stop("Filtering took")
         return filtered
     }
 
@@ -197,13 +196,9 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
     }
 
-    fun addOrUpdateTransactions(newTransactions: List<Transaction>) {
-//        categoryFilters.forEach { runBlocking { async { applyCategorieOn(newTransactions, it, false) }.await() } }
-        applyCategoriesOnNewTransactions(newTransactions)
-//        _transactions =
-//            newTransactions.filter { nt -> runBlocking { async { !_transactions.contains(nt) }.await() } }
-//                .plus(_transactions)
-        invokeStorage(newTransactions)
+    fun addOrUpdateTransactions(vararg newTransactions: Transaction, applyCategories: Boolean = true) {
+        if (applyCategories) applyCategoriesOnNewTransactions(newTransactions.toList())
+        invokeStorage(newTransactions.toList())
     }
 
     private fun invokeStorage(transactions: List<Transaction> = _transactions) {
@@ -222,7 +217,11 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     }
 
     fun getChildrenFor(id: Long): List<Transaction> {
-        return _transactions.filter { Transfer::class.isInstance(it) && (it as Transfer).parentId.equals(id) }
+        return _transactions.filter {
+            ManualTransaction::class.isInstance(it) && (it as ManualTransaction).parentId.equals(
+                id
+            )
+        }
     }
 
 }

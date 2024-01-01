@@ -25,9 +25,25 @@ abstract class Transaction(
     var description: String,
     var category: String = UNKNOWN,
     var counterName: String = StringUtils.EMPTY,
-    val parentId: Long = 0
+    val parentId: Long = 0,
+    @Transient private var _children: MutableList<ManualTransaction>? = mutableListOf()
 ) : Event, IterativeStorable<Transaction> {
 
+    enum class SIGN {
+        POS,
+        NEG;
+
+        companion object {
+
+            fun getPosNeg(amount: Amount): SIGN {
+                return if (amount.value < BigDecimal.ZERO) NEG else POS
+            }
+        }
+    }
+
+    fun getChildren() = _children?.toList() ?: listOf()
+
+    val sign: SIGN get() = SIGN.getPosNeg(mutation)
 
     companion object {
         fun EMPTY(account: IBAN, currency: Currency) = object : Transaction(
@@ -85,6 +101,25 @@ abstract class Transaction(
 
     override fun replace(source: List<Transaction>): List<Transaction> {
         return source.filter { it.equals(this) }
+    }
+
+    fun addChild(vararg child: ManualTransaction) {
+        if (_children == null) _children = mutableListOf()
+        _children!!.addAll(child)
+    }
+
+    private fun remainingParentValue(): BigDecimal {
+        return when (sign) {
+            SIGN.NEG -> mutation.value.plus(getChildren().sumOf { it.mutation.value })
+            SIGN.POS -> mutation.value.minus(getChildren().sumOf { it.mutation.value })
+        }
+    }
+
+    fun compoundMutation(): Amount {
+        return when (sign) {
+            SIGN.NEG -> Amount(remainingParentValue().minus(getChildren().sumOf { it.mutation.value }), mutation.symbol)
+            SIGN.POS -> Amount(remainingParentValue().plus(getChildren().sumOf { it.mutation.value }), mutation.symbol)
+        }
     }
 
     abstract fun counter(): String

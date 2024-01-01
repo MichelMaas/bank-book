@@ -25,7 +25,7 @@ class FileImportService {
         try {
             GlobalScope.async {
                 transactions.addAll(parserService.parseFile(file))
-                modelCache.addOrUpdateTransactions(transactions)
+                modelCache.addOrUpdateTransactions(*transactions.toTypedArray())
             }.await()
         } catch (e: Exception) {
             println("An error occurred while importing ${file.name}:")
