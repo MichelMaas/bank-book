@@ -3,7 +3,9 @@ package nl.maas.bankbook.frontend.wicket.caches
 import kotlinx.coroutines.*
 import nl.maas.bankbook.domain.*
 import nl.maas.bankbook.domain.properties.Categories
+import nl.maas.bankbook.frontend.services.PayDateUtility
 import nl.maas.bankbook.frontend.translation.CachingGoogleTranslator
+import nl.maas.bankbook.frontend.wicket.objects.enums.StartOfMonth
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
 import java.time.Duration
@@ -13,15 +15,14 @@ import java.time.Year
 import javax.inject.Inject
 
 @Component
-class ModelCache : nl.maas.wicket.framework.services.ModelCache {
+class ModelCache @Inject constructor(val translator: CachingGoogleTranslator, val propertiesCache: PropertiesCache) :
+    nl.maas.wicket.framework.services.ModelCache {
 
     val occupiedIDs: List<Long> get() = _transactions.map { it.id }
     private var storeInProgress = false
     private var blockRequested = false
     val shouldHoldRender get() = storeInProgress || blockRequested
 
-    @Inject
-    private lateinit var translator: CachingGoogleTranslator
 
     private var _transactions: List<Transaction> =
         IterativeStorable.load(Transaction::class)
@@ -32,7 +33,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
 
     @Transient
     var selectedTransaction: Transaction? = null
-    private val transactions
+    val transactions
         get() = if (allAccounts) _transactions else _transactions.filter {
             it.baseAccount.equals(
                 account
@@ -69,15 +70,21 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         }
     }
 
-    fun transactionsForPeriod(localDate: LocalDate, period: PERIOD, category: String): List<Transaction> {
+    fun transactionsForPeriod(
+        localDate: LocalDate,
+        period: PERIOD,
+        category: String,
+        startOfMonth: StartOfMonth = propertiesCache.properties.startOfMonth
+    ): List<Transaction> {
         val start = LocalDateTime.now()
         var transactionsForPeriod = when (period) {
             PERIOD.MONTH -> transactions.filter {
                 runBlocking {
                     async {
+                        val dates = determineStartEndDateForMonth(localDate, startOfMonth)
                         between(
-                            localDate.withDayOfMonth(1),
-                            localDate.withDayOfMonth(localDate.month.length(localDate.isLeapYear)),
+                            dates[0],
+                            dates[1],
                             it.date
                         )
                     }.await()
@@ -103,6 +110,20 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
         println("Fetching transactions took ${Duration.between(start, end).toString()}")
 
         return transactionsForPeriod
+    }
+
+    private fun determineStartEndDateForMonth(localDate: LocalDate, startOfMonth: StartOfMonth): Array<LocalDate> {
+        return when (startOfMonth) {
+            StartOfMonth.PAY_DAY -> PayDateUtility.get(this).findIncomeStartEndDates(
+                localDate.month,
+                Year.of(localDate.year)
+            ).toList().toTypedArray()
+
+            else -> arrayOf(
+                localDate.withDayOfMonth(1),
+                localDate.withDayOfMonth(localDate.month.length(localDate.isLeapYear))
+            )
+        }
     }
 
     fun transactionsForPreviousPeriod(
@@ -135,7 +156,7 @@ class ModelCache : nl.maas.wicket.framework.services.ModelCache {
     ) {
         runBlocking {
             filterTransactions(categoryFilter.filterString, transactions).forEach {
-                async { it.category = categoryFilter.category.name }
+                async { it.category = categoryFilter.category }
             }
         }
         if (storeNow) invokeStorage(transactions)

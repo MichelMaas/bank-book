@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.domain.CategoryFilter
 import nl.maas.bankbook.domain.Transaction
-import nl.maas.bankbook.domain.enums.Categories
+import nl.maas.bankbook.domain.properties.Categories
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.*
@@ -225,7 +225,7 @@ class FiltersPanel : StoreWaitingPanel() {
                 transactionTable.update(transactionsToTuples, target)
             }
 
-        }.addSelect("category", "Category", Categories.values().toList().sortedBy { it.name }, categoryFilter.category)
+        }.addSelect("category", "Category", Categories.values().toList().sorted(), categoryFilter.category)
             .addCheckbox("store", "Store", categoryFilter.store)
     }
 

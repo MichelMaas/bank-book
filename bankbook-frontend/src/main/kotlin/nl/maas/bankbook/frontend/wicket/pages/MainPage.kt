@@ -8,7 +8,9 @@ import nl.maas.wicket.framework.pages.RIAPage
 
 @WicketHomePage
 class MainPage : RIAPage<ModelCache>(BankbookRIAProperties()) {
-    init {
+
+    override fun onBeforeRender() {
+        super.onBeforeRender()
         registerPanels(
             "Year Overview" to YearOverviewPanel(),
             "Month Overview" to MonthOverviewPanel(),

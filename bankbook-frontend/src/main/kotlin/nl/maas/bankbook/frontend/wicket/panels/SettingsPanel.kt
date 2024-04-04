@@ -5,6 +5,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import nl.maas.bankbook.frontend.translation.CachingGoogleTranslator
 import nl.maas.bankbook.frontend.translation.Translation
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
+import nl.maas.bankbook.frontend.wicket.objects.Properties
+import nl.maas.bankbook.frontend.wicket.objects.enums.StartOfMonth
 import nl.maas.wicket.framework.components.base.CollapsablePanel
 import nl.maas.wicket.framework.components.base.CollapsablePanelGroup
 import nl.maas.wicket.framework.components.base.DynamicFormComponent
@@ -21,14 +24,44 @@ class SettingsPanel : RIAPanel() {
     @SpringBean
     private lateinit var translator: CachingGoogleTranslator
 
+    @SpringBean
+    private lateinit var propertiesCache: PropertiesCache
+
     override fun onBeforeRender() {
         super.onBeforeRender()
         addOrReplace(createContent())
     }
 
     private fun createContent(): Component {
-        return DynamicPanel("panel").addRow("Collapsables", 12)
+        return DynamicPanel("panel").addRow("properties", 12).addRow("Collapsables", 12)
+            .addOrReplaceComponentToColumn("properties", 0, createPropertiesForm())
             .addOrReplaceComponentToColumn("Collapsables", 0, createCollapsables())
+    }
+
+    private fun createPropertiesForm(): Component {
+        return object : DynamicFormComponent<Properties>(
+            "content",
+            "Properties",
+            CompoundPropertyModel.of(propertiesCache.properties),
+            translator
+        ) {
+
+            override fun onSubmit(target: AjaxRequestTarget, typedModelObject: Properties) {
+                super.onSubmit(target, typedModelObject)
+                typedModelObject.store()
+            }
+
+            override fun onAfterSubmit(target: AjaxRequestTarget, typedModelObject: Properties) {
+                super.onAfterSubmit(target, typedModelObject)
+                reload(target)
+            }
+        }
+            .addSelect(
+                "startOfMonth",
+                "First day of the month",
+                StartOfMonth.values().toList(),
+                propertiesCache.properties.startOfMonth
+            )
     }
 
     private fun createCollapsables(): Component {
