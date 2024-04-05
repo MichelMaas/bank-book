@@ -6,6 +6,7 @@ import nl.maas.bankbook.domain.IBAN
 import nl.maas.bankbook.domain.Transaction
 import nl.maas.bankbook.frontend.ContextProvider
 import nl.maas.bankbook.frontend.wicket.caches.ModelCache
+import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import nl.maas.bankbook.frontend.wicket.config.BootstrapProperties
 import nl.maas.bankbook.frontend.wicket.tools.TupleUtils
 import nl.maas.wicket.framework.components.base.*
@@ -31,6 +32,8 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
     private val creationStart = LocalDateTime.now()
     private lateinit var renderStart: LocalDateTime
 
+    @SpringBean
+    protected lateinit var propertiesCache: PropertiesCache
 
     @SpringBean
     private lateinit var translator: Translator
@@ -162,8 +165,13 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
         return KeyValueView(
             ROW_CONTENT_ID, translator,
             "Total transactions" to transactions.size,
-            "Result" to transactions.sumOf { it.mutation.value }
+            "Result" to transactions.sumOf { it.mutation.value },
+            *addToSummaryRight()
         )
+    }
+
+    protected open fun addToSummaryRight(): Array<Pair<*, *>> {
+        return arrayOf()
     }
 
     private fun createSummaryLeft(transactions: List<Transaction>): Component {
@@ -172,8 +180,13 @@ abstract class AbstractOverviewPanel(private val period: ModelCache.PERIOD = Mod
             "Total in" to transactions.filter { it.mutation.value > BigDecimal.ZERO }
                 .sumOf { it.mutation.value },
             "Total out" to transactions.filter { it.mutation.value < BigDecimal.ZERO }
-                .sumOf { it.mutation.value }
+                .sumOf { it.mutation.value },
+            *addToSummaryLeft()
         )
+    }
+
+    protected open fun addToSummaryLeft(): Array<Pair<*, *>> {
+        return arrayOf()
     }
 
     private fun createToggle(): Component {
