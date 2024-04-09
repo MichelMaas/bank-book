@@ -11,7 +11,7 @@
     <groupId>nl.maas.bankbook</groupId>
     <artifactId>bankbook</artifactId>
     <packaging>pom</packaging>
-    <version>2023.11-SNAPSHOT</version>
+    <version>2024.01</version>
 
     <modules>
         <module>bankbook-backend</module>
@@ -40,7 +40,7 @@
         </jvm.options>
         <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <kotlinx-coroutines-core.version>1.6.1</kotlinx-coroutines-core.version>
-        <wicket.framework.lib.version>2024.02-SNAPSHOT</wicket.framework.lib.version>
+        <wicket.framework.lib.version>2024.02</wicket.framework.lib.version>
     </properties>
 
     <repositories>
