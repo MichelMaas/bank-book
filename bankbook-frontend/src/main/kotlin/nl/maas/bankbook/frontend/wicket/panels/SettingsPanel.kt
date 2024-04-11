@@ -51,8 +51,8 @@ class SettingsPanel : RIAPanel() {
                 typedModelObject.store()
             }
 
-            override fun onAfterSubmit(target: AjaxRequestTarget, typedModelObject: Properties) {
-                super.onAfterSubmit(target, typedModelObject)
+            override fun onSubmitCompleted(target: AjaxRequestTarget, typedModelObject: Properties) {
+                super.onSubmitCompleted(target, typedModelObject)
                 reload(target)
             }
         }

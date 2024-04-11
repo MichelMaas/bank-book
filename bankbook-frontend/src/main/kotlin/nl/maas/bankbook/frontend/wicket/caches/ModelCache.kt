@@ -77,11 +77,11 @@ class ModelCache @Inject constructor(val translator: CachingGoogleTranslator, va
         startOfMonth: StartOfMonth = propertiesCache.properties.startOfMonth
     ): List<Transaction> {
         val start = LocalDateTime.now()
+        val dates = determineStartEndDateForMonth(localDate, startOfMonth)
         var transactionsForPeriod = when (period) {
             PERIOD.MONTH -> transactions.filter {
                 runBlocking {
                     async {
-                        val dates = determineStartEndDateForMonth(localDate, startOfMonth)
                         between(
                             dates[0],
                             dates[1],
@@ -146,7 +146,8 @@ class ModelCache @Inject constructor(val translator: CachingGoogleTranslator, va
     }
 
     private fun between(startDate: LocalDate, endDate: LocalDate, date: LocalDate): Boolean {
-        return !date.isBefore(startDate) && !date.isAfter(endDate)
+        val period = startDate.datesUntil(endDate)
+        return period.anyMatch { date.equals(it) }
     }
 
     fun applyCategorieOn(
