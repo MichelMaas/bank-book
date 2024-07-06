@@ -15,8 +15,8 @@ class BankbookRIAProperties : RiaPageProperties<ModelCache>(
     ContextProvider.ctx.getBean(ModelCache::class.java),
     ContextProvider.ctx.getBean(CachingGoogleTranslator::class.java),
     brandName = "Bankbook",
-    iconPath = FileUtils.findFile("icon.png"),
-    brandPath = FileUtils.findFile("brand.png"),
-    navbarOrientation = NavbarOrientation.VERTICAL
+    iconPath = FileUtils.findFile("open/images/icon.png"),
+    brandPath = FileUtils.findFile("open/images/brand.png"),
+    navbarOrientation = NavbarOrientation.HORIZONTAL
 ) {
 }

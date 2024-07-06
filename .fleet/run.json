@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "maven",
+            "name": "Full",
+            "workingDir": "bankbook-client",
+            "tasks": [
+                "spring-boot:run"
+            ],
+            "args": [
+                "-T1C -Dapp.dir=$PROJECT_DIR$/bankbook-client"
+            ],
+            "environment": {
+                "-Xms2048m -Xmx2048m --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED"
+            },
+        },
+    ]
+}
