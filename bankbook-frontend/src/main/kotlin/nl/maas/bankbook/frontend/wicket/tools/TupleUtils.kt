@@ -65,6 +65,16 @@ class TupleUtils {
         }
     }
 
+    fun groupTuplesBy(tuples: List<Tuple>, column: String): List<Tuple> {
+        return tuples.groupBy { it.columns.get(column) }.map {
+            Tuple(
+                mapOf(
+                    column to it.key.toString(),
+                    "Quantity" to it.value.size
+                ), "Quantity"
+            )
+        }
+    }
 
     private fun createTransactionTuple(transaction: Transaction): Tuple {
         return Tuple(

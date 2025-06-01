@@ -37,6 +37,8 @@ class FiltersPanel : StoreWaitingPanel() {
 
     private val filterCache = FilterCache()
 
+    var grouped = true
+
 
     override fun onInitialize() {
         super.onInitialize()
@@ -69,13 +71,37 @@ class FiltersPanel : StoreWaitingPanel() {
         panel.addOrReplaceComponentToColumn(SEARCH, 0, createSearchBar(transactionsTable, filterTable))
         panel.addOrReplaceComponentToColumn(FILTERS, 0, createFilterForm(filterTable, transactionsTable))
         panel.addOrReplaceComponentToColumn(FILTERS, 1, filterTable)
+        panel.addOrReplaceComponentToColumn(FILTER_BUTTON, 0, createGroupSwitch(transactionsTable))
         panel.addOrReplaceComponentToColumn(FILTER_BUTTON, 1, createFilterButton())
         panel.addOrReplaceComponentToColumn(TRANSACTIONS, 0, transactionsTable)
         return panel
     }
 
+    private fun createGroupSwitch(transactionsTable: DynamicDataTable): Component {
+        val form = object : DynamicFormComponent<FiltersPanel>(
+            ROW_CONTENT_ID,
+            "",
+            CompoundPropertyModel.of(this),
+            translator
+        ) {
+            override fun onSwitchToggled(propertyName: String, switch: Boolean, target: AjaxRequestTarget) {
+                when (propertyName) {
+                    "grouped" -> toggleGrouped(switch, target)
+                }
+            }
+
+            private fun toggleGrouped(switch: Boolean, target: AjaxRequestTarget) {
+                this@FiltersPanel.grouped = switch
+                transactionsTable.update(fetchTransactions(), target)
+            }
+        }.addSwitch("grouped", "Grouped", grouped)
+        form.showButons = false
+        return form
+    }
+
     private fun createFilterButtons(filterTable: DynamicDataTable): Component {
-        return ButtonGroup(ROW_CONTENT_ID,
+        return ButtonGroup(
+            ROW_CONTENT_ID,
             object : SimpleAjaxButton(
                 ComponentListView.CONTENT_ID,
                 "Delete",
@@ -147,8 +173,7 @@ class FiltersPanel : StoreWaitingPanel() {
     }
 
     private fun createTransactionsTable(): DynamicDataTable {
-        val tuples =
-            runBlocking { tupleUtils.transactionsToTuples(filterCache.transactions, false, ModelCache.PERIOD.NONE) }
+        val tuples = fetchTransactions()
         return DynamicDataTable.get(
             ROW_CONTENT_ID,
             tuples,
@@ -159,6 +184,20 @@ class FiltersPanel : StoreWaitingPanel() {
             onTupleClick = tupleClicked()
         ).invertHeader().sm()
             .striped()
+    }
+
+    private fun fetchTransactions() = if (grouped) {
+        runBlocking {
+            tupleUtils.groupTuplesBy(
+                tupleUtils.transactionsToTuples(
+                    filterCache.transactions,
+                    false,
+                    ModelCache.PERIOD.NONE
+                ), "Receiver"
+            )
+        }.sortedByDescending { it.getValueForColumn(it.sortColumn).toString().toInt() }
+    } else {
+        runBlocking { tupleUtils.transactionsToTuples(filterCache.transactions, false, ModelCache.PERIOD.NONE) }
     }
 
     private fun tupleClicked() = { target: AjaxRequestTarget, tuple: Tuple ->
@@ -235,12 +274,23 @@ class FiltersPanel : StoreWaitingPanel() {
                 filterCache.filter(convertedInput ?: StringUtils.EMPTY)
                 runBlocking {
                     val transTuples = async {
-                        tupleUtils.transactionsToTuples(
-                            filterCache.transactions,
-                            false,
-                            ModelCache.PERIOD.NONE
-                        )
+                        if (grouped) {
+                            tupleUtils.groupTuplesBy(
+                                tupleUtils.transactionsToTuples(
+                                    filterCache.transactions,
+                                    false,
+                                    ModelCache.PERIOD.NONE
+                                ), "Receiver"
+                            ).sortedByDescending { it.getValueForColumn(it.sortColumn).toString().toInt() }
+                        } else {
+                            tupleUtils.transactionsToTuples(
+                                filterCache.transactions,
+                                false,
+                                ModelCache.PERIOD.NONE
+                            )
+                        }
                     }
+
                     val filTuples = async {
                         tupleUtils.filtersToTuples(filterCache.filters)
                     }
