@@ -41,8 +41,11 @@ class TupleUtilsTest {
         val tuples = INSTANCE.filtersToTuples(createFilters())
         val result = INSTANCE.groupTuplesBy(tuples, "Category")
         assertEquals(result.size, 2)
-        assertEquals(result.first { it.getValueForColumn("Category").equals("Tested") }.getValueForColumn("Count"), 4)
-        assertEquals(result.first { it.getValueForColumn("Category").equals("Test") }.getValueForColumn("Count"), 2)
+        assertEquals(
+            result.first { it.getValueForColumn("Category").equals("Tested") }.getValueForColumn("Quantity"),
+            4
+        )
+        assertEquals(result.first { it.getValueForColumn("Category").equals("Test") }.getValueForColumn("Quantity"), 2)
     }
 
     private fun createTransactions(): List<Transaction> {
