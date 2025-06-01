@@ -11,7 +11,7 @@
     <groupId>nl.maas.bankbook</groupId>
     <artifactId>bankbook</artifactId>
     <packaging>pom</packaging>
-    <version>2024.03-SNAPSHOT</version>
+    <version>2025.01-SNAPSHOT</version>
 
     <modules>
         <module>bankbook-backend</module>
@@ -29,7 +29,7 @@
     </scm>
 
     <properties>
-        <kotlin.version>1.6.10</kotlin.version>
+        <kotlin.version>1.6.21</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
@@ -40,7 +40,7 @@
         </jvm.options>
         <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <kotlinx-coroutines-core.version>1.6.1</kotlinx-coroutines-core.version>
-        <wicket.framework.lib.version>2024.03-SNAPSHOT</wicket.framework.lib.version>
+        <wicket.framework.lib.version>2024.5</wicket.framework.lib.version>
     </properties>
 
     <repositories>
@@ -48,6 +48,11 @@
             <id>objectdb</id>
             <name>ObjectDB Repository</name>
             <url>https://m2.objectdb.com</url>
+        </repository>
+        <repository>
+            <id>maas-fam</id>
+            <name>local repo</name>
+            <url>file:///shares/downloads/repo</url>
         </repository>
     </repositories>
 
@@ -227,7 +232,7 @@
                 <plugin>
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <groupId>org.jetbrains.kotlin</groupId>
-                    <version>1.6.21</version>
+                    <version>${kotlin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
