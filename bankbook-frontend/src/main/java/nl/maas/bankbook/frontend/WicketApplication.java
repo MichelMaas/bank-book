@@ -38,8 +38,8 @@ public class WicketApplication extends WebApplication {
     @Override
     protected void internalInit() {
         super.internalInit();
-        FileSystemResourceReference favicon = new FileSystemResourceReference("favicon", Path.of(this.getClass().getResource("/open/images/icon.png").getPath()));
-        mountResource("/images/icon.png", favicon);
+        FileSystemResourceReference favicon = new FileSystemResourceReference("favicon", Path.of(this.getClass().getResource("/open/images/bankbook.ico").getPath()));
+        mountResource("/images/bankbook.ico", favicon);
     }
 
     @Override
