@@ -10,7 +10,6 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import javax.annotation.OverridingMethodsMustInvokeSuper
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
@@ -57,7 +56,6 @@ abstract class Transaction(
         }
     }
 
-    @OverridingMethodsMustInvokeSuper
     override fun equals(other: Any?): Boolean {
         if (!Transaction::class.isInstance(other)) return false
 

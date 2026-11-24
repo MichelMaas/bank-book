@@ -1,0 +1,20 @@
+{
+  "destination": "/home/michel/shares/downloads/Debs",
+  "packages": {
+    "bankbook-client_2026.01~snapshot-2_amd64.deb": {
+      "sha256": "604c268cdc11366cee8794f0a24d34ebc46a99aa241239b5d4b0e74bc96eae97",
+      "size": 78259796,
+      "control": "Package: bankbook-client\nVersion: 2026.01~snapshot-2\nArchitecture: amd64\nDepends: openjdk-21-jre, debconf (>= 0.5) | debconf-2.0, python3, libgtk-3-0, libxtst6, libxi6, libxrender1, libgl1, libasound2t64 | libasound2\n"
+    },
+    "bankbook-server_2026.01~snapshot-2_all.deb": {
+      "sha256": "75be37367f6387d1838af109598fc5a9cea3f4d7ce1edefcd76abbac049bf357",
+      "size": 78857924,
+      "control": "Package: bankbook-server\nVersion: 2026.01~snapshot-2\nArchitecture: all\nDepends: openjdk-21-jre-headless, adduser, init-system-helpers (>= 1.54~)\n"
+    },
+    "bankbook-standalone_2026.01~snapshot-2_all.deb": {
+      "sha256": "828977883726064c05ccb8a6db6aca575d41e4cdf53ecea28327e6fe24d9b4a5",
+      "size": 4064,
+      "control": "Package: bankbook-standalone\nVersion: 2026.01~snapshot-2\nArchitecture: all\nDepends: bankbook-server (= 2026.01~snapshot-2), bankbook-client (= 2026.01~snapshot-2)\n"
+    }
+  }
+}

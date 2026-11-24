@@ -7,7 +7,7 @@ import nl.maas.bankbook.frontend.wicket.caches.ModelCache
 import nl.maas.bankbook.utils.TimerUtil
 import org.springframework.stereotype.Component
 import java.io.File
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @Component
 class FileImportService {

@@ -1,0 +1,18 @@
+[Unit]
+Description=Bankbook server
+After=network.target
+[Service]
+Type=simple
+User=bankbook
+Group=bankbook
+WorkingDirectory=/var/lib/bankbook
+EnvironmentFile=/etc/default/bankbook-server
+ExecStart=/usr/bin/java --add-opens=java.base/java.time=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED -Xms32m -Xmx512m -Djava.awt.headless=true -Dbankbook.dataDir=/var/lib/bankbook -Duser.home=/var/lib/bankbook -jar /usr/share/bankbook/server.jar
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+[Install]
+WantedBy=multi-user.target

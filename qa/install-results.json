@@ -1,0 +1,15 @@
+[
+  "echte dpkg-installatie drie pakketten met nagebootste systeemhelpers",
+  "debconf installatieadres opgeslagen",
+  "servergegevensmap afgeschermd",
+  "poort 80 en minimaal bindrecht ingesteld",
+  "servicestart bij eerste installatie",
+  "conffile behouden bij herinstallatie",
+  "gestopte service blijft gestopt bij herinstallatie",
+  "serverrestart via try-restart aangevraagd",
+  "adres later wijzigbaar",
+  "ongeldige installatie-URL geweigerd",
+  "remove bewaart gegevens en serverconfig",
+  "purge bewaart financiele gegevens en clientadres",
+  "purge verwijdert serverconffile"
+]

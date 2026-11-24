@@ -1,4 +1,11 @@
+server:
+  address: ${BANKBOOK_BIND:127.0.0.1}
+  port: ${BANKBOOK_PORT:80}
 wicket:
+  core:
+    settings:
+      general:
+        configuration-type: deployment
   external:
     agilcoders:
       bootstrap:

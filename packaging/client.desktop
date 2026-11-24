@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Bankbook
+Comment=Open de Bankbook-server in een eigen venster
+Exec=bankbook
+Icon=bankbook
+Terminal=false
+Categories=Office;Finance;
+Actions=Configure;
+
+[Desktop Action Configure]
+Name=Server instellen
+Exec=bankbook --configure

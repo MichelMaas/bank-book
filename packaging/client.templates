@@ -1,0 +1,14 @@
+Template: bankbook-client/server-url
+Type: string
+Default: http://127.0.0.1
+Description: Adres van de Bankbook-server:
+ Gebruik http://127.0.0.1 voor stand-alone gebruik op deze computer.
+ Voor een aparte server vult u het volledige http:// of https:// adres in.
+ Het adres kan later worden gewijzigd via Bankbook server instellen in het startmenu
+ of met sudo dpkg-reconfigure bankbook-client.
+
+Template: bankbook-client/invalid-url
+Type: error
+Description: Ongeldig Bankbook-serveradres
+ Gebruik een volledig http:// of https:// adres met een geldige hostnaam,
+ zonder gebruikersnaam, wachtwoord, query of fragment.

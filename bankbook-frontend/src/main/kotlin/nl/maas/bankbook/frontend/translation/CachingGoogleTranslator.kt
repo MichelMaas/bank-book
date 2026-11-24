@@ -5,10 +5,13 @@ import nl.maas.bankbook.domain.IterativeStorable
 import nl.maas.wicket.framework.services.Translator
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
+import org.springframework.beans.factory.annotation.Value
 import java.util.*
 
 @Component
-class CachingGoogleTranslator() : Translator {
+class CachingGoogleTranslator(
+    @Value("\${bankbook.translation.remote-enabled:false}") private val remoteEnabled: Boolean = false
+) : Translator {
 
     private var translations = IterativeStorable.load(Translation::class)
 
@@ -22,13 +25,18 @@ class CachingGoogleTranslator() : Translator {
         if (word.filter { it.isLetterOrDigit() }.toDoubleOrNull() != null) {
             return word
         }
-        if (translations.none { it.language.equals(language) && it.original.equals(word) }) {
+        translations.firstOrNull { it.language == language && it.original == word }?.let { return it.translation }
+        if (!remoteEnabled || language == "en") return word
+        try {
             val translation = me.bush.translator.Translator().translateBlocking(
                 word,
                 Language.valueOf(Locale.getDefault().getDisplayLanguage(Locale.ENGLISH).uppercase()),
                 Language.ENGLISH
             ).translatedText.lowercase().replaceFirstChar { it.uppercase() }
             updateTranslations(word, translation)
+        } catch (ex: Exception) {
+            // Translation availability must never make the banking UI unavailable.
+            return word
         }
         return translations.first { it.language.equals(language) && it.original.equals(word) }.translation
     }
@@ -43,7 +51,7 @@ class CachingGoogleTranslator() : Translator {
         if (word.isNullOrBlank()) {
             return StringUtils.EMPTY
         }
-        return translations.first { language.equals(it.language) && word.equals(it.translation) }.original
+        return translations.firstOrNull { language.equals(it.language) && word.equals(it.translation) }?.original ?: word
     }
 
 }

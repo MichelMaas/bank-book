@@ -12,7 +12,7 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Year
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @Component
 class ModelCache @Inject constructor(val translator: CachingGoogleTranslator, val propertiesCache: PropertiesCache) :

@@ -1,0 +1,8 @@
+[
+  "ingepakte server start met Java 21 zonder desktop en levert HTML",
+  "iconen uit executable JAR correct uitgepakt in private datamap",
+  "gegevensmap behouden na volledige JVM-herstart",
+  "instelbare datamap gebruikt; geen impliciete persoonlijke opslag",
+  "client URL-validatie en opslag getest met tijdelijke configuratie",
+  "gedeelde CEFViewer toont echte importpagina zonder paginaserialisatiefouten"
+]

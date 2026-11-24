@@ -50,7 +50,7 @@ class TupleUtilsTest {
 
     private fun createTransactions(): List<Transaction> {
         val date = LocalDate.now()
-        val currency = Currency.getInstance(Locale.getDefault())
+        val currency = Currency.getInstance("EUR")
         return listOf(
             Payment(0, date, IBAN.EMPTY, currency, Amount("1", currency.symbol), MutationTypes.MAN, "Test", "Tester"),
             Payment(0, date, IBAN.EMPTY, currency, Amount("2", currency.symbol), MutationTypes.MAN, "Test", "Tester"),

@@ -19,11 +19,11 @@ import kotlin.reflect.full.hasAnnotation
 interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
 
     companion object {
-        fun path(className: String) = "${System.getProperty("user.home")}/.bankbook/${className.lowercase()}.json"
+        fun path(className: String) = "${System.getProperty("bankbook.dataDir", System.getProperty("user.home") + "/.bankbook")}/${className.lowercase()}.json"
 
 
         @JvmStatic
-        fun <T : IterativeStorable<T>> load(clazz: KClass<T>): List<T> {
+        fun <T : IterativeStorable<T>> load(clazz: KClass<out IterativeStorable<T>>): List<T> {
 
             val className = if (clazz.allSuperclasses.plus(clazz)
                     .any { it.hasAnnotation<StoreAs>() }
@@ -44,9 +44,9 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
             }
         }
 
-        private fun <T : IterativeStorable<T>> readLines(path: Path, clazz: KClass<T>): List<T> {
+        private fun <T : IterativeStorable<T>> readLines(path: Path, clazz: KClass<out IterativeStorable<T>>): List<T> {
             return runBlocking {
-                if (path.toFile().exists()) Files.readAllLines(path).map { async { decode(it) }.await() }
+                (if (path.toFile().exists()) Files.readAllLines(path).map { async { decode(it) }.await() }
                     .map { async { toJSONObject(it) }.await() }.filterNotNull()
                     .map {
                         async {
@@ -59,7 +59,7 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                                     clazz.java
                             )
                         }.await()
-                    } else listOf<T>()
+                    } else listOf<T>()) as List<T>
             }
         }
 
@@ -87,7 +87,7 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                 val oldList = load(storablesClass)
                 val toRemove = storables.flatMap { runBlocking { async { it.replace(oldList) }.await() } }
                 val newList = oldList.minus(toRemove).plus(storables)
-                Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
+                Files.createDirectories(dir)
                 Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
                 return load(storablesClass)
             } else {
@@ -109,7 +109,7 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
                 val oldList = load(storablesClass)
                 val toRemove = storables.flatMap { runBlocking { async { it.replace(oldList) }.await() } }
                 val newList = oldList.minus(toRemove)
-                Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
+                Files.createDirectories(dir)
                 Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
                 return load(storablesClass)
             } else {
@@ -149,7 +149,7 @@ interface IterativeStorable<T : IterativeStorable<T>> : Storable<T> {
         val dir = Paths.get(path.substring(0, path.lastIndexOf("/")))
         val oldList = load(this::class)
         val newList = oldList.minus(replace(oldList as List<T>)).plus(this)
-        Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
+        Files.createDirectories(dir)
         Files.write(Paths.get("${path}"), newList.map { encode(serialize(it)) }, Charsets.UTF_8)
         return this as T
     }

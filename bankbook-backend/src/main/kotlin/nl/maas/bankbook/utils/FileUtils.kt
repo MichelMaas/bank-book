@@ -12,6 +12,10 @@ import java.util.stream.Collectors
 
 object FileUtils {
 
+    private val userHome = System.getProperty("user.home")
+    private val appFolder = Files.createDirectories(Paths.get(System.getProperty("bankbook.dataDir", "$userHome/.bankbook"))).toFile()
+
+    @JvmStatic
     fun findFile(fileName: String): String {
         val files = runBlocking {
             if (Files.exists(Path.of(fileName))) listOf(Path.of(fileName)) else async {
@@ -31,26 +35,35 @@ object FileUtils {
         }
     }
 
-    fun getResourceAsFile(resourcePath: String): File {
-        return File(FileUtils::class.java.getResource(resourcePath).toURI())
+    fun getFileFromAppFolder(fileName: String): File {
+        return File("$appFolder/$fileName")
     }
 
-    fun saveFileToAppFolder(fileName: String, content: String): File {
-        val userHome = System.getProperty("user.home")
-        val appFolder = Paths.get("$userHome/.bankbook").toRealPath().toFile()
+    @JvmStatic
+    fun getResourceAsFile(resourcePath: String): File {
+        val target = File(appFolder, resourcePath.substringAfterLast('/'))
+        FileUtils::class.java.getResourceAsStream(resourcePath).use { input ->
+            requireNotNull(input) { "Missing resource: $resourcePath" }
+            target.outputStream().use { input.copyTo(it) }
+        }
+        return target
+    }
+
+    @JvmStatic
+    fun saveFileToAppFolder(fileName: String, content: String, overwrite: Boolean = false): File {
         val file = File("$appFolder/$fileName")
-        file.writeText(content)
+        if (!file.exists() || overwrite) {
+            file.writeText(content)
+        }
         return file
     }
 
-    fun saveFileToAppFolder(file: File): File {
-        val userHome = System.getProperty("user.home")
-        val appFolder = Paths.get("$userHome/.bankbook").toRealPath().toFile()
+    @JvmStatic
+    fun saveFileToAppFolder(file: File, overwrite: Boolean = false): File {
         val definitivePath = "$appFolder/${file.name}"
-        val destinationFile = file.copyTo(File(definitivePath))
-        if (file.exists() && !file.absolutePath.equals(definitivePath)) {
-            file.delete()
-        }
+        val destination = File(definitivePath)
+        if (file.canonicalFile == destination.canonicalFile) return file
+        val destinationFile = file.copyTo(destination, overwrite)
         return destinationFile
     }
 

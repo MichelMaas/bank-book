@@ -4,7 +4,6 @@ import com.giffing.wicket.spring.boot.context.extensions.ApplicationInitExtensio
 import com.giffing.wicket.spring.boot.context.extensions.WicketApplicationInitConfiguration
 import de.agilecoders.wicket.core.Bootstrap
 import de.agilecoders.wicket.core.settings.ThemeProvider
-import de.agilecoders.wicket.less.BootstrapLess
 import de.agilecoders.wicket.themes.markup.html.bootswatch.BootswatchThemeProvider
 import org.apache.wicket.protocol.http.WebApplication
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +33,5 @@ class BootstrapConfig : WicketApplicationInitConfiguration {
         val themeProvider: ThemeProvider = BootswatchThemeProvider(prop.theme)
         prop.themeProvider = themeProvider
         Bootstrap.install(webApplication, prop)
-        BootstrapLess.install(webApplication)
     }
 }

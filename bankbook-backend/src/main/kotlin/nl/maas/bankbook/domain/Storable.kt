@@ -13,10 +13,10 @@ import kotlin.reflect.full.hasAnnotation
 
 interface Storable<T : Storable<T>> : Serializable {
     companion object {
-        fun path(className: String) = "${System.getProperty("user.home")}/.bankbook/${className.lowercase()}.json"
+        fun path(className: String) = "${System.getProperty("bankbook.dataDir", System.getProperty("user.home") + "/.bankbook")}/${className.lowercase()}.json"
 
         @JvmStatic
-        fun <T : Storable<T>> load(clazz: KClass<T>): T? {
+        fun <T : Storable<T>> load(clazz: KClass<out Storable<T>>): T? {
             val className = if (clazz.allSuperclasses.plus(clazz)
                     .any { it.hasAnnotation<StoreAs>() }
             ) clazz.allSuperclasses.plus(clazz).find { it.hasAnnotation<StoreAs>() }!!
@@ -34,7 +34,7 @@ interface Storable<T : Storable<T>> : Serializable {
             .findAnnotation<StoreAs>()!!.storeAs else this::class.java.simpleName
         val path = path(className.lowercase())
         val dir = Paths.get(path.substring(0, path.lastIndexOf("/")))
-        Files.setAttribute(Files.createDirectories(dir), "dos:hidden", true)
+        Files.createDirectories(dir)
         Files.write(Paths.get("${path}"), listOf(Gson().toJson(this)), Charsets.UTF_8)
         return this as T
     }

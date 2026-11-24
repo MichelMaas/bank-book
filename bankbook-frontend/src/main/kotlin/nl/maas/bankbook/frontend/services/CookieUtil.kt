@@ -5,7 +5,7 @@ import org.apache.wicket.request.cycle.RequestCycle
 import org.apache.wicket.request.http.WebRequest
 import org.apache.wicket.request.http.WebResponse
 import org.apache.wicket.util.cookies.CookieUtils
-import javax.servlet.http.Cookie
+import jakarta.servlet.http.Cookie
 
 class CookieUtil {
 

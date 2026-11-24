@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+exec /usr/bin/java --add-exports=java.desktop/sun.awt=ALL-UNNAMED --add-exports=java.desktop/sun.java2d=ALL-UNNAMED -cp '/usr/share/bankbook/client/client.jar:/usr/share/bankbook/client/lib/*' nl.maas.bankbook.client.ClientMain "$@"

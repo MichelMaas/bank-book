@@ -6,7 +6,7 @@ import nl.maas.bankbook.frontend.wicket.caches.PropertiesCache
 import nl.maas.bankbook.parsers.Parser
 import org.springframework.stereotype.Component
 import java.io.File
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @Component
 class ParserService {

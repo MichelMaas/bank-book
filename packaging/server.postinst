@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+if [ "$1" = configure ]; then
+  if ! getent passwd bankbook >/dev/null; then adduser --system --group --home /var/lib/bankbook --no-create-home bankbook; fi
+  install -d -m 0700 -o bankbook -g bankbook /var/lib/bankbook
+  deb-systemd-helper unmask bankbook-server.service >/dev/null || true
+  deb-systemd-helper enable bankbook-server.service >/dev/null
+  if [ -d /run/systemd/system ]; then
+    systemctl --system daemon-reload
+    if [ -n "${2:-}" ]; then
+      deb-systemd-invoke try-restart bankbook-server.service
+    else
+      deb-systemd-invoke start bankbook-server.service
+    fi
+  fi
+fi

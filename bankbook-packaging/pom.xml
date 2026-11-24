@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>nl.maas.bankbook</groupId>
+    <artifactId>bankbook</artifactId>
+    <version>2026.01-SNAPSHOT</version>
+  </parent>
+  <artifactId>bankbook-packaging</artifactId>
+  <packaging>pom</packaging>
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+  <profiles>
+    <profile>
+      <id>package-linux-deb</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <executions>
+              <execution>
+                <id>build-debs</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>python3</executable>
+                  <arguments>
+                    <argument>${project.basedir}/../packaging/build_debs.py</argument>
+                    <argument>--version</argument>
+                    <argument>${project.version}</argument>
+                    <argument>--output</argument>
+                    <argument>${deb.outputDirectory}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

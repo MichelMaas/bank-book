@@ -11,7 +11,7 @@ import nl.maas.wicket.framework.objects.Tuple
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @Component
 class TupleUtils {

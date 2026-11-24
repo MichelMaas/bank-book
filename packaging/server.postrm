@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+if [ -d /run/systemd/system ]; then systemctl --system daemon-reload; fi
+if [ "$1" = purge ]; then deb-systemd-helper purge bankbook-server.service; deb-systemd-helper unmask bankbook-server.service; fi
+# Financial data and service account are deliberately retained, including on purge.
